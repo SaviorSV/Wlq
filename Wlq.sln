@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlq.Web", "Wlq.Web\Wlq.Web.csproj", "{4855C781-E744-40A0-9C8E-9AAA02428A5A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{3CCF9FA2-4FFE-405A-AC25-ABD84324D0D2}"
+	ProjectSection(SolutionItems) = preProject
+		References\Hanger.Common.dll = References\Hanger.Common.dll
+		References\Microsoft.Practices.ServiceLocation.dll = References\Microsoft.Practices.ServiceLocation.dll
+		References\Microsoft.Practices.Unity.dll = References\Microsoft.Practices.Unity.dll
+		References\Newtonsoft.Json.dll = References\Newtonsoft.Json.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlq.Core", "Wlq.Core\Wlq.Core.csproj", "{467A1FD9-D047-4DB7-94A4-31B2712B587A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlq.Core.Implementation", "Wlq.Core.Implementation\Wlq.Core.Implementation.csproj", "{D9278DC7-D96E-446B-8CE3-121330E0FE11}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9823241A-6D61-4DD4-80D6-0053CB01CFF7}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4855C781-E744-40A0-9C8E-9AAA02428A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4855C781-E744-40A0-9C8E-9AAA02428A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4855C781-E744-40A0-9C8E-9AAA02428A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4855C781-E744-40A0-9C8E-9AAA02428A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{467A1FD9-D047-4DB7-94A4-31B2712B587A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{467A1FD9-D047-4DB7-94A4-31B2712B587A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{467A1FD9-D047-4DB7-94A4-31B2712B587A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{467A1FD9-D047-4DB7-94A4-31B2712B587A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9278DC7-D96E-446B-8CE3-121330E0FE11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9278DC7-D96E-446B-8CE3-121330E0FE11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9278DC7-D96E-446B-8CE3-121330E0FE11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9278DC7-D96E-446B-8CE3-121330E0FE11}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
