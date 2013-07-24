@@ -100,20 +100,20 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Wlq.Core.Implementation\Wlq.Core.Implementation.csproj">
-      <Project>{D9278DC7-D96E-446B-8CE3-121330E0FE11}</Project>
-      <Name>Wlq.Core.Implementation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Wlq.Core\Wlq.Core.csproj">
-      <Project>{467A1FD9-D047-4DB7-94A4-31B2712B587A}</Project>
-      <Name>Wlq.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wlq.Service.Implementation\Wlq.Service.Implementation.csproj">
+      <Project>{D9278DC7-D96E-446B-8CE3-121330E0FE11}</Project>
+      <Name>Wlq.Service.Implementation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wlq.Service\Wlq.Service.csproj">
+      <Project>{467A1FD9-D047-4DB7-94A4-31B2712B587A}</Project>
+      <Name>Wlq.Service</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

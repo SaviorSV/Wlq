@@ -4,12 +4,17 @@ using System.Linq;
 using System.Text;
 
 using Hanger.Common;
-using Wlq.Core.Services;
+using Wlq.Service;
 
-namespace Wlq.Core.Implementation
+namespace Wlq.Service.Implementation
 {
 	public class CommonService : Disposable, ICommonService
 	{
+		public CommonService()
+		{
+ 
+		}
+
 		/// <summary>
 		/// Dispose
 		/// </summary>

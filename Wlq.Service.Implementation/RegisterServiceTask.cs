@@ -1,8 +1,8 @@
 ﻿using Hanger.Common;
 using Microsoft.Practices.Unity;
-using Wlq.Core.Services;
+using Wlq.Service;
 
-namespace Wlq.Core.Implementation
+namespace Wlq.Service.Implementation
 {
 	public class RegisterServiceTask : RegisterServiceBootstrapperTask
 	{

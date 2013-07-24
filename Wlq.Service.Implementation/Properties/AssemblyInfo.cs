@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Wlq.Core")]
+[assembly: AssemblyTitle("Wlq.Service.Implementation")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Wlq.Core")]
+[assembly: AssemblyProduct("Wlq.Service.Implementation")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("22faff14-b925-49e5-a814-9c2f0b14d0e7")]
+[assembly: Guid("7a26d926-d1fe-4f6d-a48c-0507e405591a")]
 
 // Version information for an assembly consists of the following four values:
 //
