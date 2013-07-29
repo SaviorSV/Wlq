@@ -1,27 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
-using Wlq.Service;
 using Hanger.Common;
+using Microsoft.Practices.Unity;
+using Wlq.Persistence;
+using Wlq.Service;
 
 namespace Wlq.Web.Controllers
 {
     public class BaseController : Controller
 	{
-		#region Services
+		#region Services & Database Context
 
-		private static ICommonService _commonService;
+		private DatabaseContext _databaseContext;
 
-		protected static ICommonService CommonService
+		private DatabaseContext DatabaseContext
+		{
+			get
+			{
+				if (_databaseContext == null)
+				{
+					_databaseContext = new DatabaseContext();
+				}
+
+				return _databaseContext;
+			}
+		}
+
+		private ICommonService _commonService;
+
+		protected ICommonService CommonService
 		{
 			get 
 			{
 				if (_commonService == null)
 				{
-					_commonService = LocalServiceLocator.GetService<ICommonService>();
+					_commonService = LocalServiceLocator.GetService<ICommonService>(new ParameterOverrides { { "databaseContext", this.DatabaseContext } });
 				}
 
 				return _commonService;
@@ -37,7 +50,9 @@ namespace Wlq.Web.Controllers
 
 		protected override void Dispose(bool disposing)
 		{
-			
+			if (_databaseContext != null)
+				_databaseContext.Dispose();
+
 			base.Dispose(disposing);
 		}
     }

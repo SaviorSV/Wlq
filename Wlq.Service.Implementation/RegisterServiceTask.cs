@@ -10,7 +10,7 @@ namespace Wlq.Service.Implementation
 
 		public override void Execute()
 		{
-			container.RegisterTypeAsSingleton<ICommonService, CommonService>();
+			container.RegisterTypeAsPerResolve<ICommonService, CommonService>();
 		}
 
 		protected override void InternalDispose()

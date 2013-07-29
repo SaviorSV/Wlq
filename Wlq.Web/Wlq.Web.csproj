@@ -107,6 +107,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Wlq.Persistence\Wlq.Persistence.csproj">
+      <Project>{F62B04B6-22F2-4F39-A4E5-48B84F3337BF}</Project>
+      <Name>Wlq.Persistence</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Wlq.Service.Implementation\Wlq.Service.Implementation.csproj">
       <Project>{D9278DC7-D96E-446B-8CE3-121330E0FE11}</Project>
       <Name>Wlq.Service.Implementation</Name>

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
 
 using Wlq.Domain;
-using System.Data.Entity;
 
-namespace Wlq.Persistence
+namespace Wlq.Persistence.Implementation
 {
 	public class DatabaseRepository<TEntity>
 		where TEntity : class, IEntity

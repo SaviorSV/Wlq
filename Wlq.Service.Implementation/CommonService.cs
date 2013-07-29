@@ -5,14 +5,17 @@ using System.Text;
 
 using Hanger.Common;
 using Wlq.Service;
+using Wlq.Persistence;
 
 namespace Wlq.Service.Implementation
 {
 	public class CommonService : Disposable, ICommonService
 	{
-		public CommonService()
+		private readonly DatabaseContext _databaseContext;
+
+		public CommonService(DatabaseContext databaseContext)
 		{
-			//Hanger.Common.LocalLoggingService.Info("CommonService()");
+			_databaseContext = databaseContext;
 		}
 
 		/// <summary>
