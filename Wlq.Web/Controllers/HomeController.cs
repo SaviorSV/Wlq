@@ -4,18 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-using Wlq.Service;
-
 namespace Wlq.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
        
         public ActionResult Index()
         {
-			var commonService = Hanger.Common.LocalServiceLocator.GetService<ICommonService>();
-
-            return View();
+			return View();
         }
 
     }

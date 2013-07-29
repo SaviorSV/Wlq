@@ -27,6 +27,8 @@ namespace Wlq.Persistence
 
 		public void Add(TEntity entity)
 		{
+			entity.LastModified = DateTime.Now;
+
 			_dbSet.Add(entity);
 		}
 
@@ -38,6 +40,11 @@ namespace Wlq.Persistence
 		public void Delete(TEntity entity)
 		{
 			_dbSet.Remove(entity);
+		}
+
+		public void Update(TEntity entity)
+		{
+			entity.LastModified = DateTime.Now;
 		}
 	}
 }

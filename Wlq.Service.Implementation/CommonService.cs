@@ -12,7 +12,7 @@ namespace Wlq.Service.Implementation
 	{
 		public CommonService()
 		{
- 
+			//Hanger.Common.LocalLoggingService.Info("CommonService()");
 		}
 
 		/// <summary>
