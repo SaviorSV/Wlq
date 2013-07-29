@@ -11,7 +11,9 @@ namespace Wlq.Web.Controllers
        
         public ActionResult Index()
         {
-			return View();
+			var str = CommonService.ToString() + "<br />" + CommonService.ToString();
+
+			return Content(str);
         }
 
     }

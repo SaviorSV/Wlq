@@ -42,13 +42,15 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ICommonService.cs" />
-    <Compile Include="Utility\MigrationHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wlq.Domain\Wlq.Domain.csproj">
       <Project>{2359C2BC-D7F9-40EC-80C5-0EDFC47ECCB9}</Project>
       <Name>Wlq.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utility\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

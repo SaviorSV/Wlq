@@ -13,8 +13,15 @@ namespace Wlq.Service.Implementation
 	{
 		private readonly DatabaseContext _databaseContext;
 
+		private CommonService() { }
+
 		public CommonService(DatabaseContext databaseContext)
 		{
+			if (databaseContext == null)
+			{
+				throw new ArgumentNullException("databaseContext");
+			}
+
 			_databaseContext = databaseContext;
 		}
 

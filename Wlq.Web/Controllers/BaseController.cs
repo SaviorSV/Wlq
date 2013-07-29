@@ -32,13 +32,20 @@ namespace Wlq.Web.Controllers
 		{
 			get 
 			{
-				if (_commonService == null)
-				{
-					_commonService = LocalServiceLocator.GetService<ICommonService>(new ParameterOverrides { { "databaseContext", this.DatabaseContext } });
-				}
-
-				return _commonService;
+				return this.GetService<ICommonService>(ref _commonService);
 			}
+		}
+
+		private TService GetService<TService>(ref TService service)
+		{
+			if (service == null)
+			{
+				service = LocalServiceLocator.GetService<TService>(
+					new ParameterOverrides { { "databaseContext", this.DatabaseContext } }
+				);
+			}
+
+			return service;
 		}
 
 		#endregion
