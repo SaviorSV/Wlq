@@ -41,8 +41,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\GroupInfo.cs" />
     <Compile Include="Entities\IEntity.cs" />
-    <Compile Include="Enums\PostCategory.cs" />
+    <Compile Include="Entities\PostInfo.cs" />
+    <Compile Include="Entities\UserGroupInfo.cs" />
+    <Compile Include="Entities\UserInfo.cs" />
+    <Compile Include="Entities\UserPostInfo.cs" />
+    <Compile Include="Entities\VenueInfo.cs" />
+    <Compile Include="Enums\GroupType.cs" />
+    <Compile Include="Enums\PostType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

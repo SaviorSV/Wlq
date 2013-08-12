@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Wlq.Domain
 {
-	public enum PostCategory
+	public enum PostType
 	{
 	}
 }
