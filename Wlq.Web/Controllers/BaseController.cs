@@ -36,6 +36,26 @@ namespace Wlq.Web.Controllers
 			}
 		}
 
+		private IUserService _userService;
+
+		protected IUserService UserService
+		{
+			get
+			{
+				return this.GetService<IUserService>(ref _userService);
+			}
+		}
+
+		private IPostService _postService;
+
+		protected IPostService PostService
+		{
+			get
+			{
+				return this.GetService<IPostService>(ref _postService);
+			}
+		}
+
 		private TService GetService<TService>(ref TService service)
 		{
 			if (service == null)

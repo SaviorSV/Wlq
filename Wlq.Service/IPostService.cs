@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Wlq.Service
 {
-	public interface ICommonService : IDisposable
+	public interface IPostService : IDisposable
 	{
 	}
 }
