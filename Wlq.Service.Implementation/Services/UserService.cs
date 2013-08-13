@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 
 using Hanger.Common;
-using Wlq.Service;
+using Wlq.Domain;
 using Wlq.Persistence;
+using Wlq.Service;
 
 namespace Wlq.Service.Implementation
 {
@@ -13,17 +14,47 @@ namespace Wlq.Service.Implementation
 	{
 		private readonly DatabaseContext _databaseContext;
 
-		private UserService() { }
-
 		public UserService(DatabaseContext databaseContext)
 		{
-			if (databaseContext == null)
-			{
-				throw new ArgumentNullException("databaseContext");
-			}
-
 			_databaseContext = databaseContext;
 		}
+
+		#region public methods
+
+		public UserInfo GetUser(long userId)
+		{
+			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
+
+			return userRepository.GetById(userId);
+		}
+
+		public UserInfo GetUser(string loginName, string password)
+		{
+			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
+
+			return userRepository.GetAll()
+				.FirstOrDefault(u => u.LoginName == loginName && u.Password == password.ToMd5());
+		}
+
+		public bool AddUser(UserInfo user)
+		{
+			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
+
+			userRepository.Add(user);
+
+			return _databaseContext.SaveChanges() > 0;
+		}
+
+		public bool UpdateUser(UserInfo user)
+		{
+			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
+
+			userRepository.Update(user);
+
+			return _databaseContext.SaveChanges() > 0;
+		}
+
+		#endregion
 
 		/// <summary>
 		/// Dispose

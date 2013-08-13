@@ -4,7 +4,7 @@ using System.Linq;
 
 using Wlq.Domain;
 
-namespace Wlq.Persistence.Implementation
+namespace Wlq.Persistence
 {
 	public class DatabaseRepository<TEntity>
 		where TEntity : class, IEntity
@@ -30,7 +30,7 @@ namespace Wlq.Persistence.Implementation
 			_dbSet.Add(entity);
 		}
 
-		public TEntity Get(long id)
+		public TEntity GetById(long id)
 		{
 			return _dbSet.FirstOrDefault(o => o.Id == id);
 		}

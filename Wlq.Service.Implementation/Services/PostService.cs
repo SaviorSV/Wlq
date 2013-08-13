@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
-using System.Text;
 
 using Hanger.Common;
 using Wlq.Service;
@@ -13,15 +15,8 @@ namespace Wlq.Service.Implementation
 	{
 		private readonly DatabaseContext _databaseContext;
 
-		private PostService() { }
-
 		public PostService(DatabaseContext databaseContext)
 		{
-			if (databaseContext == null)
-			{
-				throw new ArgumentNullException("databaseContext");
-			}
-
 			_databaseContext = databaseContext;
 		}
 
