@@ -7,5 +7,11 @@ namespace Wlq.Domain
 		public string Logo { get; set; }
 		public long ParentGroup { get; set; }
 		public int GroupType { get; set; }
+
+		public GroupInfo()
+		{
+			Name = string.Empty;
+			Logo = string.Empty;
+		}
 	}
 }

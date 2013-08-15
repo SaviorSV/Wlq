@@ -8,5 +8,12 @@ namespace Wlq.Domain
 		public string Image { get; set; }
 		public long GroupId { get; set; }
 		public int GroupType { get; set; }
+
+		public PostInfo()
+		{
+			Title = string.Empty;
+			Content = string.Empty;
+			Image = string.Empty;
+		}
 	}
 }

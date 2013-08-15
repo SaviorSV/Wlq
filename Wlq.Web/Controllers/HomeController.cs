@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+using Wlq.Domain;
+
 namespace Wlq.Web.Controllers
 {
     public class HomeController : BaseController
