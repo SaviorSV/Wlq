@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 
 using Wlq.Domain;
+using Hanger.Common;
 
 namespace Wlq.Web.Controllers
 {
