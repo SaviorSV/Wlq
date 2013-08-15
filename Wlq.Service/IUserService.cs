@@ -11,5 +11,7 @@ namespace Wlq.Service
 		UserInfo GetUser(string loginName, string password);
 		bool AddUser(UserInfo user);
 		bool UpdateUser(UserInfo user);
+		bool DeleteUser(long userId);
+		bool ChangePassword(UserInfo user, string newPassword);
 	}
 }

@@ -75,13 +75,15 @@ namespace Wlq.Web.Controllers
 					{
 						long.TryParse(HttpContext.User.Identity.Name, out _currentUserId);
 					}
+
+					return _currentUserId;
 				}
 
-				return _currentUserId;
+				return 0;
 			}
 		}
 
-		private UserInfo _user = null;
+		private UserInfo _currentUser = null;
 
 		protected UserInfo CurrentUser
 		{
@@ -89,12 +91,12 @@ namespace Wlq.Web.Controllers
 			{
 				if (CurrentUserId > 0)
 				{
-					if (_user == null)
+					if (_currentUser == null)
 					{
-						_user = UserService.GetUser(CurrentUserId);
+						_currentUser = UserService.GetUser(CurrentUserId);
 					}
 
-					return _user;
+					return _currentUser;
 				}
 
 				return null;

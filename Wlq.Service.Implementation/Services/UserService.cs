@@ -54,6 +54,22 @@ namespace Wlq.Service.Implementation
 			return _databaseContext.SaveChanges() > 0;
 		}
 
+		public bool DeleteUser(long userId)
+		{
+			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
+
+			userRepository.DeleteById(userId);
+
+			return _databaseContext.SaveChanges() > 0;
+		}
+
+		public bool ChangePassword(UserInfo user, string newPassword)
+		{
+			user.Password = newPassword.ToMd5();
+
+			return this.UpdateUser(user);
+		}
+
 		#endregion
 
 		/// <summary>

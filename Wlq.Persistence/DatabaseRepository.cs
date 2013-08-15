@@ -35,9 +35,12 @@ namespace Wlq.Persistence
 			return _dbSet.FirstOrDefault(o => o.Id == id);
 		}
 
-		public void Delete(TEntity entity)
+		public void DeleteById(long id)
 		{
-			_dbSet.Remove(entity);
+			var entity = this.GetById(id);
+
+			if (entity != null)
+				_dbSet.Remove(entity);
 		}
 
 		public void Update(TEntity entity)
