@@ -4,6 +4,8 @@ using Hanger.Common;
 using Microsoft.Practices.Unity;
 using Wlq.Persistence;
 using Wlq.Service;
+using Wlq.Domain;
+using System.Web;
 
 namespace Wlq.Web.Controllers
 {
@@ -59,9 +61,53 @@ namespace Wlq.Web.Controllers
 
 		#endregion
 
-		public BaseController()
+		#region Loggin User
+
+		private long _currentUserId;
+
+		protected long CurrentUserId
 		{
- 
+			get
+			{
+				if (HttpContext.User.Identity.IsAuthenticated)
+				{
+					if (_currentUserId == 0)
+					{
+						long.TryParse(HttpContext.User.Identity.Name, out _currentUserId);
+					}
+				}
+
+				return _currentUserId;
+			}
+		}
+
+		private UserInfo _user = null;
+
+		protected UserInfo CurrentUser
+		{
+			get
+			{
+				if (CurrentUserId > 0)
+				{
+					if (_user == null)
+					{
+						_user = UserService.GetUser(CurrentUserId);
+					}
+
+					return _user;
+				}
+
+				return null;
+			}
+		}
+
+		#endregion
+
+		public BaseController() { }
+
+		public ActionResult AlertAndRedirect(string message, string url)
+		{
+			return RedirectToAction("Redirect", "Common", new { Message = HttpUtility.UrlEncode(message), Url = url });
 		}
 
 		protected override void Dispose(bool disposing)

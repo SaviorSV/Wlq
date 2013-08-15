@@ -1,0 +1,12 @@
+﻿<script type="text/javascript">
+	var message = '@ViewBag.Message';
+	var url = '@ViewBag.Url';
+
+	if (message != '') {
+		alert(message);
+	}
+
+	if (url != '') {
+		window.location.href = url;
+	}
+</script>
