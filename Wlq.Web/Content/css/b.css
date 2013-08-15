@@ -1,0 +1,265 @@
+@charset "utf-8";
+/* 重置 */
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6,pre, form, fieldset, input, textarea, p, blockquote, th, td {padding:0;margin:0;}   
+fieldset, img {border:0;}   
+table{border-collapse:collapse;border-spacing:0;}   
+ol, ul {list-style:none;}   
+address, caption, cite, code, dfn, em, th, var {font-weight:normal;font-style:normal;}   
+caption, th {text-align:left;}   
+h1, h2, h3, h4, h5, h6 {font-size:100%;}   
+q:before, q:after {content:'';}  
+ins{ text-decoration:none;}
+
+.clearfix { *zoom:1}
+.clearfix:after {content: ".";display: block;clear: both;visibility: hidden;line-height: 0;height: 0;}
+.clear{ clear:both}
+.hide{ display:none}
+
+a{blr:expression(this.onFocus=this.blur());cursor:pointer} 
+a:focus { -moz-outline-style: none; } 
+
+a,area { blr:expression(this.onFocus=this.blur()) }
+*:focus { outline: none; }
+
+/*common*/
+body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
+.wp{ width:980px; margin:auto}
+.mb10{ margin-bottom:10px;}
+.mb25{ margin-bottom:25px;}
+.fr{ float:right !important}
+.fl{ float:left !important}
+.o-hidden{ overflow:hidden}
+.txt-c{ text-align:center}
+
+
+
+.top{ height:279px; background:url(../images/common/top-bg.jpg) no-repeat top center}
+.logo{width:235px; height:140px; float:left;position:absolute; top:29px; left:37px;}
+.logo a{ background:url(../images/common/logo.jpg); width:235px; height:140px; display:inline-block}
+.header{ height:199px; position:relative;}
+.login-ico{ background:url(../images/common/login-ico.jpg); width:32px; height:32px; display:inline-block; float:left; margin-right:10px; margin-top:10px;}
+.login-card{ background:url(../images/common/logininput-1.jpg); width:197px; height:47px; line-height:47px; border:0px; float:left; margin-right:8px; margin-top:3px; font-size:16px; text-indent:15px; color:#a3a2a0}
+.login-pass{ background:url(../images/common/logininput-2.jpg); width:162px; height:47px; line-height:47px; border:0px; float:left; margin-right:5px; margin-top:3px; font-size:16px; text-indent:15px; color:#a3a2a0}
+.btn-login{ background:url(../images/common/loginbtn-1.jpg); width:116px; height:53px; border:0px; display:inline-block; float:left}
+.btn-shuaka{background:url(../images/common/loginbtn-2.jpg); width:116px; height:53px; border:0px; display:inline-block; float:left}
+.loginbarbody{ float:right; padding:4px 16px 0 0 }
+
+.body-bg{ background:url(../images/common/body-bg.jpg); width:980px; margin:auto; padding:0 22px;position:relative; z-index:998; overflow:hidden}
+
+.footer{ height:151px; background:#FFF url(../images/common/footer.jpg) top center no-repeat; position:relative; z-index:999; line-height:30px; font-size:12px; text-align:center; color:#515151; padding:47px 0 0 0}
+
+.l-box{ width:299px; float:left; position:relative; margin-top:-17px; padding-bottom:40px;}
+.r-box{width:646px; float:left; position:relative; margin-top:-17px; background:url(../images/common/rightbox-bg.jpg) left top no-repeat; min-height:400px; padding:30px 18px 30px 17px}
+.leftmenu{}
+.leftmenu li{ height:103px;}
+.leftmenu li a{ height:103px; background:url(../images/common/leftmenu.jpg); width:299px; display:inline-block}
+.leftmenu li a.menu-1{ background-position:0 0}
+.leftmenu li a.menu-2{ background-position:0 -103px;}
+.leftmenu li a.menu-3{background-position:0 -206px;}
+.leftmenu li a.menu-4{background-position:0 -309px;}
+.leftmenu li a.menu-5{background-position:0 -412px;}
+
+.leftmenu li.on a.menu-1{background-position:-299px 0}
+.leftmenu li.on a.menu-2{background-position:-299px -103px;}
+.leftmenu li.on a.menu-3{background-position:-299px -206px;}
+.leftmenu li.on a.menu-4{background-position:-299px -309px;}
+.leftmenu li.on a.menu-5{background-position:-299px -412px;}
+
+.left-title{ margin-top:15px;}
+.leftlist{ overflow:hidden; padding:15px 0 0 20px;}
+.leftlist li{ float:left; width:78px; margin-right:13px; text-align:center; margin-bottom:25px;}
+.leftlist li a{ float:left; color:#FFF; text-decoration:none; font-size:14px; font-weight:bold;}
+.leftlist li a img{ margin-bottom:5px;}
+.leftmore{ text-align:right; padding-right:20px; clear:both}
+.leftmore a{ color:#b4b4b4; text-decoration:none; font-size:14px; font-weight:bold}
+
+.bannerbox{ height:364px;}
+.r-box-title{ text-align:center; padding:20px 0;}
+
+.mainbox{ margin-bottom:20px; overflow:hidden;}
+.mainbox .leftico{ width:80px; float:left; display:inline-block; height:150px; margin-right:10px; color:#505050; text-align:center; text-decoration:none; line-height:24px; font-size:14px; font-weight:bold}
+.mainbox .leftico img{ margin-bottom:5px;}
+
+.mainbox-r{ width:459px; background:url(../images/common/box-t.jpg); padding:20px 29px 0 40px; font-size:12px; line-height:24px; position:relative; float:left; color:#333333}
+.mainbox-r h3{ font-size:16px;font-family:"Microsoft Yahei"; color:#333; font-weight:normal; margin-bottom:10px;}
+.mainbox-r p.time{ color:#b49879}
+.mainbox-r .order{ text-align:center; color:#767676; font-size:16px;font-family:Tahoma,Verdana,Arial;padding:10px 0 20px 0 }
+.mainbox-r .order strong{ color:#ea993a; font-size:40px; margin:0 10px; font-weight:normal}
+.mainbox-b{ background:url(../images/common/box-b.jpg); width:528px; height:15px; position:absolute; left:0px; bottom:0px;}
+.mainbox-txt{ margin-bottom:10px;}
+.imgbox{}
+.imgbox img{ float:left}
+
+.flag-1,.flag-2{ width:64px; height:29px; display:inline-block; position:absolute; top:11px; right:0px;}
+.flag-1{background:url(../images/common/flag-1.jpg)}
+.flag-2{ background:url(../images/common/flag-2.jpg)}
+
+
+
+
+.righttitle-1{ font-size:22px; color:#333; font-weight:normal; font-family:"Microsoft Yahei"; text-align:center; height:30px; line-height:30px; margin-bottom:30px;}
+.righttitle-2{ padding:10px 0 40px 0; text-align:center}
+.cd-detail{ border:1px solid #d7d7d7; background:#FFF; padding:26px; font-size:12px; line-height:20px; font-family:simsun}
+.cd-detail h4{ margin-top:10px; line-height:30px; font-size:14px;}
+.cd-detail-tbl{ width:100%}
+.cd-detail-tbl td,.cd-detail-tbl th{ border:1px solid #cfcecd; text-align:center; height:36px;}
+.cd-detail-tbl td{ background:#e7e5e5; width:70px;}
+.cd-detail-tbl td.on{background:#a1d514; color:#FFF}
+.cd-detail-tbl thead th{ background:#a1d514; color:#FFF}
+.cd-detail-tbl thead th.none{ background:none}
+
+.indexlist{ padding:0 0 0 10px;}
+
+.js-detail{border:1px solid #d7d7d7; background:#FFF; padding:26px 11px; font-size:12px; line-height:20px; font-family:simsun; min-height:500px;_height:500px; width:622px}
+
+.tabbox{ border-left:1px solid #d7d7d7}
+.tabbox li{ float:left; width:169px; height:49px;  text-align:center; line-height:49px; border-top:1px solid #d7d7d7; border-right:1px solid #d7d7d7; position:relative}
+.tabbox li a{ color:#979797;font-family:"Microsoft Yahei"; font-size:18px; font-weight:normal; text-decoration:none;width:169px; height:49px; display:inline-block;background:#f5f5f5;}
+.tabbox li a.on{ background:#fff; position:absolute; height:50px; left:0px; border-top:10px solid #f92e54; top:-10px;}
+
+.tabbox-1 li{ width:128px; }
+.tabbox-1 li a{ width:128px; background:#e5e5e5; position:relative}
+
+.btn-yuyue{ background:url(../images/common/btn-yuyue.jpg); width:188px; height:48px; display:inline-block; position:relative; top:12px; margin-right:20px;}
+
+.btn{ background:url(../images/common/btn.png); width:216px; height:48px; line-height:48px; font-size:16px; color:#FFF; display:inline-block; text-decoration:none;}
+.btn-1{ background:url(../images/common/btn-bg.png) repeat-x; height:40px; display:inline-block; line-height:40px; color:#FFF; text-align:center; text-decoration:none}
+.btn-2{ background:url(../images/common/btn2-bg.png); height:38px; width:78px; display:inline-block; border:1px solid #ded8d8; line-height:38px; text-align:center; text-decoration:none; color:#686868}
+.tip-1{ background:url(../images/common/tip-1-24.png); _background:url(../images/common/tip-1-8.png); width:334px; height:256px; position:absolute}
+
+.tip-close-1{ position:absolute; width:30px; height:30px; right:15px; top:15px; display:inline-block;}
+.tip-message{width:265px; margin:36px 0 0 30px;}
+.tip-message h3{ height:44px; line-height:44px; border-bottom:1px solid #dcdcdc; font-size:14px; color:#333; padding-left:5px;}
+.tip-message-txt1{ line-height:30px; font-size:14px; color:#505050; padding:20px 5px;}
+.tip-msg-btnbox{ text-align:center}
+
+/*user*/
+.userinfobox{position:relative; display:inline-block}
+.sendmsg{ background:url(../images/user/msg-ico.png) no-repeat; font-size:14px; color:#4f5354; height:29px; line-height:29px; display:block; padding:0 0 0 35px; text-decoration:none; margin:5px 0 0 25px;}
+
+.user-tx{ float:left; width:140px; margin-right:15px; margin-left:25px;display:inline}
+.user-info{ float:left; width:400px;}
+.user-info li{ line-height:28px; font-size:14px; color:#333}
+.user-info li label{ width:75px; display:inline-block; text-align:right}
+
+.user-sf{ background:url(../images/user/userflag.png) no-repeat; position:absolute; top:3px; width:100px; right:0px; padding:30px 0 0 82px; height:100px;}
+.user-sf li{ background:url(../images/user/userflag-ico.png) left center no-repeat; height:26px; line-height:26px; padding:0 0 0 15px; font-size:14px;}
+.tuanlist{ }
+.tuanlist span{ float:left; margin-right:15px;height:32px; display:inline-block; line-height:32px;}
+.tuanlist img{ float:left; margin-right:10px; margin-left:5px;}
+
+.r-subtitle{ height:44px; line-height:44px; border-bottom:1px solid #d7d7d7; color:#333; margin-bottom:20px;}
+.upload-img{ overflow:hidden; margin-bottom:20px;}
+.upload-img span{ float:left; margin:0 30px 0 30px}
+.upload-img div{ float:left; font-size:14px; padding:60px 0 0 0}
+.upload-img div p{ position:relative; left:-8px; color:#333;line-height:30px;}
+
+.useredit-list{ padding:0 0 0 50px; width:410px;}
+.useredit-list li{ margin-bottom:20px; clear:both; overflow:hidden}
+.useredit-list li label.btn-2{ float:left;margin-right:27px;}
+.useredit-list li span{ float:left; height:40px; line-height:40px;}
+.useredit-list li input{ height:30px; line-height:30px; border:0px; font-size:14px; margin:5px 0 0 0 ; color:#b4b4b4}
+.usertag-list{ padding:0 0 0 50px;}
+.usertag-list li{ margin-right:20px; overflow:hidden; margin-bottom:10px; float:left}
+.usertag-list li label{ float:left; margin-right:5px;}
+.usertag-list li input{ float:left; margin-top:1px;}
+
+.btnbox{ clear:both; text-align:center; padding:30px 0px 10px 50px; }
+.btnbox a{ margin-right:40px;}
+
+.msgtip{ background:url(../images/common/msgtip.png); width:20px; height:20px; display:inline-block; color:#FFF; text-align:center; line-height:20px; margin-left:5px; position:absolute; top:12px;}
+
+.guanzhu-list{ width:640px;}
+.guanzhu-list li{ background:url(../images/common/guanzhu-list.png); width:282px; height:202px; padding:20px 0 0 20px; float:left; margin:0 18px 18px 0}
+.guanzhu-list li img{ float:left; margin-right:18px;}
+.guanzhu-list li  h4{ font-size:14px; line-height:24px; margin-bottom:10px; color:#505050}
+.guanzhu-list li p{ clear:both; padding:10px 0 0 5px; line-height:26px; color:#505050; font-size:14px;}
+.guanzhu-list li a.qxgz{ background:url(../images/common/btn-quxiaoguanzhu.png); width:124px; height:42px; display:inline-block; position:relative; left:-3px;}
+
+.useryy-list{}
+.useryy-list li{ height:69px; border-bottom:1px solid #d7d7d7; line-height:69px;padding-left:80px;}
+.useryy-list li a{ color:#00a0e9; font-size:14px; font-weight:bold}
+.useryy-list li.flagline-1{ background:url(../images/common/flag-1.jpg) no-repeat left center ; }
+.useryy-list li.flagline-2{ background:url(../images/common/flag-2.jpg) no-repeat left center ; }
+.useryy-list li.flagline-3{ background:url(../images/common/flag-3.jpg) no-repeat left center ; }
+
+.usermsg-list{}
+.usermsg-list li{ min-height:29px; _height:29px; border-bottom:1px solid #d7d7d7;padding:20px 0 20px 80px; line-height:20px; position:relative}
+.usermsg-list li p{ font-size:14px; color:#333333; width:440px;}
+.usermsg-list li p a{ color:#00a0e9;}
+.usermsg-list li.flagline-1{ background:url(../images/common/flag-1.jpg) no-repeat left center ; }
+.usermsg-list li.flagline-2{ background:url(../images/common/flag-2.jpg) no-repeat left center ; }
+.usermsg-list li.flagline-3{ background:url(../images/common/flag-3.jpg) no-repeat left center ; }
+
+.usermsg-list li div.pannel{ position:absolute; right:20px; bottom:0px; font-size:12px;}
+.usermsg-list li div.pannel a{ color:#979797; text-decoration:none; margin-left:20px;}
+
+.box640{ width:640px; background:url(../images/common/box640-bg.jpg); margin-bottom:20px;}
+.dt-detail{ padding:0 20px;}
+
+.dt-detail-topl{ float:left; width:300px;}
+.dt-detail-topl img{ float:left; margin-right:10px;}
+.dt-detail-topl h4{ font-size:14px; padding:5px 0 10px 0; float:left; color:#505050; width:100px; }
+.dt-detail-topr{ float:right; text-align:right; font-size:12px; line-height:20px; color:#333}
+.btn-gz{ background:url(../images/common/btn-guanzhu.png); width:126px; height:44px; display:inline-block}
+
+.detailtxt-box{ line-height:24px; font-size:14px; padding:20px 0 0 0 }
+.detailtxt-box h3{ font-size:16px; margin-bottom:20px; position:relative}
+.detailtxt-box h3 span{ color:#b49879; display:block; font-size:12px; font-weight:normal}
+.detailtxt-box h3 p{ position:absolute; right:0px; top:0px; color:#808080}
+.detailtxt-box h3 p strong{ color:#EA993A; font-size:40px; padding:0 10px; font-weight:normal}
+.detailimgbox{ padding:20px 0; text-align:center}
+.box640-bottom{ height:11px; font-size:1px; overflow:hidden}
+
+.jk-tab{ margin-bottom:40px;}
+.jk-tab li{height:92px; width:152px; float:left; margin-right:9px;}
+.jk-tab li a{background:url(../images/common/jk-tab.png); width:152px; height:92px; display:inline-block}
+
+.jk-tab li a.tab-1{background-position:0 0}
+.jk-tab li.tabon a.tab-1{background-position:-152px 0;}
+.jk-tab li a.tab-2{background-position:0 -92px}
+.jk-tab li.tabon a.tab-2{background-position:-152px -92px}
+.jk-tab li a.tab-3{background-position:0 -184px}
+.jk-tab li.tabon a.tab-3{background-position:-152px -184px}
+.jk-tab li a.tab-4{background-position:0 -276px}
+.jk-tab li.tabon a.tab-4{background-position:-152px -276px}
+
+.datetbl-1{ width:100%;}
+.datetbl-1 th{ border-bottom:2px solid #e7e7e7;text-align:center; height:60px; line-height:60px; color:#8c8c8c; font-size:14px; font-family:"Microsoft Yahei"}
+.datetbl-1 td{ text-align:center; height:50px; line-height:50px; font-size:14px; color:#686868}
+
+.jiance-list{ margin-bottom:20px;}
+.jiance-list li{ float:left; width:300px; font-size:14px; line-height:36px; color:#333}
+.jiance-list li label{ width:150px; text-align:right; display:inline-block; font-weight:bold}
+.jiance-list li span{ padding:0 0 0 20px;}
+
+.jiance-zj{ color:#505050; font-size:18px; border-top:2px solid #e7e7e7; line-height:30px; text-align:center; padding:10px 0 }
+.jiance-zj span{ padding:0 20px;}
+.jiance-zj span strong{ padding:0 20px;}
+
+.shq-top{}
+.shq-top img{ float:left; margin-right:20px;}
+.shq-top span{ float:left; margin-top:25px;}
+.shq-detail{ padding:20px 10px ; font-size:14px; line-height:26px;}
+
+.btn-shenqing{ background:url(../images/common/btn-shenqing.png); width:183px; height:44px; display:inline-block}
+
+.useredit-list1{ padding:0 0 0 50px;}
+.useredit-list1 li{ margin-bottom:20px; clear:both; overflow:hidden}
+.useredit-list1 li label.btn-2{ float:left;margin-right:0px;}
+.useredit-list1 li span{ float:left; height:40px; line-height:40px;}
+.useredit-list1 li input{ height:38px; line-height:38px; width:329px; border:0px; font-size:14px;  color:#b4b4b4; float:left; border:1px solid #ded8d8; border-left:0px; text-indent:10px;}
+
+.userindexbox{}
+.userindexbox-img{ float:left; margin-right:22px;}
+.userindexbox-info{ float:left; width:500px; line-height:26px; font-size:14px; color:#333}
+
+.userindexbox-info h4{ height:50px; line-height:50px; float:left; margin-right:20px;}
+
+
+/*mask*/
+.UED_SHUCOVER_V1{background-color:#0ff;position:fixed;left:0;top:0;width:100%;height:100%;filter:alpha(opacity=50);opacity:.5;z-index:99997;_position:absolute;_top:expression(eval(document.compatMode && document.compatMode=='CSS1Compat') ? documentElement.scrollTop+(document.documentElement.clientHeight-this.offsetHeight)/2:document.body.scrollTop+(document.body.clientHeight - this.clientHeight)/2);}
+.UED_SHUCOVER_IFRAME_V1{position:fixed;_position:absolute;width:100%;height:100%;border:none;filter:alpha(opacity=0);opacity:0;left:0;top:0;z-index:-1;}
+.UED_LAYER_PARENT_V1{top:50%;left:50%;position:fixed;z-index:99999;_position:absolute;_top:expression(eval(document.compatMode && document.compatMode=='CSS1Compat') ? documentElement.scrollTop+(document.documentElement.clientHeight - this.offsetHeight)/2+this.offsetHeight/2:document.body.scrollTop+(document.body.clientHeight - this.clientHeight)/2);}
+.UED_hide{display:none;}
+

@@ -53,6 +53,7 @@
     <Compile Include="Entities\VenueInfo.cs" />
     <Compile Include="Enums\GroupType.cs" />
     <Compile Include="Enums\PostType.cs" />
+    <Compile Include="Enums\UserTag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValueObjects\BookingTimeConfig.cs" />
   </ItemGroup>

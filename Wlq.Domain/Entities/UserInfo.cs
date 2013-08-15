@@ -7,8 +7,11 @@ namespace Wlq.Domain
 		public string Password { get; set; }
 		public string Name { get; set; }
 		public string Gender { get; set; }
+		public string Birth { get; set; }
 		public string Mobile { get; set; }
+		public string Committees { get; set; }
 		public string Address { get; set; }
+		public int Tags { get; set; }
 		public bool IsSystem { get; set; }
 
 		public UserInfo()
@@ -17,7 +20,9 @@ namespace Wlq.Domain
 			Password = string.Empty;
 			Name = string.Empty;
 			Gender = string.Empty;
+			Birth = string.Empty;
 			Mobile = string.Empty;
+			Committees = string.Empty;
 			Address = string.Empty;
 		}
 	}

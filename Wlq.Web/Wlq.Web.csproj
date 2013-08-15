@@ -87,6 +87,71 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\b.css" />
+    <Content Include="Content\images\common\bg.png" />
+    <Content Include="Content\images\common\body-bg.jpg" />
+    <Content Include="Content\images\common\box-b.jpg" />
+    <Content Include="Content\images\common\box-t.jpg" />
+    <Content Include="Content\images\common\box640-b.jpg" />
+    <Content Include="Content\images\common\box640-bg.jpg" />
+    <Content Include="Content\images\common\box640-t.jpg" />
+    <Content Include="Content\images\common\btn-bg.png" />
+    <Content Include="Content\images\common\btn-guanzhu.png" />
+    <Content Include="Content\images\common\btn-quxiaoguanzhu.png" />
+    <Content Include="Content\images\common\btn-shenqing.png" />
+    <Content Include="Content\images\common\btn-yuyue.jpg" />
+    <Content Include="Content\images\common\btn.png" />
+    <Content Include="Content\images\common\btn2-bg.png" />
+    <Content Include="Content\images\common\flag-1.jpg" />
+    <Content Include="Content\images\common\flag-2.jpg" />
+    <Content Include="Content\images\common\flag-3.jpg" />
+    <Content Include="Content\images\common\footer.jpg" />
+    <Content Include="Content\images\common\guanzhu-list.png" />
+    <Content Include="Content\images\common\jk-tab.png" />
+    <Content Include="Content\images\common\jklist-tabbg.png" />
+    <Content Include="Content\images\common\leftmenu.jpg" />
+    <Content Include="Content\images\common\login-ico.jpg" />
+    <Content Include="Content\images\common\loginbtn-1.jpg" />
+    <Content Include="Content\images\common\loginbtn-2.jpg" />
+    <Content Include="Content\images\common\logininput-1.jpg" />
+    <Content Include="Content\images\common\logininput-2.jpg" />
+    <Content Include="Content\images\common\logo.jpg" />
+    <Content Include="Content\images\common\msgtip.png" />
+    <Content Include="Content\images\common\rightbox-bg.jpg" />
+    <Content Include="Content\images\common\tip-1-24.png" />
+    <Content Include="Content\images\common\tip-1-8.png" />
+    <Content Include="Content\images\common\title-1.jpg" />
+    <Content Include="Content\images\common\title-11.jpg" />
+    <Content Include="Content\images\common\title-12.jpg" />
+    <Content Include="Content\images\common\title-13.jpg" />
+    <Content Include="Content\images\common\title-14.jpg" />
+    <Content Include="Content\images\common\title-15.jpg" />
+    <Content Include="Content\images\common\title-2.jpg" />
+    <Content Include="Content\images\common\title-3.jpg" />
+    <Content Include="Content\images\common\title-4.jpg" />
+    <Content Include="Content\images\common\title-5.jpg" />
+    <Content Include="Content\images\common\title-6.jpg" />
+    <Content Include="Content\images\common\title-7.jpg" />
+    <Content Include="Content\images\common\title-8.jpg" />
+    <Content Include="Content\images\common\title-9.jpg" />
+    <Content Include="Content\images\common\top-bg.jpg" />
+    <Content Include="Content\images\other\banner-1.jpg" />
+    <Content Include="Content\images\other\ico-1.png" />
+    <Content Include="Content\images\other\img1.jpg" />
+    <Content Include="Content\images\user\msg-ico.png" />
+    <Content Include="Content\images\user\touxiang.png" />
+    <Content Include="Content\images\user\tuan-ico.png" />
+    <Content Include="Content\images\user\userflag-ico.png" />
+    <Content Include="Content\images\user\userflag.png" />
+    <Content Include="Content\images\user\userinfobox.png" />
+    <Content Include="Content\js\ajaxfileupload.js" />
+    <Content Include="Content\js\fed.famsg.js" />
+    <Content Include="Content\js\fed.tabs.js" />
+    <Content Include="Content\js\jq.layer.js" />
+    <Content Include="Content\js\jquery.bgiframe.min.js" />
+    <Content Include="Content\js\jquery.min.js" />
+    <Content Include="Content\js\setByte.js" />
+    <Content Include="Content\js\swfobject.js" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -100,7 +165,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +193,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_Redirect.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_Header.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

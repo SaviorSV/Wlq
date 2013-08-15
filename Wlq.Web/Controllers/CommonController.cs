@@ -8,6 +8,11 @@ namespace Wlq.Web.Controllers
 {
     public class CommonController : BaseController
     {
+		public ActionResult Header()
+		{
+			return PartialView("_Header");
+		}
+
 		public ActionResult Redirect(string message, string url)
 		{
 			ViewBag.Message = HttpUtility.UrlDecode(message);
