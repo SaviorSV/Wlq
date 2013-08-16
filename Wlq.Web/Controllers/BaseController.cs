@@ -33,11 +33,11 @@ namespace Wlq.Web.Controllers
 			get { return this.GetService<ICommonService>(ref _commonService); }
 		}
 
-		private IUserService _userService;
+		private IUserGroupService _userService;
 
-		protected IUserService UserService
+		protected IUserGroupService UserService
 		{
-			get { return this.GetService<IUserService>(ref _userService); }
+			get { return this.GetService<IUserGroupService>(ref _userService); }
 		}
 
 		private IPostService _postService;
