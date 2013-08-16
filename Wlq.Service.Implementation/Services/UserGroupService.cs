@@ -7,6 +7,8 @@ using Hanger.Common;
 using Wlq.Domain;
 using Wlq.Persistence;
 using Wlq.Service;
+using System.Web.Security;
+using System.Web;
 
 namespace Wlq.Service.Implementation
 {
@@ -26,14 +28,6 @@ namespace Wlq.Service.Implementation
 			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
 
 			return userRepository.GetById(userId);
-		}
-
-		public UserInfo GetUser(string loginName, string password)
-		{
-			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
-
-			return userRepository.GetAll()
-				.FirstOrDefault(u => u.LoginName == loginName && u.Password == password.ToMd5());
 		}
 
 		public bool AddUser(UserInfo user)
@@ -57,8 +51,17 @@ namespace Wlq.Service.Implementation
 		public bool DeleteUser(long userId)
 		{
 			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
-
+			var userGroupRepository = new DatabaseRepository<UserGroupInfo>(_databaseContext);
+			
 			userRepository.DeleteById(userId);
+
+			var userGroups = userGroupRepository.GetAll()
+				.Where(ug => ug.UserId == userId);
+
+			foreach (var userGroup in userGroups)
+			{
+				userGroupRepository.DeleteById(userGroup.Id);
+			}
 
 			return _databaseContext.SaveChanges() > 0;
 		}
@@ -70,6 +73,33 @@ namespace Wlq.Service.Implementation
 			return this.UpdateUser(user);
 		}
 
+		public bool Login(string loginName, string password)
+		{
+			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
+
+			var user = userRepository.GetAll()
+				.FirstOrDefault(u => u.LoginName == loginName && u.Password == password.ToMd5());
+
+			if (user == null)
+				return false;
+
+			var ticket = new FormsAuthenticationTicket(
+				1,
+				user.Id.ToString(),
+				DateTime.Now,
+				DateTime.Now.AddMinutes(30),
+				true,
+				string.Empty,
+				FormsAuthentication.FormsCookiePath);
+
+			var encTicket = FormsAuthentication.Encrypt(ticket);
+
+			HttpContext.Current.Response.Cookies
+				.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket));
+
+			return true;
+		}
+
 		#endregion
 
 		#region Group
@@ -77,6 +107,11 @@ namespace Wlq.Service.Implementation
 		public IEnumerable<GroupInfo> GetGroupsByUser(long userId)
 		{
 			return this.GetGroupsByRelation<UserGroupInfo>(userId);
+		}
+
+		public IEnumerable<GroupInfo> GetGroupsByManager(long userId)
+		{
+			return this.GetGroupsByRelation<GroupManagerInfo>(userId);
 		}
 
 		public IEnumerable<GroupInfo> GetGroupsByParent(long parentGroupId)
@@ -133,11 +168,6 @@ namespace Wlq.Service.Implementation
 		#endregion
 
 		#region GroupManager
-
-		public IEnumerable<GroupInfo> GetGroupsByManager(long userId)
-		{
-			return this.GetGroupsByRelation<GroupManagerInfo>(userId);
-		}
 
 		public IEnumerable<UserInfo> GetManagersByGroup(long groupId)
 		{

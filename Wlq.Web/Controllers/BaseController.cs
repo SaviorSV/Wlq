@@ -33,11 +33,11 @@ namespace Wlq.Web.Controllers
 			get { return this.GetService<ICommonService>(ref _commonService); }
 		}
 
-		private IUserGroupService _userService;
+		private IUserGroupService _userGroupService;
 
-		protected IUserGroupService UserService
+		protected IUserGroupService UserGroupService
 		{
-			get { return this.GetService<IUserGroupService>(ref _userService); }
+			get { return this.GetService<IUserGroupService>(ref _userGroupService); }
 		}
 
 		private IPostService _postService;
@@ -93,7 +93,7 @@ namespace Wlq.Web.Controllers
 				{
 					if (_currentUser == null)
 					{
-						_currentUser = UserService.GetUser(CurrentUserId);
+						_currentUser = UserGroupService.GetUser(CurrentUserId);
 					}
 
 					return _currentUser;
@@ -109,7 +109,8 @@ namespace Wlq.Web.Controllers
 
 		public ActionResult AlertAndRedirect(string message, string url)
 		{
-			return RedirectToAction("Redirect", "Common", new { Message = HttpUtility.UrlEncode(message), Url = url });
+			return RedirectToAction("Redirect", "Common", 
+				new { Message = HttpUtility.UrlEncode(message), Url = url });
 		}
 
 		protected override void Dispose(bool disposing)
