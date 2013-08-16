@@ -1,9 +1,17 @@
 ﻿<div class="loginbar">
     <div class="loginbarbody">
 		<span class="login-ico"></span>
+	@if (ViewBag.LoginName == string.Empty) 
+	{
 		<input type="text" class="login-card" value="卡号" />
 		<input type="password" class="login-pass" value="密码" />
 		<a href="#" class="btn-login"></a>
 		<a href="#" class="btn-shuaka"></a>
+	}
+	else
+	{
+		<span>用户名：@ViewBag.LoginName</span>
+	}
+		
 	</div>
 </div>

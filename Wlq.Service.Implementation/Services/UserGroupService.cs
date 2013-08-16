@@ -174,12 +174,12 @@ namespace Wlq.Service.Implementation
 			return this.GetUsersByRelation<GroupManagerInfo>(groupId);
 		}
 
-		public bool AddUserToGroupManager(long userId, long groupId)
+		public bool AddManagerToGroup(long userId, long groupId)
 		{
 			return this.AddRelation<GroupManagerInfo>(userId, groupId);
 		}
 
-		public bool RemoveUserFromGroupManager(long userId, long groupId)
+		public bool RemoveManagerFromGroup(long userId, long groupId)
 		{
 			return this.RemoveRelations<GroupManagerInfo>(userId, groupId);
 		}

@@ -10,6 +10,11 @@ namespace Wlq.Web.Controllers
     {
 		public ActionResult Header()
 		{
+			if (CurrentUser != null)
+				ViewBag.LoginName = CurrentUser.LoginName;
+			else
+				ViewBag.LoginName = string.Empty;
+
 			return PartialView("_Header");
 		}
 
