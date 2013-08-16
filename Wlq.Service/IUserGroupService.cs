@@ -32,11 +32,22 @@ namespace Wlq.Service
 
 		#endregion
 
-		#region UserGroup
+		#region GroupManager
 
-		bool AddUserToGroup(long userId, long groupId, bool isManager);
-		bool RemoveUserFromGroup(long userId, long groupId);
+		IEnumerable<GroupInfo> GetGroupsByManager(long userId);
+		IEnumerable<UserInfo> GetManagersByGroup(long groupId);
+		bool AddUserToGroupManager(long userId, long groupId);
+		bool RemoveUserFromGroupManager(long userId, long groupId);
 
 		#endregion
+
+		#region UserGroup
+
+		bool AddUserToGroup(long userId, long groupId);
+		bool RemoveUserFromGroup(long userId, long groupId);
+		bool IsUserInGroup(long userId, long groupId);
+
+		#endregion
+
 	}
 }

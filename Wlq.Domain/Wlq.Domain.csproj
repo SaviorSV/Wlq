@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\GroupManagerInfo.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\GroupInfo.cs" />
     <Compile Include="Entities\IEntity.cs" />

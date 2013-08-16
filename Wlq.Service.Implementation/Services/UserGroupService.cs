@@ -76,9 +76,13 @@ namespace Wlq.Service.Implementation
 
 		public IEnumerable<GroupInfo> GetGroupsByUser(long userId)
 		{
-			var userGroups = _databaseContext.UserGroups.Where(ug => ug.UserId == userId).Select(ug => ug.GroupId);
+			var groupRepository = new DatabaseRepository<GroupInfo>(_databaseContext);
+			var userGroupRepository = new DatabaseRepository<UserGroupInfo>(_databaseContext);
 
-			return _databaseContext.Groups
+			var userGroups = userGroupRepository.GetAll()
+				.Where(ug => ug.UserId == userId).Select(ug => ug.GroupId);
+
+			return groupRepository.GetAll()
 				.Where(g => userGroups.Contains(g.Id));
 		}
 
@@ -118,8 +122,89 @@ namespace Wlq.Service.Implementation
 		public bool DeleteGroup(long groupId)
 		{
 			var groupRepository = new DatabaseRepository<GroupInfo>(_databaseContext);
-
+			var userGroupRepository = new DatabaseRepository<UserGroupInfo>(_databaseContext);
+			
 			groupRepository.DeleteById(groupId);
+
+			var userGroups = userGroupRepository.GetAll()
+				.Where(ug => ug.GroupId == groupId);
+
+			foreach (var userGroup in userGroups)
+			{
+				userGroupRepository.DeleteById(userGroup.Id);
+			}
+
+			return _databaseContext.SaveChanges() > 0;
+		}
+
+		#endregion
+
+		#region GroupManager
+
+		public IEnumerable<GroupInfo> GetGroupsByManager(long userId)
+		{
+			var groupRepository = new DatabaseRepository<GroupInfo>(_databaseContext);
+			var groupManagerRepository = new DatabaseRepository<GroupManagerInfo>(_databaseContext);
+
+			var groupManagers = groupManagerRepository.GetAll()
+				.Where(ug => ug.UserId == userId).Select(ug => ug.GroupId);
+
+			return groupRepository.GetAll()
+				.Where(g => groupManagers.Contains(g.Id));
+		}
+
+		public IEnumerable<UserInfo> GetManagersByGroup(long groupId)
+		{
+			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
+			var groupManagerRepository = new DatabaseRepository<GroupManagerInfo>(_databaseContext);
+
+			var groupManagers = groupManagerRepository.GetAll()
+				.Where(gm => gm.GroupId == groupId).Select(ug => ug.UserId);
+
+			return userRepository.GetAll()
+				.Where(u => groupManagers.Contains(u.Id));
+		}
+
+		public bool AddUserToGroupManager(long userId, long groupId)
+		{
+			var groupManagerRepository = new DatabaseRepository<GroupManagerInfo>(_databaseContext);
+			var groupManager = groupManagerRepository.GetAll()
+				.FirstOrDefault(gm => gm.GroupId == groupId && gm.UserId == userId);
+
+			if (groupManager != null)
+				return true;
+
+			var user = this.GetUser(userId);
+
+			if (user == null)
+				return false;
+
+			var group = this.GetGroup(groupId);
+
+			if (group == null)
+				return false;
+
+			groupManager = new GroupManagerInfo
+			{
+				UserId = userId,
+				GroupId = groupId
+			};
+
+			groupManagerRepository.Add(groupManager);
+
+			return _databaseContext.SaveChanges() > 0;
+		}
+
+		public bool RemoveUserFromGroupManager(long userId, long groupId)
+		{
+			var groupManagerRepository = new DatabaseRepository<GroupManagerInfo>(_databaseContext);
+			var groupManagers = groupManagerRepository.GetAll()
+				.Where(ug => ug.UserId == userId && ug.GroupId == groupId);
+
+			foreach (var groupManager in groupManagers)
+			{
+				groupManagerRepository.DeleteById(groupManager.Id);
+			}
 
 			return _databaseContext.SaveChanges() > 0;
 		}
@@ -128,8 +213,11 @@ namespace Wlq.Service.Implementation
 
 		#region UserGroup
 
-		public bool AddUserToGroup(long userId, long groupId, bool isManager)
+		public bool AddUserToGroup(long userId, long groupId)
 		{
+			if (this.IsUserInGroup(userId, groupId))
+				return true;
+
 			var user = this.GetUser(userId);
 
 			if (user == null)
@@ -143,8 +231,7 @@ namespace Wlq.Service.Implementation
 			var userGroup = new UserGroupInfo
 			{
 				UserId = userId,
-				GroupId = groupId,
-				IsManager = isManager
+				GroupId = groupId
 			};
 
 			var userGroupRepository = new DatabaseRepository<UserGroupInfo>(_databaseContext);
@@ -160,18 +247,25 @@ namespace Wlq.Service.Implementation
 			var userGroups = userGroupRepository.GetAll()
 				.Where(ug => ug.UserId == userId && ug.GroupId == groupId);
 
-			if (userGroups != null)
+			foreach (var userGroup in userGroups)
 			{
-				foreach (var userGroup in userGroups)
-				{
-					userGroupRepository.DeleteById(userGroup.Id);
-				}
+				userGroupRepository.DeleteById(userGroup.Id);
 			}
 
 			return _databaseContext.SaveChanges() > 0;
 		}
 
+		public bool IsUserInGroup(long userId, long groupId)
+		{
+			var userGroupRepository = new DatabaseRepository<UserGroupInfo>(_databaseContext);
+			var userGroup = userGroupRepository.GetAll()
+				.FirstOrDefault(ug => ug.GroupId == groupId && ug.UserId == userId);
+
+			return userGroup != null;
+		}
+
 		#endregion
+
 
 		/// <summary>
 		/// Dispose
