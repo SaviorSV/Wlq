@@ -47,6 +47,7 @@
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\GroupInfo.cs" />
     <Compile Include="Entities\IEntity.cs" />
+    <Compile Include="Entities\IUserGroupRelation.cs" />
     <Compile Include="Entities\PostInfo.cs" />
     <Compile Include="Entities\UserGroupInfo.cs" />
     <Compile Include="Entities\UserInfo.cs" />

@@ -76,14 +76,7 @@ namespace Wlq.Service.Implementation
 
 		public IEnumerable<GroupInfo> GetGroupsByUser(long userId)
 		{
-			var groupRepository = new DatabaseRepository<GroupInfo>(_databaseContext);
-			var userGroupRepository = new DatabaseRepository<UserGroupInfo>(_databaseContext);
-
-			var userGroups = userGroupRepository.GetAll()
-				.Where(ug => ug.UserId == userId).Select(ug => ug.GroupId);
-
-			return groupRepository.GetAll()
-				.Where(g => userGroups.Contains(g.Id));
+			return this.GetGroupsByRelation<UserGroupInfo>(userId);
 		}
 
 		public IEnumerable<GroupInfo> GetGroupsByParent(long parentGroupId)
@@ -143,70 +136,22 @@ namespace Wlq.Service.Implementation
 
 		public IEnumerable<GroupInfo> GetGroupsByManager(long userId)
 		{
-			var groupRepository = new DatabaseRepository<GroupInfo>(_databaseContext);
-			var groupManagerRepository = new DatabaseRepository<GroupManagerInfo>(_databaseContext);
-
-			var groupManagers = groupManagerRepository.GetAll()
-				.Where(ug => ug.UserId == userId).Select(ug => ug.GroupId);
-
-			return groupRepository.GetAll()
-				.Where(g => groupManagers.Contains(g.Id));
+			return this.GetGroupsByRelation<GroupManagerInfo>(userId);
 		}
 
 		public IEnumerable<UserInfo> GetManagersByGroup(long groupId)
 		{
-			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
-			var groupManagerRepository = new DatabaseRepository<GroupManagerInfo>(_databaseContext);
-
-			var groupManagers = groupManagerRepository.GetAll()
-				.Where(gm => gm.GroupId == groupId).Select(ug => ug.UserId);
-
-			return userRepository.GetAll()
-				.Where(u => groupManagers.Contains(u.Id));
+			return this.GetUsersByRelation<GroupManagerInfo>(groupId);
 		}
 
 		public bool AddUserToGroupManager(long userId, long groupId)
 		{
-			var groupManagerRepository = new DatabaseRepository<GroupManagerInfo>(_databaseContext);
-			var groupManager = groupManagerRepository.GetAll()
-				.FirstOrDefault(gm => gm.GroupId == groupId && gm.UserId == userId);
-
-			if (groupManager != null)
-				return true;
-
-			var user = this.GetUser(userId);
-
-			if (user == null)
-				return false;
-
-			var group = this.GetGroup(groupId);
-
-			if (group == null)
-				return false;
-
-			groupManager = new GroupManagerInfo
-			{
-				UserId = userId,
-				GroupId = groupId
-			};
-
-			groupManagerRepository.Add(groupManager);
-
-			return _databaseContext.SaveChanges() > 0;
+			return this.AddRelation<GroupManagerInfo>(userId, groupId);
 		}
 
 		public bool RemoveUserFromGroupManager(long userId, long groupId)
 		{
-			var groupManagerRepository = new DatabaseRepository<GroupManagerInfo>(_databaseContext);
-			var groupManagers = groupManagerRepository.GetAll()
-				.Where(ug => ug.UserId == userId && ug.GroupId == groupId);
-
-			foreach (var groupManager in groupManagers)
-			{
-				groupManagerRepository.DeleteById(groupManager.Id);
-			}
-
-			return _databaseContext.SaveChanges() > 0;
+			return this.RemoveRelations<GroupManagerInfo>(userId, groupId);
 		}
 
 		#endregion
@@ -215,7 +160,53 @@ namespace Wlq.Service.Implementation
 
 		public bool AddUserToGroup(long userId, long groupId)
 		{
-			if (this.IsUserInGroup(userId, groupId))
+			return this.AddRelation<UserGroupInfo>(userId, groupId);
+		}
+
+		public bool RemoveUserFromGroup(long userId, long groupId)
+		{
+			return this.RemoveRelations<UserGroupInfo>(userId, groupId);
+		}
+
+		public bool IsUserInGroup(long userId, long groupId)
+		{
+			return this.HasRelation<UserGroupInfo>(userId, groupId);
+		}
+
+		#endregion
+
+		#region Private
+
+		private IEnumerable<UserInfo> GetUsersByRelation<TEntity>(long groupId)
+			where TEntity : Entity, IUserGroupRelation
+		{
+			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
+			var relationRepository = new DatabaseRepository<TEntity>(_databaseContext);
+
+			var relations = relationRepository.GetAll()
+				.Where(r => r.GroupId == groupId).Select(r => r.UserId);
+
+			return userRepository.GetAll()
+				.Where(u => relations.Contains(u.Id));
+		}
+
+		private IEnumerable<GroupInfo> GetGroupsByRelation<TEntity>(long userId)
+			where TEntity : Entity, IUserGroupRelation
+		{
+			var groupRepository = new DatabaseRepository<GroupInfo>(_databaseContext);
+			var relationRepository = new DatabaseRepository<TEntity>(_databaseContext);
+
+			var relations = relationRepository.GetAll()
+				.Where(r => r.UserId == userId).Select(r => r.GroupId);
+
+			return groupRepository.GetAll()
+				.Where(g => relations.Contains(g.Id));
+		}
+
+		private bool AddRelation<TEntity>(long userId, long groupId)
+			where TEntity : Entity, IUserGroupRelation, new()
+		{
+			if (this.HasRelation<TEntity>(userId, groupId))
 				return true;
 
 			var user = this.GetUser(userId);
@@ -228,44 +219,45 @@ namespace Wlq.Service.Implementation
 			if (group == null)
 				return false;
 
-			var userGroup = new UserGroupInfo
+			var relation = new TEntity
 			{
 				UserId = userId,
 				GroupId = groupId
 			};
 
-			var userGroupRepository = new DatabaseRepository<UserGroupInfo>(_databaseContext);
+			var relationRepository = new DatabaseRepository<TEntity>(_databaseContext);
 
-			userGroupRepository.Add(userGroup);
+			relationRepository.Add(relation);
 
 			return _databaseContext.SaveChanges() > 0;
 		}
 
-		public bool RemoveUserFromGroup(long userId, long groupId)
+		private bool RemoveRelations<TEntity>(long userId, long groupId)
+			where TEntity : Entity, IUserGroupRelation
 		{
-			var userGroupRepository = new DatabaseRepository<UserGroupInfo>(_databaseContext);
-			var userGroups = userGroupRepository.GetAll()
+			var relationRepository = new DatabaseRepository<TEntity>(_databaseContext);
+			var relations = relationRepository.GetAll()
 				.Where(ug => ug.UserId == userId && ug.GroupId == groupId);
 
-			foreach (var userGroup in userGroups)
+			foreach (var relation in relations)
 			{
-				userGroupRepository.DeleteById(userGroup.Id);
+				relationRepository.DeleteById(relation.Id);
 			}
 
 			return _databaseContext.SaveChanges() > 0;
 		}
 
-		public bool IsUserInGroup(long userId, long groupId)
+		private bool HasRelation<TEntity>(long userId, long groupId)
+			where TEntity : Entity, IUserGroupRelation
 		{
-			var userGroupRepository = new DatabaseRepository<UserGroupInfo>(_databaseContext);
-			var userGroup = userGroupRepository.GetAll()
+			var relationRepository = new DatabaseRepository<TEntity>(_databaseContext);
+			var relation = relationRepository.GetAll()
 				.FirstOrDefault(ug => ug.GroupId == groupId && ug.UserId == userId);
 
-			return userGroup != null;
+			return relation != null;
 		}
 
 		#endregion
-
 
 		/// <summary>
 		/// Dispose

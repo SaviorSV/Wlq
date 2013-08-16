@@ -1,9 +1,9 @@
 ﻿
 namespace Wlq.Domain
 {
-	public class GroupManagerInfo : Entity
+	public class GroupManagerInfo : Entity, IUserGroupRelation
 	{
-		public long GroupId { get; set; }
 		public long UserId { get; set; }
+		public long GroupId { get; set; }
 	}
 }
