@@ -12,7 +12,7 @@ namespace Wlq.Domain
 		public string Committees { get; set; }
 		public string Address { get; set; }
 		public int Tags { get; set; }
-		public bool IsSystem { get; set; }
+		public bool IsAdmin { get; set; }
 
 		public UserInfo()
 		{

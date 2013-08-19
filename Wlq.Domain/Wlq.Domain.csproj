@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\VenueBookingInfo.cs" />
+    <Compile Include="Entities\VenueConfigInfo.cs" />
     <Compile Include="Entities\GroupManagerInfo.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\GroupInfo.cs" />
@@ -57,7 +59,8 @@
     <Compile Include="Enums\PostType.cs" />
     <Compile Include="Enums\UserTag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ValueObjects\BookingTimeConfig.cs" />
+    <Compile Include="ValueObjects\BookingConfig.cs" />
+    <Compile Include="ValueObjects\BookingPeriod.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

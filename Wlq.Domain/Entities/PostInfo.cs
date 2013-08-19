@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace Wlq.Domain
 {
 	public class PostInfo : Entity
@@ -8,6 +9,9 @@ namespace Wlq.Domain
 		public string Image { get; set; }
 		public long GroupId { get; set; }
 		public int GroupType { get; set; }
+		public DateTime BeginDate { get; set; }
+		public DateTime EndDate { get; set; }
+		public long VenueId { get; set; }
 
 		public PostInfo()
 		{
