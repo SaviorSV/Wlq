@@ -88,6 +88,29 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\b.css" />
+    <Content Include="Content\css\b_admin.css" />
+    <Content Include="Content\images\admin\arrw-l.png" />
+    <Content Include="Content\images\admin\arrw-r.png" />
+    <Content Include="Content\images\admin\bg.jpg" />
+    <Content Include="Content\images\admin\bg.png" />
+    <Content Include="Content\images\admin\btn-1.png" />
+    <Content Include="Content\images\admin\btn-2.png" />
+    <Content Include="Content\images\admin\editico-1.png" />
+    <Content Include="Content\images\admin\editico-2.png" />
+    <Content Include="Content\images\admin\form-footer.png" />
+    <Content Include="Content\images\admin\form-tt.png" />
+    <Content Include="Content\images\admin\indexlist-bg.png" />
+    <Content Include="Content\images\admin\indexlist-tt.png" />
+    <Content Include="Content\images\admin\indextab.png" />
+    <Content Include="Content\images\admin\leftmenu.png" />
+    <Content Include="Content\images\admin\leftmenuico.png" />
+    <Content Include="Content\images\admin\leftmenuon.png" />
+    <Content Include="Content\images\admin\login-bg.png" />
+    <Content Include="Content\images\admin\loginbtn.png" />
+    <Content Include="Content\images\admin\logininput-1.png" />
+    <Content Include="Content\images\admin\logininput-2.png" />
+    <Content Include="Content\images\admin\logo.png" />
+    <Content Include="Content\images\admin\maintop.png" />
     <Content Include="Content\images\common\bg.png" />
     <Content Include="Content\images\common\body-bg.jpg" />
     <Content Include="Content\images\common\box-b.jpg" />
@@ -162,7 +185,7 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Admin\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -196,6 +219,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_Header.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\images\admin\leftmenuico.psd" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Admin\Login.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\_Header.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

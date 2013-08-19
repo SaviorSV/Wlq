@@ -16,6 +16,5 @@ namespace Wlq.Web.Controllers
         {
 			return View();
         }
-
     }
 }

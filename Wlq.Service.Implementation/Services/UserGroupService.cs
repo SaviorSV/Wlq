@@ -77,8 +77,10 @@ namespace Wlq.Service.Implementation
 		{
 			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
 
+			var hashedPassword = password.ToMd5();
+
 			var user = userRepository.GetAll()
-				.FirstOrDefault(u => u.LoginName == loginName && u.Password == password.ToMd5());
+				.FirstOrDefault(u => u.LoginName == loginName && u.Password == hashedPassword);
 
 			if (user == null)
 				return false;

@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>后台系统</title>
+	<link href="@Url.Content("~/content/css/b_admin.css")" rel="stylesheet" type="text/css" />
+</head>
+<body class="loginbody">
+	<div class="login">
+		<h2>管理后台</h2>
+		<h3>请输入您的账号密码进入后台</h3>
+	@using (Html.BeginForm("Login", "Admin", FormMethod.Post, new { id = "admin_login_form" }))
+	{
+		<ul>
+			<li>
+				<label class="line">账号</label>
+				<input id="loginName" name="loginName" type="text" class="logininput-1" />
+			</li>
+			<li>
+				<label class="line">密码</label>
+				<input id="password" name="password" type="password" class="logininput-2" />
+			</li>
+			<li class="pt20 clearfix">
+				<a id="btn_login" href="javascript:;" class="loginbtn"></a>
+				@*<span class="saveid">
+					<input type="checkbox"> <label>账号保存</label>
+				</span>*@
+			</li>
+		</ul>
+	 }
+		<p class="loginfooter">五里桥社区（街道）党工委   五里桥街道办事处</p>
+	</div>
+
+	<script src="@Url.Content("~/Content/js/jquery.min.js")" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(function () {
+			$("#admin_login_form").keypress(function (e) {
+				kCode = e.keyCode || e.charCode //for cross browser
+
+				if (kCode == 13) {
+					$("#btn_login").click();
+					return false;
+				}
+			});
+
+			$('#btn_login').bind("click", function () {
+				if ($('#loginName').val() == '' || $('#loginName').val() == '') {
+					alert('请输入用户名密码');
+					return false;
+				}
+				else {
+					$('#admin_login_form').submit();
+				}
+			});
+		});
+	</script>
+</body>
+</html>

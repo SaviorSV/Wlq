@@ -11,9 +11,9 @@ namespace Wlq.Web.Controllers
 	public class UserController : BaseController
 	{
 		[HttpPost]
-		public ActionResult Login(string username, string password)
+		public ActionResult Login(string loginName, string password)
 		{
-			var success = UserGroupService.Login(username, password);
+			var success = UserGroupService.Login(loginName, password);
 
 			if (success)
 			{
