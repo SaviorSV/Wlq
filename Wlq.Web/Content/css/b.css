@@ -44,6 +44,12 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .btn-shuaka{background:url(../images/common/loginbtn-2.jpg); width:116px; height:53px; border:0px; display:inline-block; float:left}
 .loginbarbody{ float:right; padding:4px 16px 0 0 }
 
+.login-userinfo{ color:#a2a2a2; margin:20px 0 0 10px; display:inline-block; float:left; font-size:14px;}
+.loginout{color:#a2a2a2; margin:20px 0 0 20px; display:inline-block; float:left; font-size:14px; text-decoration:none}
+.loginout:hover{ text-decoration:underline}
+.login-edit{color:#a2a2a2; margin:20px 0 0 20px; display:inline-block; float:left; font-size:14px; text-decoration:none}
+.login-edit:hover{ text-decoration:underline}
+
 .body-bg{ background:url(../images/common/body-bg.jpg); width:980px; margin:auto; padding:0 22px;position:relative; z-index:998; overflow:hidden}
 
 .footer{ height:151px; background:#FFF url(../images/common/footer.jpg) top center no-repeat; position:relative; z-index:999; line-height:30px; font-size:12px; text-align:center; color:#515151; padding:47px 0 0 0}
