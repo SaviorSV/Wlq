@@ -11,7 +11,7 @@ namespace Wlq.Web.Controllers
 		public ActionResult Header()
 		{
 			if (CurrentUser != null)
-				ViewBag.LoginName = CurrentUser.LoginName;
+				ViewBag.LoginName = CurrentUser.Name;
 			else
 				ViewBag.LoginName = string.Empty;
 
