@@ -13,7 +13,7 @@ namespace Wlq.Web.Controllers
 		[HttpPost]
 		public ActionResult Login(string loginName, string password)
 		{
-			var success = UserGroupService.Login(loginName, password);
+			var success = UserGroupService.Login(loginName, password, false);
 
 			if (success)
 			{

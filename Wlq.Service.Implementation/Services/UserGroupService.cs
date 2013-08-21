@@ -73,14 +73,14 @@ namespace Wlq.Service.Implementation
 			return this.UpdateUser(user);
 		}
 
-		public bool Login(string loginName, string password)
+		public bool Login(string loginName, string password, bool isAdmin)
 		{
 			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
 
 			var hashedPassword = password.ToMd5();
 
 			var user = userRepository.GetAll()
-				.FirstOrDefault(u => u.LoginName == loginName && u.Password == hashedPassword);
+				.FirstOrDefault(u => u.LoginName == loginName && u.Password == hashedPassword && (!isAdmin || u.IsAdmin));
 
 			if (user == null)
 				return false;
