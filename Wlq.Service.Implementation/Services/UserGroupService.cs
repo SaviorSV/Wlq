@@ -34,6 +34,14 @@ namespace Wlq.Service.Implementation
 		{
 			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
 
+			var existUser = userRepository.GetAll()
+				.FirstOrDefault(u => u.LoginName == user.LoginName);
+
+			if (existUser != null)
+			{
+				return false;
+			}
+
 			userRepository.Add(user);
 
 			return _databaseContext.SaveChanges() > 0;
@@ -80,7 +88,7 @@ namespace Wlq.Service.Implementation
 			var hashedPassword = password.ToMd5();
 
 			var user = userRepository.GetAll()
-				.FirstOrDefault(u => u.LoginName == loginName && u.Password == hashedPassword && (!isAdmin || u.IsAdmin));
+				.FirstOrDefault(u => u.LoginName == loginName && u.Password == hashedPassword && (!isAdmin || u.Role > (int)RoleLevel.Normal));
 
 			if (user == null)
 				return false;

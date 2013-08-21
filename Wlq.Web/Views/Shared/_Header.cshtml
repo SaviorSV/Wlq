@@ -1,19 +1,27 @@
 ﻿<div class="loginbar">
-    <div class="loginbarbody">
+    
+@if (!ViewBag.IsLogin) 
+{
+	using (Html.BeginForm("Login", "User", FormMethod.Post, new { id = "user_login_form" }))
+	{
+	<div class="loginbarbody">
 		<span class="login-ico"></span>
-	@if (ViewBag.LoginName == string.Empty) 
-	{
-		<input type="text" class="login-card" value="卡号" />
-		<input type="password" class="login-pass" value="密码" />
-		<a href="#" class="btn-login"></a>
+		<input id="loginName" name="loginName" type="text" class="login-card" />
+		<input id="password" name="password" type="password" class="login-pass" />
+		<a id="btn_login" href="javascript:;" class="btn-login"></a>
 		<a href="#" class="btn-shuaka"></a>
+	</div>
 	}
-	else
-	{
+}
+else
+{
+	<div class="loginbarbody">
+		<span class="login-ico"></span>
 		<span class="login-userinfo">您好，<strong>@ViewBag.Name</strong></span>
 		<a href="#" class="login-edit">个人资料修改</a>
-		<a href="#" class="loginout">退出</a>
-	}
-		
+		<a href="/user/signout" class="loginout">退出</a>
 	</div>
+}
+
 </div>
+

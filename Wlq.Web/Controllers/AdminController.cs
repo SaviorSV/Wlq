@@ -6,11 +6,14 @@ using System.Web.Mvc;
 
 using Wlq.Domain;
 using Wlq.Service;
+using System.Web.Security;
 
 namespace Wlq.Web.Controllers
 {
     public class AdminController : BaseController
-    {
+	{
+		#region Members
+
 		private UserInfo _adminUser;
 
 		protected UserInfo AdminUser
@@ -19,7 +22,7 @@ namespace Wlq.Web.Controllers
 			{
 				if (_adminUser == null)
 				{
-					if (CurrentUser != null && CurrentUser.IsAdmin)
+					if (CurrentUser != null && CurrentUser.Role > (int)RoleLevel.Normal)
 					{
 						_adminUser = CurrentUser;
 					}
@@ -29,7 +32,9 @@ namespace Wlq.Web.Controllers
 			}
 		}
 
-        public ActionResult Index()
+		#endregion
+
+		public ActionResult Index()
         {
 			if (AdminUser == null)
 			{
@@ -38,6 +43,11 @@ namespace Wlq.Web.Controllers
 
             return View();
         }
+
+		public ActionResult AdminManagement()
+		{
+			return View();
+		}
 
 		#region Login
 
@@ -59,6 +69,13 @@ namespace Wlq.Web.Controllers
 			{
 				return AlertAndRedirect("用户名或密码错误", "/Admin/Login");
 			}
+		}
+
+		public ActionResult SignOut()
+		{
+			FormsAuthentication.SignOut();
+
+			return RedirectToAction("Login", "Admin");
 		}
 
 		public ActionResult Header()

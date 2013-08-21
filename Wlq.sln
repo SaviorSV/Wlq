@@ -26,6 +26,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlq.Service", "Wlq.Service\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlq.Service.Implementation", "Wlq.Service.Implementation\Wlq.Service.Implementation.csproj", "{D9278DC7-D96E-446B-8CE3-121330E0FE11}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlq.Test", "Wlq.Test\Wlq.Test.csproj", "{21ED4309-23FE-4395-BE96-EA88B3B140BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{21550255-7737-4182-9FB1-C918E2B65CB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,8 +56,15 @@ Global
 		{D9278DC7-D96E-446B-8CE3-121330E0FE11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9278DC7-D96E-446B-8CE3-121330E0FE11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9278DC7-D96E-446B-8CE3-121330E0FE11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21ED4309-23FE-4395-BE96-EA88B3B140BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21ED4309-23FE-4395-BE96-EA88B3B140BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21ED4309-23FE-4395-BE96-EA88B3B140BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21ED4309-23FE-4395-BE96-EA88B3B140BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{21ED4309-23FE-4395-BE96-EA88B3B140BD} = {21550255-7737-4182-9FB1-C918E2B65CB7}
 	EndGlobalSection
 EndGlobal

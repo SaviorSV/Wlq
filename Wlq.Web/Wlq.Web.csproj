@@ -173,8 +173,10 @@
     <Content Include="Content\js\jq.layer.js" />
     <Content Include="Content\js\jquery.bgiframe.min.js" />
     <Content Include="Content\js\jquery.min.js" />
+    <Content Include="Content\js\main.js" />
     <Content Include="Content\js\setByte.js" />
     <Content Include="Content\js\swfobject.js" />
+    <Content Include="Content\js\main_admin.js" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -226,6 +228,7 @@
     <Content Include="Views\Admin\Login.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\_Header.cshtml" />
+    <Content Include="Views\Admin\AdminManagement.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
