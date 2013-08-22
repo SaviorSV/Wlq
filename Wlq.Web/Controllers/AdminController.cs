@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Wlq.Domain;
 using Wlq.Service;
 using System.Web.Security;
+using Hanger.Common;
 
 namespace Wlq.Web.Controllers
 {
@@ -46,7 +47,24 @@ namespace Wlq.Web.Controllers
 
 		public ActionResult AdminManagement()
 		{
-			return View();
+			if (AdminUser == null)
+			{
+				return RedirectToAction("Login", "Admin");
+			}
+
+			IEnumerable<GroupInfo> groups = null;
+
+			if (AdminUser.Role == (int)RoleLevel.SuperAdmin)
+			{
+				groups = UserGroupService.GetGroupsByParent(0);
+			}
+			else
+			{
+				groups = UserGroupService.GetGroupsByManager(AdminUser.Id)
+					.Where(g => g.ParentGroupId == 0);
+			}
+
+			return View(groups);
 		}
 
 		#region Login
@@ -88,5 +106,34 @@ namespace Wlq.Web.Controllers
 
 		#endregion
 
+		#region Ajax
+
+		public ActionResult GetGroupManagers(long groupId)
+		{
+			if (AdminUser == null)
+			{
+				return Content("[]", "text/json");
+			}
+
+			var managers = UserGroupService.GetManagersByGroup(groupId)
+				.Select(m => new { Id = m.Id, LoginName = m.LoginName, Name = m.Name });
+
+			return Content(managers.ObjectToJson(), "text/json");
+		}
+
+		public ActionResult GetGroupsByParent(long parentId)
+		{
+			if (AdminUser == null)
+			{
+				return Content("[]", "text/json");
+			}
+
+			var groups = UserGroupService.GetGroupsByParent(parentId)
+				.Select(g => new { Id = g.Id, Name = g.Name });
+
+			return Content(groups.ObjectToJson(), "text/json");
+		}
+
+		#endregion
 	}
 }
