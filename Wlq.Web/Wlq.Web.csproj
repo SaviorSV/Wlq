@@ -190,7 +190,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Admin\_Layout.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Upload\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
@@ -228,6 +230,8 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\_Header.cshtml" />
     <Content Include="Views\Admin\AdminManagement.cshtml" />
+    <Content Include="Views\Admin\GroupManagement.cshtml" />
+    <Content Include="Views\Admin\Group.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

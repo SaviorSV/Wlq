@@ -194,6 +194,11 @@ namespace Wlq.Service.Implementation
 			return this.RemoveRelations<GroupManagerInfo>(userId, groupId);
 		}
 
+		public bool IsManagerInGroup(long userId, long groupId)
+		{
+			return this.HasRelation<GroupManagerInfo>(userId, groupId);
+		}
+
 		#endregion
 
 		#region UserGroup

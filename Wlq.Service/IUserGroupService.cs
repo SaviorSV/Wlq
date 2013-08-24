@@ -38,6 +38,7 @@ namespace Wlq.Service
 		IEnumerable<UserInfo> GetManagersByGroup(long groupId);
 		bool AddManagerToGroup(long userId, long groupId);
 		bool RemoveManagerFromGroup(long userId, long groupId);
+		bool IsManagerInGroup(long userId, long groupId);
 
 		#endregion
 

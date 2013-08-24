@@ -15,7 +15,8 @@ ins{ text-decoration:none;}
 .clear{ clear:both}
 .hide{ display:none}
 
-a{blr:expression(this.onFocus=this.blur());cursor:pointer} 
+a { blr:expression(this.onFocus=this.blur());cursor:pointer; text-decoration:none; color:#666; } 
+a:hover { text-decoration:underline;}
 a:focus { -moz-outline-style: none; } 
 
 a,area { blr:expression(this.onFocus=this.blur()) }

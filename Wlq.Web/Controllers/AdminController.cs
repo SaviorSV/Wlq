@@ -77,6 +77,70 @@ namespace Wlq.Web.Controllers
 			return View(model);
 		}
 
+		public ActionResult GroupManagement()
+		{
+			if (AdminUser == null)
+			{
+				return RedirectToAction("Login", "Admin");
+			}
+
+			IEnumerable<GroupInfo> groups = null;
+
+			if (AdminUser.Role == (int)RoleLevel.SuperAdmin)
+			{
+				groups = UserGroupService.GetGroupsByParent(0);
+			}
+			else
+			{
+				groups = UserGroupService.GetGroupsByManager(AdminUser.Id)
+					.Where(g => g.ParentGroupId == 0);
+			}
+
+			return View(groups);
+		}
+
+		public ActionResult Group(long groupId, long parentGroupId)
+		{
+			if (AdminUser == null)
+			{
+				return RedirectToAction("Login", "Admin");
+			}
+
+			if (AdminUser.Role != (int)RoleLevel.SuperAdmin
+				&& !UserGroupService.IsManagerInGroup(AdminUser.Id, parentGroupId))
+			{
+				return RedirectToAction("GroupManagement", "Admin");
+			}
+
+			var parentGroup = UserGroupService.GetGroup(parentGroupId);
+
+			if (parentGroup == null)
+			{
+				return RedirectToAction("GroupManagement", "Admin");
+			}
+
+			ViewBag.ParentGroupName = parentGroup.Name;
+
+			if (groupId > 0)
+			{
+				var group = UserGroupService.GetGroup(groupId);
+
+				if (group != null)
+				{
+					if (group.ParentGroupId == parentGroupId)
+					{
+						return View(group);
+					}
+					else
+					{
+						return RedirectToAction("GroupManagement", "Admin");
+					}
+				}
+			}
+
+			return View(new GroupInfo());
+		}
+
 		#region Login
 
 		public ActionResult Login()
@@ -131,14 +195,14 @@ namespace Wlq.Web.Controllers
 			return Content(managers.ObjectToJson(), "text/json");
 		}
 
-		public ActionResult GetGroupsByParent(long parentId)
+		public ActionResult GetGroupsByParent(long id)
 		{
 			if (AdminUser == null)
 			{
 				return Content("[]", "text/json");
 			}
 
-			var groups = UserGroupService.GetGroupsByParent(parentId)
+			var groups = UserGroupService.GetGroupsByParent(id)
 				.Select(g => new { Id = g.Id, Name = g.Name });
 
 			return Content(groups.ObjectToJson(), "text/json");

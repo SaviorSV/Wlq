@@ -23,7 +23,7 @@ else
 
 	@if (!ViewBag.SuperAdmin)
 	{
-		<span>圈子：</span>
+		<span>下级组织：</span>
 		<select id="circle_selector" class="select-2">
 		@if(Model.Circles != null && Model.Circles.Count() > 0)
 		{
@@ -167,7 +167,7 @@ else
 						result += "<thead><tr><th>登录名</th><th>姓名</th><th>从组删除</th><th>密码重置</th></tr></thead><tbody>";
 
 						for (var i in data) {
-							result += "<tr class='eq'><td>" + data[i].LoginName + "</td><td>" + data[i].Name + "</td><td><a href='javascript:remove_manager(" + data[i].Id + "," + groupId + ")' class='editico-1'></a></td><td><a href='javascript:;' class='editico-2'></a></td></tr>";
+							result += "<tr><td>" + data[i].LoginName + "</td><td>" + data[i].Name + "</td><td><a href='javascript:remove_manager(" + data[i].Id + "," + groupId + ")' class='editico-1'></a></td><td><a href='javascript:;' class='editico-2'></a></td></tr>";
 						}
 
 						result += "</tbody></table>";
