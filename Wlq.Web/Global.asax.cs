@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Data.Entity;
+using Wlq.Persistence;
+using Wlq.Persistence.Migrations;
 
 namespace Wlq.Web
 {
@@ -37,6 +40,8 @@ namespace Wlq.Web
 			RegisterRoutes(RouteTable.Routes);
 
 			Hanger.Common.HangerFramework.Start();
+
+			Database.SetInitializer(new MigrateDatabaseToLatestVersion<DatabaseContext, Configuration>());
 		}
 
 		protected void Application_End()

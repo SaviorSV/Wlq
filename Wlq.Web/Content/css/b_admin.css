@@ -139,3 +139,10 @@ body{ background:url(../images/admin/bg.png) repeat-y left top; }
 .UED_LAYER_PARENT_V1{top:50%;left:50%;position:fixed;z-index:99999;_position:absolute;_top:expression(eval(document.compatMode && document.compatMode=='CSS1Compat') ? documentElement.scrollTop+(document.documentElement.clientHeight - this.offsetHeight)/2+this.offsetHeight/2:document.body.scrollTop+(document.body.clientHeight - this.clientHeight)/2);}
 .UED_hide{display:none;}
 
+.popup { display:none; position:absolute; top:170px; left:400px;width:602px; height:295px; background:url(../images/admin/indexlist-bg.png) 0 bottom}
+.popup .title { background:url(../images/admin/indexlist-tt.png); height:43px; line-height:42px; padding:0 0 0 34px; color:#333333; margin-bottom:10px;}
+.popup .title span { float:right; margin-right:15px; }
+.popup .title a { color:#000; text-decoration:none;}
+.popup .content { margin:15px;}
+.popup hr { border: 1px solid #eee;}
+.popup input { height:20px;}

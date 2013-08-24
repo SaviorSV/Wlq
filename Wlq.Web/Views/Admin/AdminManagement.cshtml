@@ -2,24 +2,216 @@
 	Layout = "~/Views/Admin/_Layout.cshtml";
 }
 
-@model IEnumerable<Wlq.Domain.GroupInfo>
+@model Wlq.Web.Models.AdminManagementModel
 
 <h4 class="form-tt">管理员管理</h4>
 <div class="formbody">
-@if (Model == null || Model.Count() == 0)
+@if (Model.Departments == null || Model.Departments.Count() == 0)
 {
 	 <span>非部门管理员，无法分配下级管理员</span>
 }
 else
 {
-	 
+	 <div class="quanxian-tt">
+		<span>部门：</span>
+		<select id="department_selector" class="select-2">
+		@foreach (var group in Model.Departments)
+		{
+			<option value="@group.Id">@group.Name</option>
+		}
+		</select>
+
+	@if (!ViewBag.SuperAdmin)
+	{
+		<span>圈子：</span>
+		<select id="circle_selector" class="select-2">
+		@if(Model.Circles != null && Model.Circles.Count() > 0)
+		{
+			foreach (var group in Model.Circles)
+			{
+			<option value="@group.Id">@group.Name</option>
+			}
+		}
+		else
+		{
+			<option value="0">无</option>
+		}
+		</select>
+	}
+		<a id="find_manager" href="javascript:;" class="btn-3">查询管理员</a>
+		<a id="add_manager" href="#" class="btn-3">+新增管理员</a>
+	</div>
+	<div id="manager_list" class="quanxian-tt"></div>
 }
 </div>
 <div class="formfooter"></div>
+
+<div id="popup" class="popup">
+	<div class="title">
+		新增管理员
+		<span><a id="close" class="close" href="javascript:;">x</a></span>
+	</div>
+	<div class="content">
+		<table class="list-tbl">
+			<tbody>
+                <tr>
+					<td>登　录　名</td><td style="text-align:left;"><input id="loginName" type="text" /></td>
+				</tr>
+                <tr>
+					<td>姓　　　名</td><td style="text-align:left;"><input id="name" type="text" /></td>
+				</tr>
+				<tr>
+					<td>密　　　码</td><td style="text-align:left;"><input id="password" type="password" /></td>
+				</tr>
+				<tr><td colspan="2">&nbsp;</td></tr>
+				<tr>
+					<td colspan="2">
+						<a id="bind_manager" href="#" class="btn-3">绑定该组</a>
+					</td>
+				</tr>
+            </tbody>
+		</table>
+	</div>
+	
+</div>
 
 @section scripts
 {
 	<script type="text/javascript">
 		selected_left_menu(1);
+
+		$("#find_manager").bind("click", function () {
+			bind_manager_list();
+		});
+
+		$("#add_manager").bind("click", function () {
+			var groupId = get_current_group();
+
+			if (groupId > 0) {
+				$("#loginName").val('');
+				$("#name").val('');
+				$("#password").val('');
+
+				$("#popup").show();
+			}
+			else {
+				alert("未选择任何组");
+			}
+		});
+
+		$("#bind_manager").bind("click", function () {
+			var loginName = $("#loginName").val();
+
+			if (loginName == '') {
+				alert("登录名不可为空");
+				return false;
+			}
+
+			var name = $("#name").val();
+
+			if (name == '') {
+				alert("姓名不可为空");
+				return false;
+			}
+
+			var password = $("#password").val();
+
+			if (password == '') {
+				alert("密码不可为空");
+				return false;
+			}
+
+			var groupId = get_current_group();
+
+			if (groupId <= 0) {
+				alert("当前组无效");
+				return false;
+			}
+
+			$.ajax({
+				type: "POST",
+				dataType: 'json',
+				url: "/Admin/BindManager",
+				data: {
+					'loginName': loginName,
+					'name': name,
+					'password': password,
+					'groupId': groupId
+				},
+				success: function (r, status) {
+					if (r.Success) {
+						alert("绑定成功");
+						bind_manager_list();
+					}
+					else {
+						alert("绑定失败。可能原因：登录名已存在。");
+					}
+				}
+			});
+
+			$("#popup").hide();
+		});
+
+		$("#popup #close").bind("click", function () {
+			$("#popup").hide();
+		});
+
+		function bind_manager_list() {
+			var groupId = get_current_group();
+
+			if (groupId > 0) {
+				$.get("/Admin/GetGroupManagers/" + groupId, function (data) {
+					var result = '';
+					if (data.length > 0) {
+						result += "<table class='list-tbl'>";
+						result += "<thead><tr><th>登录名</th><th>姓名</th><th>从组删除</th><th>密码重置</th></tr></thead><tbody>";
+
+						for (var i in data) {
+							result += "<tr class='eq'><td>" + data[i].LoginName + "</td><td>" + data[i].Name + "</td><td><a href='javascript:remove_manager(" + data[i].Id + "," + groupId + ")' class='editico-1'></a></td><td><a href='javascript:;' class='editico-2'></a></td></tr>";
+						}
+
+						result += "</tbody></table>";
+					}
+					else {
+						result = "<span>未绑定管理员</span>";
+					}
+
+					$("#manager_list").html(result);
+				});
+			}
+		}
+
+		function get_current_group() {
+			if ($("#circle_selector").length > 0) {
+				return $("#circle_selector").val();
+			}
+			else {
+				return $("#department_selector").val();
+			}
+		}
+
+		function remove_manager(userId, groupId) {
+			if (!confirm("确定删除管理员?"))
+				return false;
+
+			$.ajax({
+				type: "POST",
+				dataType: 'json',
+				url: "/Admin/RemoveManager",
+				data: {
+					'userId': userId,
+					'groupId': groupId
+				},
+				success: function (r, status) {
+					if (r.Success) {
+						alert("删除成功");
+						bind_manager_list();
+					}
+					else {
+						alert("删除失败");
+					}
+				}
+			});
+		}
 	</script>
 }

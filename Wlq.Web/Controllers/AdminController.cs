@@ -8,6 +8,7 @@ using Wlq.Domain;
 using Wlq.Service;
 using System.Web.Security;
 using Hanger.Common;
+using Wlq.Web.Models;
 
 namespace Wlq.Web.Controllers
 {
@@ -52,19 +53,28 @@ namespace Wlq.Web.Controllers
 				return RedirectToAction("Login", "Admin");
 			}
 
-			IEnumerable<GroupInfo> groups = null;
+			var model = new AdminManagementModel();
 
 			if (AdminUser.Role == (int)RoleLevel.SuperAdmin)
 			{
-				groups = UserGroupService.GetGroupsByParent(0);
+				ViewBag.SuperAdmin = true;
+
+				model.Departments = UserGroupService.GetGroupsByParent(0);
 			}
 			else
 			{
-				groups = UserGroupService.GetGroupsByManager(AdminUser.Id)
+				ViewBag.SuperAdmin = false;
+
+				model.Departments = UserGroupService.GetGroupsByManager(AdminUser.Id)
 					.Where(g => g.ParentGroupId == 0);
+
+				if (model.Departments != null && model.Departments.Count() > 0)
+				{
+					model.Circles = UserGroupService.GetGroupsByParent(model.Departments.First().Id);
+				}
 			}
 
-			return View(groups);
+			return View(model);
 		}
 
 		#region Login
@@ -108,14 +118,14 @@ namespace Wlq.Web.Controllers
 
 		#region Ajax
 
-		public ActionResult GetGroupManagers(long groupId)
+		public ActionResult GetGroupManagers(long id)
 		{
 			if (AdminUser == null)
 			{
 				return Content("[]", "text/json");
 			}
 
-			var managers = UserGroupService.GetManagersByGroup(groupId)
+			var managers = UserGroupService.GetManagersByGroup(id)
 				.Select(m => new { Id = m.Id, LoginName = m.LoginName, Name = m.Name });
 
 			return Content(managers.ObjectToJson(), "text/json");
@@ -132,6 +142,44 @@ namespace Wlq.Web.Controllers
 				.Select(g => new { Id = g.Id, Name = g.Name });
 
 			return Content(groups.ObjectToJson(), "text/json");
+		}
+
+		[HttpPost]
+		public ActionResult BindManager(string loginName, string name, string password, long groupId)
+		{
+			var success = false;
+
+			if (!string.IsNullOrWhiteSpace(loginName) && !string.IsNullOrWhiteSpace(name)
+				&& !string.IsNullOrWhiteSpace(password) && groupId > 0)
+			{
+				var user = new UserInfo 
+				{
+					LoginName = loginName,
+					Name = name,
+					Password = password.ToMd5(),
+					Role = (int)RoleLevel.Manager
+				};
+
+				if (UserGroupService.AddUser(user))
+				{
+					success = UserGroupService.AddManagerToGroup(user.Id, groupId);
+				}
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
+		[HttpPost]
+		public ActionResult RemoveManager(long userId, long groupId)
+		{
+			var success = UserGroupService.RemoveManagerFromGroup(userId, groupId);
+
+			if (success)
+			{
+				UserGroupService.DeleteUser(userId);
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
 		}
 
 		#endregion
