@@ -28,7 +28,7 @@ namespace Wlq.Test.ServiceTests
 		[Test]
 		public void AddGroups()
 		{
-			var success = true;
+			var success = false;
 			var groupNames = new string[] { "教育局", "文化局", "体育局", "卫生局" };
 
 			foreach (var name in groupNames)

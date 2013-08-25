@@ -30,6 +30,13 @@ namespace Wlq.Service.Implementation
 			return userRepository.GetById(userId);
 		}
 
+		public UserInfo GetUser(string loginName)
+		{
+			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
+
+			return userRepository.GetAll().FirstOrDefault(u => u.LoginName == loginName);
+		}
+
 		public bool AddUser(UserInfo user)
 		{
 			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);

@@ -6,30 +6,71 @@
 
 <h4 class="form-tt">组织管理</h4>
 <div class="formbody">
-	 <ul>
+@using (Html.BeginForm("SaveGroup", "Admin", FormMethod.Post, new { id = "admin_saveGroup_form" }))
+{
+	<ul>
 		<li><label>所属部门：</label><label>@ViewBag.ParentGroupName</label></li>
-		<li><label>组织名称：</label><input type="text" value="@Model.Name" /></li>
+		<li><label>组织名称：</label><input id="groupName" name="Name" type="text" value="@Model.Name" /></li>
 		<li>
 			<label>头　　像：</label>
-			<input type="file" /><br />
+			<input id="logo_uploader" name="logo_uploader" type="file" onchange="upload_file('logo');" /><br />
 		@if (string.IsNullOrWhiteSpace(Model.Logo))
 		{
-			<img src="/Content/images/other/ico-1.png" alt="logo" />
+			<img id="logo_img" class="group_logo" src="/Content/images/other/ico-1.png" alt="logo" />
 		}
 		else
 		{
-			<img src="@Model.Logo" alt="logo" />
+			<img id="logo_img" class="group_logo" src='@String.Format("/upload/group/{0}/logo{1}", Model.Id, Model.Logo)' alt="logo" />
 		}
 		</li>
-	 </ul>
-	 <a id="save_group" href="#" class="btn-3">保　存</a>
-	 <a href="/Admin/GroupManagement" class="btn-3">返　回</a>
+	</ul>
+	<input name="Id" type="hidden" value="@Model.Id" />
+	<input name="ParentGroupId" type="hidden" value="@Model.ParentGroupId" />
+	<input id="hidden_logo" name="Logo" type="hidden" value="@Model.Logo" />
+	<a id="save_group" href="javascript:;" class="btn-3">保　存</a>
+	<a href="/Admin/GroupManagement" class="btn-3">返　回</a>
+}
 </div>
 <div class="formfooter"></div>
 
 @section scripts
 {
+	<script src="@Url.Content("~/Content/js/ajaxfileupload.js")" type="text/javascript"></script>
 	<script type="text/javascript">
 		selected_left_menu(2);
+
+		$("#save_group").bind("click", function () {
+			if ($.trim($("#groupName").val()) == '') {
+				alert("组织名称不可为空");
+				return false;
+			}
+			else {
+				$("#admin_saveGroup_form").submit();
+			}
+		});
+
+		function upload_file() {
+			if (validateFile($('#logo_uploader'), "logo")) {
+				$.ajaxFileUpload({
+					url: '/Common/Upload',
+					secureuri: false,
+					fileElementId: 'logo_uploader',
+					dataType: 'json',
+					data: {
+						'type': "logo"
+					},
+					success: function (r, status) {
+						if (r.error == 0) {
+							if (r.url != "") {
+								$('#logo_img').attr("src", r.url);
+								$('#hidden_logo').val(r.extention);
+							}
+						}
+						else
+							alert(r.message)
+					}
+				});
+			}
+		}
 	</script>
 }

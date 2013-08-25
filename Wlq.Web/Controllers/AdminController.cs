@@ -9,6 +9,7 @@ using Wlq.Service;
 using System.Web.Security;
 using Hanger.Common;
 using Wlq.Web.Models;
+using Wlq.Service.Utility;
 
 namespace Wlq.Web.Controllers
 {
@@ -45,6 +46,8 @@ namespace Wlq.Web.Controllers
 
             return View();
         }
+
+		#region User & Group
 
 		public ActionResult AdminManagement()
 		{
@@ -106,20 +109,16 @@ namespace Wlq.Web.Controllers
 				return RedirectToAction("Login", "Admin");
 			}
 
-			if (AdminUser.Role != (int)RoleLevel.SuperAdmin
-				&& !UserGroupService.IsManagerInGroup(AdminUser.Id, parentGroupId))
-			{
-				return RedirectToAction("GroupManagement", "Admin");
-			}
+			GroupInfo parentGroup = null;
 
-			var parentGroup = UserGroupService.GetGroup(parentGroupId);
-
-			if (parentGroup == null)
+			if (!CheckParentGroupIsLegal(parentGroupId, ref parentGroup))
 			{
 				return RedirectToAction("GroupManagement", "Admin");
 			}
 
 			ViewBag.ParentGroupName = parentGroup.Name;
+
+			FileManager.CleanTempFile(AdminUser.Id);
 
 			if (groupId > 0)
 			{
@@ -138,8 +137,101 @@ namespace Wlq.Web.Controllers
 				}
 			}
 
-			return View(new GroupInfo());
+			return View(new GroupInfo { ParentGroupId = parentGroupId });
 		}
+
+		public ActionResult SaveGroup(GroupInfo groupModel)
+		{
+			if (AdminUser == null)
+			{
+				return RedirectToAction("Login", "Admin");
+			}
+
+			GroupInfo parentGroup = null;
+
+			if (!CheckParentGroupIsLegal(groupModel.ParentGroupId, ref parentGroup))
+			{
+				return RedirectToAction("GroupManagement", "Admin");
+			}
+
+			var group = groupModel.Id > 0
+				? UserGroupService.GetGroup(groupModel.Id)
+				: new GroupInfo();
+
+			if (group == null)
+			{
+				return AlertAndRedirect("保存失败(该组不存在)", "/Admin/GroupManagement");
+			}
+
+			group.Name = groupModel.Name;
+			group.ParentGroupId = groupModel.ParentGroupId;
+			group.GroupType = (int)GroupType.Circle;
+			group.Logo = groupModel.Logo;
+
+			if (group.Id == 0)
+			{
+				if (!UserGroupService.AddGroup(group))
+				{
+					return AlertAndRedirect("保存失败(添加新组失败)", "/Admin/GroupManagement");
+				}
+			}
+			else
+			{
+				if (!UserGroupService.UpdateGroup(group))
+				{
+					return AlertAndRedirect("保存失败(更新组织失败)", "/Admin/GroupManagement");
+				}
+			}
+
+			FileManager.SaveLogo(AdminUser.Id, group.Id);
+
+			return AlertAndRedirect("保存成功", "/Admin/GroupManagement");
+		}
+
+		private bool CheckParentGroupIsLegal(long parentGroupId, ref GroupInfo parentGroup)
+		{
+			if (AdminUser.Role != (int)RoleLevel.SuperAdmin
+				&& !UserGroupService.IsManagerInGroup(AdminUser.Id, parentGroupId))
+			{
+				return false;
+			}
+
+			parentGroup = UserGroupService.GetGroup(parentGroupId);
+
+			if (parentGroup == null)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		#endregion
+
+		#region Venue
+
+		public ActionResult VenueConfig()
+		{
+			if (AdminUser == null)
+			{
+				return RedirectToAction("Login", "Admin");
+			}
+
+			IEnumerable<GroupInfo> groups = null;
+
+			if (AdminUser.Role == (int)RoleLevel.SuperAdmin)
+			{
+				groups = UserGroupService.GetGroupsByParent(0);
+			}
+			else
+			{
+				groups = UserGroupService.GetGroupsByManager(AdminUser.Id);
+			}
+
+			return View(groups);
+		}
+
+		#endregion
 
 		#region Login
 
@@ -213,20 +305,23 @@ namespace Wlq.Web.Controllers
 		{
 			var success = false;
 
-			if (!string.IsNullOrWhiteSpace(loginName) && !string.IsNullOrWhiteSpace(name)
-				&& !string.IsNullOrWhiteSpace(password) && groupId > 0)
+			if (AdminUser != null)
 			{
-				var user = new UserInfo 
+				if (!string.IsNullOrWhiteSpace(loginName) && !string.IsNullOrWhiteSpace(name)
+					&& !string.IsNullOrWhiteSpace(password) && groupId > 0)
 				{
-					LoginName = loginName,
-					Name = name,
-					Password = password.ToMd5(),
-					Role = (int)RoleLevel.Manager
-				};
+					var user = new UserInfo
+					{
+						LoginName = loginName,
+						Name = name,
+						Password = password.ToMd5(),
+						Role = (int)RoleLevel.Manager
+					};
 
-				if (UserGroupService.AddUser(user))
-				{
-					success = UserGroupService.AddManagerToGroup(user.Id, groupId);
+					if (UserGroupService.AddUser(user))
+					{
+						success = UserGroupService.AddManagerToGroup(user.Id, groupId);
+					}
 				}
 			}
 
@@ -236,11 +331,29 @@ namespace Wlq.Web.Controllers
 		[HttpPost]
 		public ActionResult RemoveManager(long userId, long groupId)
 		{
-			var success = UserGroupService.RemoveManagerFromGroup(userId, groupId);
+			var success = false;
 
-			if (success)
+			if (AdminUser != null)
 			{
-				UserGroupService.DeleteUser(userId);
+				success = UserGroupService.RemoveManagerFromGroup(userId, groupId);
+
+				if (success)
+				{
+					UserGroupService.DeleteUser(userId);
+				}
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
+		[HttpPost]
+		public ActionResult RemoveGroup(long groupId)
+		{
+			var success = false;
+
+			if (AdminUser != null)
+			{
+				success = UserGroupService.DeleteGroup(groupId);
 			}
 
 			return Content(new { Success = success }.ObjectToJson(), "text/json");

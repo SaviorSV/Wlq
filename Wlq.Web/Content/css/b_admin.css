@@ -147,3 +147,5 @@ body{ background:url(../images/admin/bg.png) repeat-y left top; }
 .popup .content { margin:15px;}
 .popup hr { border: 1px solid #eee;}
 .popup input { height:20px;}
+
+.group_logo { max-width:78px; max-height:75px; }

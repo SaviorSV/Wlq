@@ -22,7 +22,7 @@ else
 		</select>
 
 		<a id="find_group" href="javascript:;" class="btn-3">查询下级组织</a>
-		<a id="add_group" href="#" class="btn-3">+新增组织</a>
+		<a id="add_group" href="javascript:;" class="btn-3">+新增组织</a>
 	</div>
 	<div id="group_list" class="quanxian-tt"></div>
 }
@@ -55,7 +55,7 @@ else
 						result += "<thead><tr><th>名称</th><th>操作</th></tr></thead><tbody>";
 
 						for (var i in data) {
-							result += "<tr><td>" + data[i].Name + "</td><td><a href='/Admin/Group?groupId=" + data[i].Id + "&parentGroupId=" + groupId + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;'>删除</a></td></tr>";
+							result += "<tr><td>" + data[i].Name + "</td><td><a href='/Admin/Group?groupId=" + data[i].Id + "&parentGroupId=" + groupId + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:remove_group(" + data[i].Id + ");'>删除</a></td></tr>";
 						}
 
 						result += "</tbody></table>";
@@ -67,6 +67,29 @@ else
 					$("#group_list").html(result);
 				});
 			}
+		}
+
+		function remove_group(groupId) {
+			if (!confirm("确定删除该组织?"))
+				return false;
+
+			$.ajax({
+				type: "POST",
+				dataType: 'json',
+				url: "/Admin/RemoveGroup",
+				data: {
+					'groupId': groupId
+				},
+				success: function (r, status) {
+					if (r.Success) {
+						alert("删除成功");
+						bind_group_list();
+					}
+					else {
+						alert("删除失败");
+					}
+				}
+			});
 		}
 
 	</script>

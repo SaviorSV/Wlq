@@ -5,6 +5,7 @@ using Hanger.Common;
 using Wlq.Service;
 using Wlq.Persistence;
 using Wlq.Domain;
+using System.Collections.Generic;
 
 namespace Wlq.Service.Implementation
 {
@@ -18,6 +19,48 @@ namespace Wlq.Service.Implementation
 		}
 
 		#region booking
+
+		public IEnumerable<VenueInfo> GetVenuesByGroup(long groupId)
+		{
+			var venueRepository = new DatabaseRepository<VenueInfo>(_databaseContext);
+
+			return venueRepository.GetAll()
+				.Where(v => v.GroupId == groupId);
+		}
+
+		public VenueInfo GetVenue(long venueId)
+		{
+			var venueRepository = new DatabaseRepository<VenueInfo>(_databaseContext);
+
+			return venueRepository.GetById(venueId);
+		}
+
+		public bool AddVenue(VenueInfo venue)
+		{
+			var venueRepository = new DatabaseRepository<VenueInfo>(_databaseContext);
+
+			venueRepository.Add(venue);
+
+			return _databaseContext.SaveChanges() > 0;
+		}
+
+		public bool UpdateVenue(VenueInfo venue)
+		{
+			var venueRepository = new DatabaseRepository<VenueInfo>(_databaseContext);
+
+			venueRepository.Update(venue);
+
+			return _databaseContext.SaveChanges() > 0;
+		}
+
+		public bool DeleteVenue(long venueId)
+		{
+			var venueRepository = new DatabaseRepository<VenueInfo>(_databaseContext);
+
+			venueRepository.DeleteById(venueId);
+
+			return _databaseContext.SaveChanges() > 0;
+		}
 
 		public bool SaveVenueConfigs(long venueId, BookingConfig configs)
 		{

@@ -1,0 +1,38 @@
+﻿@{
+	Layout = "~/Views/Admin/_Layout.cshtml";
+}
+
+
+@model IEnumerable<Wlq.Domain.GroupInfo>
+
+<h4 class="form-tt">场地配置</h4>
+<div class="formbody">
+@if (Model == null || Model.Count() == 0)
+{
+	 <span>没有组织信息，无法配置场地</span>
+}
+else
+{
+	 <div class="quanxian-tt">
+		<span>所属部门或组织：</span>
+		<select id="department_selector" class="select-2">
+		@foreach (var group in Model)
+		{
+			<option value="@group.Id">@group.Name</option>
+		}
+		</select>
+
+		<a id="find_venue" href="javascript:;" class="btn-3">查询场地信息</a>
+		<a id="add_venue" href="javascript:;" class="btn-3">+新增场地</a>
+	</div>
+	<div id="group_list" class="quanxian-tt"></div>
+}
+</div>
+<div class="formfooter"></div>
+
+@section scripts
+{
+	<script type="text/javascript">
+		selected_left_menu(4);
+	</script>
+}

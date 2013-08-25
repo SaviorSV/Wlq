@@ -122,6 +122,64 @@ namespace Wlq.Service.Utility
 				graphics.Dispose();
 			}
 		}
+
+		public static void CleanTempFile(long userId)
+		{
+			var tempPath = AppDomain.CurrentDomain.BaseDirectory + "\\Upload\\temp\\";
+
+			if (Directory.Exists(tempPath))
+			{
+				var tempFiles = Directory.GetFiles(tempPath);
+
+				foreach (var file in tempFiles)
+				{
+					if (Path.GetFileName(file).StartsWith(userId.ToString() + "_"))
+						File.Delete(file);
+				}
+			}
+		}
+
+		public static string SaveLogo(long userId, long groupId)
+		{
+			var extension = string.Empty;
+			var tempPath = AppDomain.CurrentDomain.BaseDirectory + "\\Upload\\temp\\";
+			var realPath = AppDomain.CurrentDomain.BaseDirectory + string.Format("\\Upload\\Group\\{0}\\", groupId);
+
+			if (Directory.Exists(tempPath))
+			{
+				var tempFiles = Directory.GetFiles(tempPath, string.Format("{0}_{1}.*", userId, UploadFileType.Logo));
+
+				foreach (var file in tempFiles)
+				{
+					extension = Path.GetExtension(file);
+
+					if (!Directory.Exists(realPath))
+						Directory.CreateDirectory(realPath);
+
+					try
+					{
+						FileManager.MakeThumbnail(
+							file, Path.Combine(realPath, string.Format("{0}{1}", UploadFileType.Logo, extension)), 78, 75, ThumbnailMode.HeightWidth);
+
+						File.Delete(file);
+					}
+					catch (Exception ex)
+					{
+						LocalLoggingService.Exception(string.Format("SaveAvatar Error:{0}", ex.Message));
+					}
+
+					break;
+				}
+			}
+
+			return extension;
+		}
+	}
+
+	public class UploadFileType
+	{
+		public const string Logo = "logo";
+		public const string Posts = "posts";
 	}
 
 	public enum ThumbnailMode
