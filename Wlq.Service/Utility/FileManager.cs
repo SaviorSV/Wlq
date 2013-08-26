@@ -179,7 +179,7 @@ namespace Wlq.Service.Utility
 	public class UploadFileType
 	{
 		public const string Logo = "logo";
-		public const string Posts = "posts";
+		public const string Post = "post";
 	}
 
 	public enum ThumbnailMode

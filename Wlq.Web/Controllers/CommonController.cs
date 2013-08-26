@@ -42,7 +42,7 @@ namespace Wlq.Web.Controllers
 			var fileName = string.Empty;
 			var extension = string.Empty;
 
-			if (type != UploadFileType.Posts && type != UploadFileType.Logo)
+			if (type != UploadFileType.Post && type != UploadFileType.Logo)
 				return UploadResult(false, "上传失败", string.Empty, string.Empty);
 
 			if (Request.Files.Count > 0 && Request.Files[0].ContentLength > 0)
@@ -55,7 +55,7 @@ namespace Wlq.Web.Controllers
 				switch (type)
 				{
 					case UploadFileType.Logo:
-					case UploadFileType.Posts:
+					case UploadFileType.Post:
 						allowExtensions = FileManager.AllowImageExtensions;
 						break;
 					default:
