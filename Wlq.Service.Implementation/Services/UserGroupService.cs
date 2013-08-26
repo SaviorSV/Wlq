@@ -126,9 +126,16 @@ namespace Wlq.Service.Implementation
 			return this.GetGroupsByRelation<UserGroupInfo>(userId);
 		}
 
-		public IEnumerable<GroupInfo> GetGroupsByManager(long userId)
+		public IEnumerable<GroupInfo> GetGroupsByManager(long userId, RoleLevel role)
 		{
-			return this.GetGroupsByRelation<GroupManagerInfo>(userId);
+			if (role == RoleLevel.SuperAdmin)
+			{
+				return this.GetGroupsByParent(0);
+			}
+			else
+			{
+				return this.GetGroupsByRelation<GroupManagerInfo>(userId);
+			}
 		}
 
 		public IEnumerable<GroupInfo> GetGroupsByParent(long parentGroupId)

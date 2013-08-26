@@ -25,7 +25,7 @@ namespace Wlq.Service
 		#region Group
 
 		IEnumerable<GroupInfo> GetGroupsByUser(long userId);
-		IEnumerable<GroupInfo> GetGroupsByManager(long userId);
+		IEnumerable<GroupInfo> GetGroupsByManager(long userId, RoleLevel role);
 		IEnumerable<GroupInfo> GetGroupsByParent(long parentGroupId);
 		GroupInfo GetGroup(long groupId);
 		bool AddGroup(GroupInfo group);

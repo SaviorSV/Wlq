@@ -57,25 +57,17 @@ namespace Wlq.Web.Controllers
 			}
 
 			var model = new AdminManagementModel();
+			var isSuperAdmin = AdminUser.Role == (int)RoleLevel.SuperAdmin;
 
-			if (AdminUser.Role == (int)RoleLevel.SuperAdmin)
+			model.Departments = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role)
+				.Where(g => g.ParentGroupId == 0);
+
+			if (!isSuperAdmin && model.Departments != null && model.Departments.Count() > 0)
 			{
-				ViewBag.SuperAdmin = true;
-
-				model.Departments = UserGroupService.GetGroupsByParent(0);
+				model.Circles = UserGroupService.GetGroupsByParent(model.Departments.First().Id);
 			}
-			else
-			{
-				ViewBag.SuperAdmin = false;
 
-				model.Departments = UserGroupService.GetGroupsByManager(AdminUser.Id)
-					.Where(g => g.ParentGroupId == 0);
-
-				if (model.Departments != null && model.Departments.Count() > 0)
-				{
-					model.Circles = UserGroupService.GetGroupsByParent(model.Departments.First().Id);
-				}
-			}
+			ViewBag.SuperAdmin = isSuperAdmin;
 
 			return View(model);
 		}
@@ -87,17 +79,8 @@ namespace Wlq.Web.Controllers
 				return RedirectToAction("Login", "Admin");
 			}
 
-			IEnumerable<GroupInfo> groups = null;
-
-			if (AdminUser.Role == (int)RoleLevel.SuperAdmin)
-			{
-				groups = UserGroupService.GetGroupsByParent(0);
-			}
-			else
-			{
-				groups = UserGroupService.GetGroupsByManager(AdminUser.Id)
-					.Where(g => g.ParentGroupId == 0);
-			}
+			var groups = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role)
+				.Where(g => g.ParentGroupId == 0);
 
 			return View(groups);
 		}
@@ -217,16 +200,7 @@ namespace Wlq.Web.Controllers
 				return RedirectToAction("Login", "Admin");
 			}
 
-			IEnumerable<GroupInfo> groups = null;
-
-			if (AdminUser.Role == (int)RoleLevel.SuperAdmin)
-			{
-				groups = UserGroupService.GetGroupsByParent(0);
-			}
-			else
-			{
-				groups = UserGroupService.GetGroupsByManager(AdminUser.Id);
-			}
+			var groups = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
 
 			return View(groups);
 		}
