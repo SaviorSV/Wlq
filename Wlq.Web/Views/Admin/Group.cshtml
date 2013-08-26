@@ -26,7 +26,7 @@
 	</ul>
 	<input name="Id" type="hidden" value="@Model.Id" />
 	<input name="ParentGroupId" type="hidden" value="@Model.ParentGroupId" />
-	<input id="hidden_logo" name="Logo" type="hidden" value="@Model.Logo" />
+	<input id="logo_hidden" name="Logo" type="hidden" value="@Model.Logo" />
 	<a id="save_group" href="javascript:;" class="btn-3">保　存</a>
 	<a href="/Admin/GroupManagement" class="btn-3">返　回</a>
 }
@@ -48,29 +48,5 @@
 				$("#admin_saveGroup_form").submit();
 			}
 		});
-
-		function upload_file() {
-			if (validateFile($('#logo_uploader'), "logo")) {
-				$.ajaxFileUpload({
-					url: '/Common/Upload',
-					secureuri: false,
-					fileElementId: 'logo_uploader',
-					dataType: 'json',
-					data: {
-						'type': "logo"
-					},
-					success: function (r, status) {
-						if (r.error == 0) {
-							if (r.url != "") {
-								$('#logo_img').attr("src", r.url);
-								$('#hidden_logo').val(r.extention);
-							}
-						}
-						else
-							alert(r.message)
-					}
-				});
-			}
-		}
 	</script>
 }

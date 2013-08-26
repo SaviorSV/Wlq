@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 
 using Hanger.Common;
 
@@ -11,6 +12,8 @@ namespace Wlq.Service.Utility
 	public class FileManager
 	{
 		public static readonly string[] AllowImageExtensions = new string[] { ".jpg", ".png", ".jpeg", ".gif" };
+		public static readonly string TempFilePhysicalPath = AppDomain.CurrentDomain.BaseDirectory + "\\Upload\\Temp\\";
+		public static readonly string RealFilePhysicalPath = AppDomain.CurrentDomain.BaseDirectory + "\\Upload\\Group\\";
 
 		public static void Upload(Stream stream, string physicalPath, string fileName)
 		{
@@ -125,16 +128,14 @@ namespace Wlq.Service.Utility
 
 		public static void CleanTempFile(long userId)
 		{
-			var tempPath = AppDomain.CurrentDomain.BaseDirectory + "\\Upload\\temp\\";
-
-			if (Directory.Exists(tempPath))
+			if (Directory.Exists(TempFilePhysicalPath))
 			{
-				var tempFiles = Directory.GetFiles(tempPath);
+				var tempFiles = Directory.GetFiles(TempFilePhysicalPath)
+					.Where(f => Path.GetFileName(f).StartsWith(userId.ToString() + "_"));
 
 				foreach (var file in tempFiles)
 				{
-					if (Path.GetFileName(file).StartsWith(userId.ToString() + "_"))
-						File.Delete(file);
+					File.Delete(file);
 				}
 			}
 		}
@@ -142,12 +143,11 @@ namespace Wlq.Service.Utility
 		public static string SaveLogo(long userId, long groupId)
 		{
 			var extension = string.Empty;
-			var tempPath = AppDomain.CurrentDomain.BaseDirectory + "\\Upload\\temp\\";
-			var realPath = AppDomain.CurrentDomain.BaseDirectory + string.Format("\\Upload\\Group\\{0}\\", groupId);
+			var realPath = RealFilePhysicalPath + string.Format("{0}\\", groupId);
 
-			if (Directory.Exists(tempPath))
+			if (Directory.Exists(TempFilePhysicalPath))
 			{
-				var tempFiles = Directory.GetFiles(tempPath, string.Format("{0}_{1}.*", userId, UploadFileType.Logo));
+				var tempFiles = Directory.GetFiles(TempFilePhysicalPath, string.Format("{0}_{1}.*", userId, UploadFileType.Logo));
 
 				foreach (var file in tempFiles)
 				{
@@ -165,7 +165,7 @@ namespace Wlq.Service.Utility
 					}
 					catch (Exception ex)
 					{
-						LocalLoggingService.Exception(string.Format("SaveAvatar Error:{0}", ex.Message));
+						LocalLoggingService.Exception(string.Format("SaveLogo Error:{0}", ex.Message));
 					}
 
 					break;
@@ -180,6 +180,7 @@ namespace Wlq.Service.Utility
 	{
 		public const string Logo = "logo";
 		public const string Post = "post";
+		public const string File = "file";
 	}
 
 	public enum ThumbnailMode

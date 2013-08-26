@@ -10,7 +10,7 @@ namespace Wlq.Service.Implementation
 
 		public override void Execute()
 		{
-			container.RegisterTypeAsPerResolve<ICommonService, CommonService>();
+			container.RegisterTypeAsSingleton<ICommonService, CommonService>();
 			container.RegisterTypeAsPerResolve<IPostService, PostService>();
 			container.RegisterTypeAsPerResolve<IUserGroupService, UserGroupService>();
 		}

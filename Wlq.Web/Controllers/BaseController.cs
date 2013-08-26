@@ -26,11 +26,9 @@ namespace Wlq.Web.Controllers
 			}
 		}
 
-		private ICommonService _commonService;
-
 		protected ICommonService CommonService
 		{
-			get { return this.GetService<ICommonService>(ref _commonService); }
+			get { return LocalServiceLocator.GetService<ICommonService>(); }
 		}
 
 		private IUserGroupService _userGroupService;
