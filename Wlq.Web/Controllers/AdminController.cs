@@ -101,7 +101,7 @@ namespace Wlq.Web.Controllers
 
 			ViewBag.ParentGroupName = parentGroup.Name;
 
-			FileManager.CleanTempFile(AdminUser.Id);
+			CommonService.CleanTempFile(AdminUser.Id);
 
 			if (groupId > 0)
 			{
@@ -166,7 +166,7 @@ namespace Wlq.Web.Controllers
 				}
 			}
 
-			FileManager.SaveLogo(AdminUser.Id, group.Id);
+			CommonService.SaveLogo(AdminUser.Id, group.Id);
 
 			return AlertAndRedirect("保存成功", "/Admin/GroupManagement");
 		}

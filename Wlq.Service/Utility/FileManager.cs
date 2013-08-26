@@ -125,55 +125,6 @@ namespace Wlq.Service.Utility
 				graphics.Dispose();
 			}
 		}
-
-		public static void CleanTempFile(long userId)
-		{
-			if (Directory.Exists(TempFilePhysicalPath))
-			{
-				var tempFiles = Directory.GetFiles(TempFilePhysicalPath)
-					.Where(f => Path.GetFileName(f).StartsWith(userId.ToString() + "_"));
-
-				foreach (var file in tempFiles)
-				{
-					File.Delete(file);
-				}
-			}
-		}
-
-		public static string SaveLogo(long userId, long groupId)
-		{
-			var extension = string.Empty;
-			var realPath = RealFilePhysicalPath + string.Format("{0}\\", groupId);
-
-			if (Directory.Exists(TempFilePhysicalPath))
-			{
-				var tempFiles = Directory.GetFiles(TempFilePhysicalPath, string.Format("{0}_{1}.*", userId, UploadFileType.Logo));
-
-				foreach (var file in tempFiles)
-				{
-					extension = Path.GetExtension(file);
-
-					if (!Directory.Exists(realPath))
-						Directory.CreateDirectory(realPath);
-
-					try
-					{
-						FileManager.MakeThumbnail(
-							file, Path.Combine(realPath, string.Format("{0}{1}", UploadFileType.Logo, extension)), 78, 75, ThumbnailMode.HeightWidth);
-
-						File.Delete(file);
-					}
-					catch (Exception ex)
-					{
-						LocalLoggingService.Exception(string.Format("SaveLogo Error:{0}", ex.Message));
-					}
-
-					break;
-				}
-			}
-
-			return extension;
-		}
 	}
 
 	public class UploadFileType
@@ -181,6 +132,25 @@ namespace Wlq.Service.Utility
 		public const string Logo = "logo";
 		public const string Post = "post";
 		public const string File = "file";
+	}
+
+	public class FileUploadResult
+	{
+		/// <summary>
+		/// success:0, error:1
+		/// </summary>
+		public int Error { get; set; }
+		public string Message { get; set; }
+		public string Url { get; set; }
+		public string Extention { get; set; }
+
+		public FileUploadResult(int error, string message, string url, string extension)
+		{
+			this.Error = error;
+			this.Message = message;
+			this.Url = url;
+			this.Extention = extension;
+		}
 	}
 
 	public enum ThumbnailMode

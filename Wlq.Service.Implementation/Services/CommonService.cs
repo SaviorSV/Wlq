@@ -51,6 +51,52 @@ namespace Wlq.Service.Implementation
 			return new FileUploadResult(0, "上传成功", string.Format("/upload/temp/{0}", fileName), extension);
 		}
 
+		public void CleanTempFile(long userId)
+		{
+			if (Directory.Exists(FileManager.TempFilePhysicalPath))
+			{
+				var tempFiles = Directory.GetFiles(FileManager.TempFilePhysicalPath)
+					.Where(f => Path.GetFileName(f).StartsWith(userId.ToString() + "_"));
+
+				foreach (var file in tempFiles)
+				{
+					File.Delete(file);
+				}
+			}
+		}
+
+		public void SaveLogo(long userId, long groupId)
+		{
+			var realPath = FileManager.RealFilePhysicalPath + string.Format("{0}\\", groupId);
+
+			if (Directory.Exists(FileManager.TempFilePhysicalPath))
+			{
+				var tempFiles = Directory.GetFiles(FileManager.TempFilePhysicalPath, string.Format("{0}_{1}.*", userId, UploadFileType.Logo));
+
+				foreach (var file in tempFiles)
+				{
+					var extension = Path.GetExtension(file);
+
+					if (!Directory.Exists(realPath))
+						Directory.CreateDirectory(realPath);
+
+					try
+					{
+						FileManager.MakeThumbnail(
+							file, Path.Combine(realPath, string.Format("{0}{1}", UploadFileType.Logo, extension)), 78, 75, ThumbnailMode.HeightWidth);
+
+						File.Delete(file);
+					}
+					catch (Exception ex)
+					{
+						LocalLoggingService.Exception(string.Format("SaveLogo Error:{0}", ex.Message));
+					}
+
+					break;
+				}
+			}
+		}
+
 		/// <summary>
 		/// Dispose
 		/// </summary>
