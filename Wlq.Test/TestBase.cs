@@ -17,7 +17,7 @@ namespace Wlq.Test
 
 		private DatabaseContext _databaseContext;
 
-		private DatabaseContext DatabaseContext
+		protected DatabaseContext DatabaseContext
 		{
 			get
 			{

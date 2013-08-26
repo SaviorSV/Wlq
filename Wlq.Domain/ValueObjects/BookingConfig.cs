@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+using Hanger.Common;
 
 namespace Wlq.Domain
 {
@@ -27,14 +27,14 @@ namespace Wlq.Domain
 			}
 		}
 
-		public void AddPeriod(DayOfWeek day, int begin, int end)
+		public void AddPeriod(DayOfWeek day, int begin, int end, int limit)
 		{
 			if (!Enum.IsDefined(typeof(DayOfWeek), day))
 			{
 				throw new Exception("DayOfWeek枚举异常!");
 			}
 
-			var period = new BookingPeriod(begin, end);
+			var period = new BookingPeriod(begin, end, limit);
 
 			if (HasOverlappingPeriods(day, period))
 			{
@@ -42,6 +42,11 @@ namespace Wlq.Domain
 			}
 
 			this._timeConfig[day].Add(period);
+		}
+
+		public string ToJson()
+		{
+			return _timeConfig.ObjectToJson();
 		}
 
 		private bool HasOverlappingPeriods(DayOfWeek day, BookingPeriod period)

@@ -77,7 +77,7 @@ namespace Wlq.Service.Implementation
 			{
 				try
 				{
-					bookingConfig.AddPeriod((DayOfWeek)config.DaysOfWeek, config.BegenTime, config.EndTime);
+					bookingConfig.AddPeriod((DayOfWeek)config.DaysOfWeek, config.BegenTime, config.EndTime, config.LimitNumber);
 				}
 				catch (Exception ex)
 				{

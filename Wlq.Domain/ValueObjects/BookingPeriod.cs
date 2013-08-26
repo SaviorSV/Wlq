@@ -11,7 +11,7 @@ namespace Wlq.Domain
 		public int EndTime { get; set; }
 		public int LimitNumber { get; set; }
 
-		public BookingPeriod(int begin, int end)
+		public BookingPeriod(int begin, int end, int limit)
 		{
 			if (begin.CompareTo(end) >= 0)
 			{
@@ -20,6 +20,7 @@ namespace Wlq.Domain
 
 			this.BeginTime = begin;
 			this.EndTime = end;
+			this.LimitNumber = limit;
 		}
 
 		public bool IsOverlapping(BookingPeriod other)
@@ -30,7 +31,7 @@ namespace Wlq.Domain
 			}
 
 			// other.From >= this.To || other.To <= this.From
-			if ((other.BeginTime.CompareTo(this.EndTime) >= 0 || other.EndTime.CompareTo(this.BeginTime) <= 0))
+			if (other.BeginTime.CompareTo(this.EndTime) >= 0 || other.EndTime.CompareTo(this.BeginTime) <= 0)
 			{
 				return false;
 			}

@@ -65,3 +65,16 @@ function validateFile(obj, type) {
 
 	return true;
 }
+
+function get_day_of_week(daysOfWeek) {
+	switch (daysOfWeek) {
+		case 'Sunday':		return '星期天';
+		case 'Monday':		return '星期一';
+		case 'Tuesday':		return '星期二';
+		case 'Wednesday':	return '星期三';
+		case 'Thursday':	return '星期四';
+		case 'Friday':		return '星期五';
+		case 'Saturday':	return '星期六';
+		default: return '';
+	}
+}

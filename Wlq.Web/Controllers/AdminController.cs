@@ -193,7 +193,7 @@ namespace Wlq.Web.Controllers
 
 		#region Venue
 
-		public ActionResult VenueConfig()
+		public ActionResult VenueManagement()
 		{
 			if (AdminUser == null)
 			{
@@ -203,6 +203,51 @@ namespace Wlq.Web.Controllers
 			var groups = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
 
 			return View(groups);
+		}
+
+		public ActionResult Venue(long venueId, long groupId)
+		{
+			if (AdminUser == null)
+			{
+				return RedirectToAction("Login", "Admin");
+			}
+
+			var group = UserGroupService.GetGroup(groupId);
+
+			if (group == null)
+			{
+				return RedirectToAction("VenueManagement", "Admin");
+			}
+
+			if (venueId > 0)
+			{
+				var venue = PostService.GetVenue(venueId);
+
+				if (venue != null)
+				{
+					if (venue.GroupId == groupId)
+					{
+						return View(venue);
+					}
+					else
+					{
+						return RedirectToAction("VenueManagement", "Admin");
+					}
+				}
+			}
+
+			var venueConfig = PostService.GetVenueConfigs(venueId);
+
+			ViewBag.GroupName = group.Name;
+			ViewBag.VenueConfig = venueConfig.ToJson();
+
+			return View(new VenueInfo { GroupId = groupId });
+		}
+
+		public ActionResult SaveVenue(VenueInfo venue, string config)
+		{
+			//todo: SaveVenue
+			return AlertAndRedirect("保存成功", "/Admin/VenueManagement");
 		}
 
 		#endregion
@@ -272,6 +317,19 @@ namespace Wlq.Web.Controllers
 				.Select(g => new { Id = g.Id, Name = g.Name });
 
 			return Content(groups.ObjectToJson(), "text/json");
+		}
+
+		public ActionResult GetVenuesByGroup(long id)
+		{
+			if (AdminUser == null)
+			{
+				return Content("[]", "text/json");
+			}
+
+			var venues = PostService.GetVenuesByGroup(id)
+				.Select(v => new { Id = v.Id, Name = v.Name });
+
+			return Content(venues.ObjectToJson(), "text/json");
 		}
 
 		[HttpPost]

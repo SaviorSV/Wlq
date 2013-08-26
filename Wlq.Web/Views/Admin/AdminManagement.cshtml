@@ -55,13 +55,13 @@ else
 		<table class="list-tbl">
 			<tbody>
                 <tr>
-					<td>登　录　名</td><td style="text-align:left;"><input id="loginName" type="text" /></td>
+					<td>登　录　名</td><td style="text-align:left;"><input class="input-2" id="loginName" type="text" /></td>
 				</tr>
                 <tr>
-					<td>姓　　　名</td><td style="text-align:left;"><input id="name" type="text" /></td>
+					<td>姓　　　名</td><td style="text-align:left;"><input class="input-2" id="name" type="text" /></td>
 				</tr>
 				<tr>
-					<td>密　　　码</td><td style="text-align:left;"><input id="password" type="password" /></td>
+					<td>密　　　码</td><td style="text-align:left;"><input class="input-2" id="password" type="password" /></td>
 				</tr>
 				<tr><td colspan="2">&nbsp;</td></tr>
 				<tr>
@@ -78,7 +78,9 @@ else
 @section scripts
 {
 	<script type="text/javascript">
-		selected_left_menu(1);
+		$(document).ready(function () {
+			selected_left_menu(1);
+		});
 
 		$("#find_manager").bind("click", function () {
 			bind_manager_list();

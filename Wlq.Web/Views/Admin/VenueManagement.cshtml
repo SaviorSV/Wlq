@@ -2,18 +2,19 @@
 	Layout = "~/Views/Admin/_Layout.cshtml";
 }
 
+
 @model IEnumerable<Wlq.Domain.GroupInfo>
 
-<h4 class="form-tt">组织管理</h4>
+<h4 class="form-tt">场地管理</h4>
 <div class="formbody">
 @if (Model == null || Model.Count() == 0)
 {
-	 <span>非部门管理员，无法创建组织</span>
+	 <span>没有组织信息，无法配置场地</span>
 }
 else
 {
 	 <div class="quanxian-tt">
-		<span>部门：</span>
+		<span>所属部门或组织：</span>
 		<select id="department_selector" class="select-2">
 		@foreach (var group in Model)
 		{
@@ -21,10 +22,10 @@ else
 		}
 		</select>
 
-		<a id="find_group" href="javascript:;" class="btn-3">查询下级组织</a>
-		<a id="add_group" href="javascript:;" class="btn-3">+新增组织</a>
+		<a id="find_venue" href="javascript:;" class="btn-3">查询场地信息</a>
+		<a id="add_venue" href="javascript:;" class="btn-3">+新增场地</a>
 	</div>
-	<div id="group_list" class="quanxian-tt"></div>
+	<div id="venue_list" class="quanxian-tt"></div>
 }
 </div>
 <div class="formfooter"></div>
@@ -33,59 +34,59 @@ else
 {
 	<script type="text/javascript">
 		$(document).ready(function () {
-			selected_left_menu(2);
+			selected_left_menu(4);
 		});
 
-		$("#find_group").bind("click", function () {
-			bind_group_list();
+		$("#find_venue").bind("click", function () {
+			bind_venue_list();
 		});
 
-		$("#add_group").bind("click", function () {
+		$("#add_venue").bind("click", function () {
 			var groupId = $("#department_selector").val();
 
-			window.location = "/Admin/Group?groupId=0&parentGroupId=" + groupId;
+			window.location = "/Admin/Venue?venueId=0&groupId=" + groupId;
 		});
 
-		function bind_group_list() {
+		function bind_venue_list() {
 			var groupId = $("#department_selector").val();
 
 			if (groupId > 0) {
-				$.get("/Admin/GetGroupsByParent/" + groupId, function (data) {
+				$.get("/Admin/GetVenuesByGroup/" + groupId, function (data) {
 					var result = '';
 					if (data.length > 0) {
 						result += "<table class='list-tbl'>";
 						result += "<thead><tr><th>名称</th><th>操作</th></tr></thead><tbody>";
 
 						for (var i in data) {
-							result += "<tr><td>" + data[i].Name + "</td><td><a href='/Admin/Group?groupId=" + data[i].Id + "&parentGroupId=" + groupId + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:remove_group(" + data[i].Id + ");'>删除</a></td></tr>";
+							result += "<tr><td>" + data[i].Name + "</td><td><a href='/Admin/Venue?venueId=" + data[i].Id + "&groupId=" + groupId + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:remove_venue(" + data[i].Id + ");'>删除</a></td></tr>";
 						}
 
 						result += "</tbody></table>";
 					}
 					else {
-						result = "<span>未创建任何组织</span>";
+						result = "<span>未添加任何场地</span>";
 					}
 
-					$("#group_list").html(result);
+					$("#venue_list").html(result);
 				});
 			}
 		}
 
-		function remove_group(groupId) {
+		function remove_venue(venueId) {
 			if (!confirm("确定删除该组织?"))
 				return false;
 
 			$.ajax({
 				type: "POST",
 				dataType: 'json',
-				url: "/Admin/RemoveGroup",
+				url: "/Admin/RemoveVenue",
 				data: {
-					'groupId': groupId
+					'venueId': venueId
 				},
 				success: function (r, status) {
 					if (r.Success) {
 						alert("删除成功");
-						bind_group_list();
+						bind_venue_list();
 					}
 					else {
 						alert("删除失败");
@@ -93,6 +94,5 @@ else
 				}
 			});
 		}
-
 	</script>
 }

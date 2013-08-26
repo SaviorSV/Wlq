@@ -6,11 +6,11 @@
 
 <h4 class="form-tt">组织管理</h4>
 <div class="formbody">
-@using (Html.BeginForm("SaveGroup", "Admin", FormMethod.Post, new { id = "admin_saveGroup_form" }))
+@using (Html.BeginForm("SaveGroup", "Admin", FormMethod.Post, new { id = "admin_save_group_form" }))
 {
 	<ul>
 		<li><label>所属部门：</label><label>@ViewBag.ParentGroupName</label></li>
-		<li><label>组织名称：</label><input id="groupName" name="Name" type="text" value="@Model.Name" /></li>
+		<li><label>组织名称：</label><input class="input-2" id="groupName" name="Name" type="text" value="@Model.Name" /></li>
 		<li>
 			<label>头　　像：</label>
 			<input id="logo_uploader" name="logo_uploader" type="file" onchange="upload_file('logo');" /><br />
@@ -37,7 +37,9 @@
 {
 	<script src="@Url.Content("~/Content/js/ajaxfileupload.js")" type="text/javascript"></script>
 	<script type="text/javascript">
-		selected_left_menu(2);
+		$(document).ready(function () {
+			selected_left_menu(2);
+		});
 
 		$("#save_group").bind("click", function () {
 			if ($.trim($("#groupName").val()) == '') {
@@ -45,7 +47,7 @@
 				return false;
 			}
 			else {
-				$("#admin_saveGroup_form").submit();
+				$("#admin_save_group_form").submit();
 			}
 		});
 	</script>
