@@ -62,7 +62,7 @@ namespace Wlq.Service.Implementation
 			return _databaseContext.SaveChanges() > 0;
 		}
 
-		public bool SaveVenueConfigs(VenueInfo venue, Dictionary<DayOfWeek, List<BookingPeriod>> configs)
+		public void SaveVenueConfigs(VenueInfo venue, Dictionary<DayOfWeek, List<BookingPeriod>> configs)
 		{
 			var venueConfigRepository = new DatabaseRepository<VenueConfigInfo>(_databaseContext);
 			var oldConfig = venueConfigRepository.GetAll().Where(v => v.VenueId == venue.Id).ToList();
@@ -109,8 +109,6 @@ namespace Wlq.Service.Implementation
 			{
 				venueConfigRepository.DeleteById(restOld.Id);
 			}
-
-			return _databaseContext.SaveChanges() > 0;
 		}
 
 		public BookingConfig GetVenueConfigs(long venueId)
