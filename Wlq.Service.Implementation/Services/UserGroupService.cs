@@ -104,7 +104,7 @@ namespace Wlq.Service.Implementation
 				DateTime.Now,
 				DateTime.Now.AddMinutes(30),
 				true,
-				string.Empty,
+				user.Role.ToString(),
 				FormsAuthentication.FormsCookiePath);
 
 			var encTicket = FormsAuthentication.Encrypt(ticket);

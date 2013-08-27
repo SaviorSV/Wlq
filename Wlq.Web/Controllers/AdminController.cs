@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using Hanger.Common;
 using Wlq.Domain;
 using Wlq.Web.Models;
+using Wlq.Web.Fliters;
 
 namespace Wlq.Web.Controllers
 {
@@ -31,25 +32,17 @@ namespace Wlq.Web.Controllers
 
 		#endregion
 
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult Index()
         {
-			if (AdminUser == null)
-			{
-				return RedirectToAction("Login", "Admin");
-			}
-
             return View();
         }
 
 		#region User & Group
 
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult AdminManagement()
 		{
-			if (AdminUser == null)
-			{
-				return RedirectToAction("Login", "Admin");
-			}
-
 			var model = new AdminManagementModel();
 			var isSuperAdmin = AdminUser.Role == (int)RoleLevel.SuperAdmin;
 
@@ -66,26 +59,18 @@ namespace Wlq.Web.Controllers
 			return View(model);
 		}
 
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult GroupManagement()
 		{
-			if (AdminUser == null)
-			{
-				return RedirectToAction("Login", "Admin");
-			}
-
 			var groups = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role)
 				.Where(g => g.ParentGroupId == 0);
 
 			return View(groups);
 		}
 
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult Group(long groupId, long parentGroupId)
 		{
-			if (AdminUser == null)
-			{
-				return RedirectToAction("Login", "Admin");
-			}
-
 			GroupInfo parentGroup = null;
 
 			if (!CheckParentGroupIsLegal(parentGroupId, ref parentGroup))
@@ -117,13 +102,9 @@ namespace Wlq.Web.Controllers
 			return View(new GroupInfo { ParentGroupId = parentGroupId });
 		}
 
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult SaveGroup(GroupInfo groupModel)
 		{
-			if (AdminUser == null)
-			{
-				return RedirectToAction("Login", "Admin");
-			}
-
 			GroupInfo parentGroup = null;
 
 			if (!CheckParentGroupIsLegal(groupModel.ParentGroupId, ref parentGroup))
@@ -187,25 +168,17 @@ namespace Wlq.Web.Controllers
 
 		#region Venue
 
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult VenueManagement()
 		{
-			if (AdminUser == null)
-			{
-				return RedirectToAction("Login", "Admin");
-			}
-
 			var groups = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
 
 			return View(groups);
 		}
 
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult Venue(long venueId, long groupId)
 		{
-			if (AdminUser == null)
-			{
-				return RedirectToAction("Login", "Admin");
-			}
-
 			var group = UserGroupService.GetGroup(groupId);
 
 			if (group == null)
@@ -238,6 +211,7 @@ namespace Wlq.Web.Controllers
 			return View(new VenueInfo { GroupId = groupId });
 		}
 
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult SaveVenue(VenueInfo venue, string config)
 		{
 			//todo: SaveVenue
