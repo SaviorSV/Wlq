@@ -15,5 +15,35 @@ namespace Wlq.Web.Controllers
         {
 			return View();
         }
+
+		public ActionResult Activity()
+		{
+			return View();
+		}
+
+		public ActionResult Course()
+		{
+			return View();
+		}
+
+		public ActionResult Venue()
+		{
+			return View();
+		}
+
+		public ActionResult Health()
+		{
+			return View();
+		}
+
+		public ActionResult Group()
+		{
+			return View();
+		}
+
+		public ActionResult GroupList()
+		{
+			return View();
+		}
     }
 }

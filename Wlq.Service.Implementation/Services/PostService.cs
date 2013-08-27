@@ -109,6 +109,8 @@ namespace Wlq.Service.Implementation
 			{
 				venueConfigRepository.DeleteById(restOld.Id);
 			}
+
+			_databaseContext.SaveChanges();
 		}
 
 		public BookingConfig GetVenueConfigs(long venueId)

@@ -188,6 +188,11 @@ namespace Wlq.Web.Controllers
 				return RedirectToAction("VenueManagement", "Admin");
 			}
 
+			var venueConfig = PostService.GetVenueConfigs(venueId);
+
+			ViewBag.GroupName = group.Name;
+			ViewBag.VenueConfig = venueConfig.ToJson();
+
 			if (venueId > 0)
 			{
 				var venue = PostService.GetVenue(venueId);
@@ -204,11 +209,6 @@ namespace Wlq.Web.Controllers
 					}
 				}
 			}
-
-			var venueConfig = PostService.GetVenueConfigs(venueId);
-
-			ViewBag.GroupName = group.Name;
-			ViewBag.VenueConfig = venueConfig.ToJson();
 
 			return View(new VenueInfo { GroupId = groupId });
 		}
@@ -227,6 +227,7 @@ namespace Wlq.Web.Controllers
 
 			venue.Name = venueModel.Name;
 			venue.Address = venueModel.Address;
+			venue.GroupId = venueModel.GroupId;
 
 			if (venue.Id == 0)
 			{

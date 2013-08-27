@@ -1,10 +1,32 @@
 ﻿using System.Web.Mvc;
 using System.Web.Security;
+using Wlq.Web.Fliters;
+using Wlq.Domain;
 
 namespace Wlq.Web.Controllers
 {
 	public class UserController : BaseController
 	{
+		public ActionResult Header()
+		{
+			var isLogin = CurrentUser != null;
+
+			ViewBag.IsLogin = isLogin;
+
+			if (isLogin)
+				ViewBag.Name = CurrentUser.Name;
+			else
+				ViewBag.Name = string.Empty;
+
+			return PartialView("_Header");
+		}
+
+		[LoginAuthentication(RoleLevel.Normal, "Home", "INdex")]
+		public ActionResult Info()
+		{
+			return View();
+		}
+
 		[HttpPost]
 		public ActionResult Login(string loginName, string password)
 		{

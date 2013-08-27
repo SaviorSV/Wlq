@@ -13,11 +13,6 @@ namespace Wlq.Domain
 
 		public BookingPeriod(int begin, int end, int limit)
 		{
-			if (begin.CompareTo(end) >= 0)
-			{
-				throw new Exception("起止时间异常!");
-			}
-
 			this.BeginTime = begin;
 			this.EndTime = end;
 			this.LimitNumber = limit;

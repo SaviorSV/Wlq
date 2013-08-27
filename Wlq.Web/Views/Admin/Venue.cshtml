@@ -118,15 +118,15 @@
 			var daysOfWeek = $("#days_of_week").val();
 			var beginTime = $("#begin_time").val() * 100;
 			var endTime = $("#end_time").val() * 100;
-			var limit = $("#limit_number").val();
+			var limit = parseInt($("#limit_number").val());
 
 			if (beginTime >= endTime) {
 				alert("结束时间须大于开始时间");
 				return false;
 			}
 
-			if(limit <= 0) {
-				alert("限制人数须大于0");
+			if(isNaN(limit) || limit <= 0) {
+				alert("限制人数须为大于0整数");
 				return false;
 			}
 			
@@ -155,7 +155,7 @@
 					var end = venueConfig[week[i]][j].EndTime / 100;
 					var limit = venueConfig[week[i]][j].LimitNumber;
 
-					periods.push(begin + ":00 - " + end + ": 00 (人数：" + limit + ") <a href='javascript:delete_config(\"" + week[i] + "\"," + begin + "," + end + ")'>删除</a>");
+					periods.push(begin + ":00 - " + end + ":00 (人数：" + limit + ") <a href='javascript:delete_config(\"" + week[i] + "\"," + begin + "," + end + ")'>删除</a>");
 				}
 
 				ul_configs.append("<li>" + get_day_of_week(week[i]) + ": " + periods.join(', ') + "</li>");

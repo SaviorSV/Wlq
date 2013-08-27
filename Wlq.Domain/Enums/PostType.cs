@@ -9,6 +9,8 @@ namespace Wlq.Domain
 
 		Course = 2,
 
-		Booking = 3
+		Venue = 3,
+
+		Health = 4
 	}
 }
