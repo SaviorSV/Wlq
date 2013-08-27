@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Security;
-using Wlq.Domain;
-
 
 namespace Wlq.Web.Controllers
 {
@@ -32,5 +27,26 @@ namespace Wlq.Web.Controllers
 			return RedirectToAction("Index", "Home");
 		}
 
+		[HttpPost]
+		public ActionResult LoginForAdmin(string loginName, string password)
+		{
+			var success = UserGroupService.Login(loginName, password, true);
+
+			if (success)
+			{
+				return RedirectToAction("Index", "Admin");
+			}
+			else
+			{
+				return AlertAndRedirect("用户名或密码错误", "/Admin/Login");
+			}
+		}
+
+		public ActionResult SignOutForAdmin()
+		{
+			FormsAuthentication.SignOut();
+
+			return RedirectToAction("Login", "Admin");
+		}
 	}
 }

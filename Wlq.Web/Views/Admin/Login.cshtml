@@ -9,7 +9,7 @@
 	<div class="login">
 		<h2>管理后台</h2>
 		<h3>请输入您的账号密码进入后台</h3>
-	@using (Html.BeginForm("Login", "Admin", FormMethod.Post, new { id = "admin_login_form" }))
+	@using (Html.BeginForm("LoginForAdmin", "User", FormMethod.Post, new { id = "admin_login_form" }))
 	{
 		<ul>
 			<li>

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
 
-using Wlq.Domain;
-using Wlq.Service;
-using System.Web.Security;
 using Hanger.Common;
+using Wlq.Domain;
 using Wlq.Web.Models;
-using Wlq.Service.Utility;
 
 namespace Wlq.Web.Controllers
 {
@@ -252,33 +246,11 @@ namespace Wlq.Web.Controllers
 
 		#endregion
 
-		#region Login
+		#region User
 
 		public ActionResult Login()
 		{
 			return View();
-		}
-
-		[HttpPost]
-		public ActionResult Login(string loginName, string password)
-		{
-			var success = UserGroupService.Login(loginName, password, true);
-
-			if (success)
-			{
-				return RedirectToAction("Index", "Admin");
-			}
-			else
-			{
-				return AlertAndRedirect("用户名或密码错误", "/Admin/Login");
-			}
-		}
-
-		public ActionResult SignOut()
-		{
-			FormsAuthentication.SignOut();
-
-			return RedirectToAction("Login", "Admin");
 		}
 
 		public ActionResult Header()
