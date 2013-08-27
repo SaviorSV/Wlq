@@ -59,7 +59,7 @@ namespace Wlq.Web.Controllers
 
 		#endregion
 
-		#region Loggin User
+		#region Login User
 
 		private long _currentUserId;
 

@@ -82,7 +82,7 @@ namespace Wlq.Web.Controllers
 
 			ViewBag.ParentGroupName = parentGroup.Name;
 
-			CommonService.CleanTempFile(AdminUser.Id);
+			CommonService.CleanTempFile(CurrentUserId);
 
 			if (groupId > 0)
 			{
@@ -143,7 +143,7 @@ namespace Wlq.Web.Controllers
 				}
 			}
 
-			CommonService.SaveLogo(AdminUser.Id, group.Id);
+			CommonService.SaveLogo(CurrentUserId, group.Id);
 
 			return AlertAndRedirect("保存成功", "/Admin/GroupManagement");
 		}
