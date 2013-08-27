@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 using Hanger.Common;
 using Wlq.Domain;
-using Wlq.Web.Models;
 using Wlq.Web.Fliters;
+using Wlq.Web.Models;
 
 namespace Wlq.Web.Controllers
 {
@@ -212,9 +214,46 @@ namespace Wlq.Web.Controllers
 		}
 
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
-		public ActionResult SaveVenue(VenueInfo venue, string config)
+		public ActionResult SaveVenue(VenueInfo venueModel, string config)
 		{
-			//todo: SaveVenue
+			var venue = venueModel.Id > 0
+				? PostService.GetVenue(venueModel.Id)
+				: new VenueInfo();
+
+			if (venue == null)
+			{
+				return AlertAndRedirect("保存失败(场地不存在)", "/Admin/VenueManagement");
+			}
+
+			venue.Name = venueModel.Name;
+			venue.Address = venueModel.Address;
+
+			if (venue.Id == 0)
+			{
+				if (!PostService.AddVenue(venue))
+				{
+					return AlertAndRedirect("保存失败(添加场地失败)", "/Admin/VenueManagement");
+				}
+			}
+			else
+			{
+				if (!PostService.UpdateVenue(venue))
+				{
+					return AlertAndRedirect("保存失败(更新场地失败)", "/Admin/VenueManagement");
+				}
+			}
+
+			try
+			{
+				var venueConfig = config.JsonToObject<Dictionary<DayOfWeek, List<BookingPeriod>>>();
+
+				PostService.SaveVenueConfigs(venue, venueConfig);
+			}
+			catch (Exception ex)
+			{
+				LocalLoggingService.Exception(string.Format("/Admin/SaveVenue error: {0}", ex.Message));
+			}
+
 			return AlertAndRedirect("保存成功", "/Admin/VenueManagement");
 		}
 

@@ -15,7 +15,7 @@ namespace Wlq.Service
 		bool UpdateVenue(VenueInfo venue);
 		bool DeleteVenue(long venueId);
 
-		bool SaveVenueConfigs(long venueId, BookingConfig configs);
+		bool SaveVenueConfigs(VenueInfo venue, Dictionary<DayOfWeek, List<BookingPeriod>> configs);
 		BookingConfig GetVenueConfigs(long venueId);
 
 		#endregion

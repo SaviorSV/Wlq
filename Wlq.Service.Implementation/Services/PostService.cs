@@ -62,15 +62,66 @@ namespace Wlq.Service.Implementation
 			return _databaseContext.SaveChanges() > 0;
 		}
 
-		public bool SaveVenueConfigs(long venueId, BookingConfig configs)
+		public bool SaveVenueConfigs(VenueInfo venue, Dictionary<DayOfWeek, List<BookingPeriod>> configs)
 		{
-			//todo: SaveVenueConfigs
-			throw new NotImplementedException();
+			if (venue == null || configs == null)
+			{
+				return false;
+			}
+
+			var venueConfigRepository = new DatabaseRepository<VenueConfigInfo>(_databaseContext);
+			var oldConfig = venueConfigRepository.GetAll().Where(v => v.VenueId == venue.Id).ToList();
+
+			//traverse sunday to saturday
+			foreach (var day in configs.Keys)
+			{
+				if (configs[day] != null)
+				{
+					//visit each period in the day
+					foreach (var period in configs[day])
+					{
+						var old = oldConfig.FirstOrDefault(c =>
+							c.DaysOfWeek == (int)day &&
+							c.BegenTime == period.BeginTime &&
+							c.EndTime == period.EndTime &&
+							c.LimitNumber == period.LimitNumber);
+
+						//if the same period is not in the database, insert item
+						if (old == null)
+						{
+							var newConfig = new VenueConfigInfo
+							{
+								VenueId = venue.Id,
+								DaysOfWeek = (int)day,
+								BegenTime = period.BeginTime,
+								EndTime = period.EndTime,
+								LimitNumber = period.LimitNumber
+							};
+
+							venueConfigRepository.Add(newConfig);
+						}
+						//remove the existing item from list
+						else
+						{
+							oldConfig.Remove(old);
+						}
+					}
+				}
+			}
+
+			//delete the rest items in list from database
+			foreach (var restOld in oldConfig)
+			{
+				venueConfigRepository.DeleteById(restOld.Id);
+			}
+
+			return _databaseContext.SaveChanges() > 0;
 		}
 
 		public BookingConfig GetVenueConfigs(long venueId)
 		{
-			var configs = _databaseContext.VenueConfigs.Where(v => v.VenueId == venueId);
+			var venueConfigRepository = new DatabaseRepository<VenueConfigInfo>(_databaseContext);
+			var configs = venueConfigRepository.GetAll().Where(v => v.VenueId == venueId);
 			var bookingConfig = new BookingConfig();
 
 			foreach (var config in configs)
