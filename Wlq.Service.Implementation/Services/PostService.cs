@@ -64,11 +64,6 @@ namespace Wlq.Service.Implementation
 
 		public bool SaveVenueConfigs(VenueInfo venue, Dictionary<DayOfWeek, List<BookingPeriod>> configs)
 		{
-			if (venue == null || configs == null)
-			{
-				return false;
-			}
-
 			var venueConfigRepository = new DatabaseRepository<VenueConfigInfo>(_databaseContext);
 			var oldConfig = venueConfigRepository.GetAll().Where(v => v.VenueId == venue.Id).ToList();
 

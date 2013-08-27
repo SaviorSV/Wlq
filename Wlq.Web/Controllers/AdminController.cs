@@ -243,18 +243,23 @@ namespace Wlq.Web.Controllers
 				}
 			}
 
+			var saveConfigsResult = false;
+
 			try
 			{
 				var venueConfig = config.JsonToObject<Dictionary<DayOfWeek, List<BookingPeriod>>>();
 
-				PostService.SaveVenueConfigs(venue, venueConfig);
+				if (venueConfig != null)
+				{
+					saveConfigsResult = PostService.SaveVenueConfigs(venue, venueConfig);
+				}
 			}
 			catch (Exception ex)
 			{
 				LocalLoggingService.Exception(string.Format("/Admin/SaveVenue error: {0}", ex.Message));
 			}
 
-			return AlertAndRedirect("保存成功", "/Admin/VenueManagement");
+			return AlertAndRedirect(string.Format("场地信息保存成功{0}", saveConfigsResult ? string.Empty : "(配置保存失败)"), "/Admin/VenueManagement");
 		}
 
 		#endregion
