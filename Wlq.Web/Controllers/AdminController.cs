@@ -263,6 +263,25 @@ namespace Wlq.Web.Controllers
 
 		#endregion
 
+		#region Post
+
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
+		public ActionResult PostManagement()
+		{
+			var groups = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
+
+			return View(groups);
+		}
+
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
+		public ActionResult Post(long postId, long groupId)
+		{
+			//todo:
+			return View();
+		}
+
+		#endregion
+
 		#region User
 
 		public ActionResult Login()
@@ -321,6 +340,27 @@ namespace Wlq.Web.Controllers
 			return Content(venues.ObjectToJson(), "text/json");
 		}
 
+		public ActionResult GetPostsByGroup(long id)
+		{
+			if (AdminUser == null)
+			{
+				return Content("[]", "text/json");
+			}
+
+			var totalNumber = 0;
+			var posts = PostService.GetPostsByGroup(id, false, 0, 0, out totalNumber)
+				.Select(p => new 
+				{ 
+					Id = p.Id, 
+					Title = p.Title,
+					PostType = CommonService.GetPostTypeName((PostType)p.PostType),
+					Publisher = p.Publisher,
+					LastModified = p.LastModified.ToString("yyyy-MM-dd HH:mm:ss") 
+				});
+
+			return Content(posts.ObjectToJson(), "text/json");
+		}
+
 		[HttpPost]
 		public ActionResult BindManager(string loginName, string name, string password, long groupId)
 		{
@@ -375,6 +415,32 @@ namespace Wlq.Web.Controllers
 			if (AdminUser != null)
 			{
 				success = UserGroupService.DeleteGroup(groupId);
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
+		[HttpPost]
+		public ActionResult RemoveVenue(long venueId)
+		{
+			var success = false;
+
+			if (AdminUser != null)
+			{
+				success = PostService.DeleteVenue(venueId);
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
+		[HttpPost]
+		public ActionResult RemovePost(long postId)
+		{
+			var success = false;
+
+			if (AdminUser != null)
+			{
+				success = PostService.DeletePost(postId);
 			}
 
 			return Content(new { Success = success }.ObjectToJson(), "text/json");

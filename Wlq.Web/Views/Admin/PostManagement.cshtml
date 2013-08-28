@@ -1,0 +1,98 @@
+﻿@{
+	Layout = "~/Views/Admin/_Layout.cshtml";
+}
+
+
+@model IEnumerable<Wlq.Domain.GroupInfo>
+
+<h4 class="form-tt">发布管理</h4>
+<div class="formbody">
+@if (Model == null || Model.Count() == 0)
+{
+	 <span>没有组织信息，无法发布信息</span>
+}
+else
+{
+	 <div class="quanxian-tt">
+		<span>所属部门或组织：</span>
+		<select id="department_selector" class="select-2">
+		@foreach (var group in Model)
+		{
+			<option value="@group.Id">@group.Name</option>
+		}
+		</select>
+
+		<a id="find_post" href="javascript:;" class="btn-3">查询发布信息</a>
+		<a id="add_post" href="javascript:;" class="btn-3">+新的发布</a>
+	</div>
+	<div id="post_list" class="quanxian-tt"></div>
+}
+</div>
+<div class="formfooter"></div>
+
+@section scripts
+{
+	<script type="text/javascript">
+		$(document).ready(function () {
+			selected_left_menu(3);
+		});
+
+		$("#find_post").bind("click", function () {
+			bind_post_list();
+		});
+
+		$("#add_post").bind("click", function () {
+			var groupId = $("#department_selector").val();
+
+			window.location = "/Admin/Post?postId=0&groupId=" + groupId;
+		});
+
+		function bind_post_list() {
+			var groupId = $("#department_selector").val();
+
+			if (groupId > 0) {
+				$.get("/Admin/GetPostsByGroup/" + groupId, function (data) {
+					var result = '';
+					if (data.length > 0) {
+						result += "<table class='list-tbl'>";
+						result += "<thead><tr><th>标题</th><th>发布人</th><th>最后更新时间</th><th>操作</th></tr></thead><tbody>";
+
+						for (var i in data) {
+							result += "<tr><td><a href='#'>" + data[i].Title + "</a></td><td>" + data[i].Publisher + "</td><td>" + data[i].LastModified + "</td><td><a href='/Admin/Post?postId=" + data[i].Id + "&groupId=" + groupId + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_post(" + data[i].Id + ");'>删除</a></td></tr>";
+						}
+
+						result += "</tbody></table>";
+					}
+					else {
+						result = "<span>没有发布信息</span>";
+					}
+
+					$("#post_list").html(result);
+				});
+			}
+		}
+
+		function remove_post(postId) {
+			if (!confirm("确定删除该条信息?"))
+				return false;
+
+			$.ajax({
+				type: "POST",
+				dataType: 'json',
+				url: "/Admin/RemovePost",
+				data: {
+					'postId': postId
+				},
+				success: function (r, status) {
+					if (r.Success) {
+						alert("删除成功");
+						bind_post_list();
+					}
+					else {
+						alert("删除失败");
+					}
+				}
+			});
+		}
+	</script>
+}

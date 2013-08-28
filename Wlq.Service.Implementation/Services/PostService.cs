@@ -145,7 +145,7 @@ namespace Wlq.Service.Implementation
 			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
 
 			return postRepository.GetAll()
-				.Where(p => (type == PostType.All || p.GroupType == (int)type)
+				.Where(p => (type == PostType.All || p.PostType == (int)type)
 					&& (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
 				.OrderByDescending(p => p.LastModified)
 				.Paging(pageIndex, pageSize, out totalNumber);
