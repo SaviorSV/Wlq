@@ -137,12 +137,72 @@ namespace Wlq.Service.Implementation
 
 		#endregion
 
+		#region post
+
+		public IEnumerable<PostInfo> GetPostsByType(PostType type, bool withinTime, int pageIndex, int pageSize, out int totalNumber)
+		{
+			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
+
+			return postRepository.GetAll()
+				.Where(p => (type == PostType.All || p.GroupType == (int)type)
+					&& (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
+				.OrderByDescending(p => p.LastModified)
+				.Paging(pageIndex, pageSize, out totalNumber);
+		}
+
+		public IEnumerable<PostInfo> GetPostsByGroup(long groupId, bool withinTime, int pageIndex, int pageSize, out int totalNumber)
+		{
+			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
+
+			return postRepository.GetAll()
+				.Where(p => p.GroupId == groupId
+					&& (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
+				.OrderByDescending(p => p.LastModified)
+				.Paging(pageIndex, pageSize, out totalNumber);
+		}
+
+		public PostInfo GetPost(long postId)
+		{
+			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
+
+			return postRepository.GetById(postId);
+		}
+
+		public bool AddPost(PostInfo post)
+		{
+			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
+
+			postRepository.Add(post);
+
+			return _databaseContext.SaveChanges() > 0;
+		}
+
+		public bool UpdatePost(PostInfo post)
+		{
+			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
+
+			postRepository.Update(post);
+
+			return _databaseContext.SaveChanges() > 0;
+		}
+
+		public bool DeletePost(long postId)
+		{
+			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
+
+			postRepository.DeleteById(postId);
+
+			return _databaseContext.SaveChanges() > 0;
+		}
+
+		#endregion
+
 		/// <summary>
 		/// Dispose
 		/// </summary>
 		protected override void InternalDispose()
 		{
-			
+
 		}
 	}
 }

@@ -19,5 +19,17 @@ namespace Wlq.Service
 		BookingConfig GetVenueConfigs(long venueId);
 
 		#endregion
+
+		#region Post
+
+		PostInfo GetPost(long postId);
+		bool AddPost(PostInfo post);
+		bool UpdatePost(PostInfo post);
+		bool DeletePost(long postId);
+
+		IEnumerable<PostInfo> GetPostsByType(PostType type, bool withinTime, int pageIndex, int pageSize, out int totalNumber);
+		IEnumerable<PostInfo> GetPostsByGroup(long groupId, bool withinTime, int pageIndex, int pageSize, out int totalNumber);
+
+		#endregion
 	}
 }

@@ -8,6 +8,7 @@ namespace Wlq.Domain
 		public string Content { get; set; }
 		public string Image { get; set; }
 		public long GroupId { get; set; }
+		//public string Publisher { get; set; }
 		public int GroupType { get; set; }
 		public DateTime BeginDate { get; set; }
 		public DateTime EndDate { get; set; }
