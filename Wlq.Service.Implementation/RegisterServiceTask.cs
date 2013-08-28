@@ -18,8 +18,8 @@ namespace Wlq.Service.Implementation
 		protected override void InternalDispose()
 		{
 			container.Resolve<ICommonService>().Dispose();
-			container.Resolve<IPostService>().Dispose();
-			container.Resolve<IUserGroupService>().Dispose();
+			//container.Resolve<IPostService>().Dispose();
+			//container.Resolve<IUserGroupService>().Dispose();
 		}
 	}
 }

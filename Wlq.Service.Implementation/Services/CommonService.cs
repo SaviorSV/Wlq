@@ -100,9 +100,6 @@ namespace Wlq.Service.Implementation
 		/// <summary>
 		/// Dispose
 		/// </summary>
-		protected override void InternalDispose()
-		{
-			
-		}
+		protected override void InternalDispose() { }
 	}
 }

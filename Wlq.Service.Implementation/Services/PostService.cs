@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Hanger.Common;
+using Microsoft.Practices.Unity;
 using Wlq.Domain;
 using Wlq.Persistence;
-using Wlq.Service;
 
 namespace Wlq.Service.Implementation
 {
@@ -13,6 +13,7 @@ namespace Wlq.Service.Implementation
 	{
 		private readonly DatabaseContext _databaseContext;
 
+		[InjectionConstructor]
 		public PostService(DatabaseContext databaseContext)
 		{
 			_databaseContext = databaseContext;
@@ -200,9 +201,6 @@ namespace Wlq.Service.Implementation
 		/// <summary>
 		/// Dispose
 		/// </summary>
-		protected override void InternalDispose()
-		{
-
-		}
+		protected override void InternalDispose() { }
 	}
 }

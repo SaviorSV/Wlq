@@ -34,8 +34,7 @@ namespace Wlq.Web.Fliters
 				{
 					isLogin = true;
 
-					var cookieName = FormsAuthentication.FormsCookieName;
-					var authCookie = HttpContext.Current.Request.Cookies[cookieName];
+					var authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
 
 					if (authCookie != null)
 					{

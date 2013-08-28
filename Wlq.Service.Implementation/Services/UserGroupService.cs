@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Security;
 
 using Hanger.Common;
+using Microsoft.Practices.Unity;
 using Wlq.Domain;
 using Wlq.Persistence;
 
@@ -14,6 +15,7 @@ namespace Wlq.Service.Implementation
 	{
 		private readonly DatabaseContext _databaseContext;
 
+		[InjectionConstructor]
 		public UserGroupService(DatabaseContext databaseContext)
 		{
 			_databaseContext = databaseContext;
@@ -319,9 +321,6 @@ namespace Wlq.Service.Implementation
 		/// <summary>
 		/// Dispose
 		/// </summary>
-		protected override void InternalDispose()
-		{
-			
-		}
+		protected override void InternalDispose() { }
 	}
 }
