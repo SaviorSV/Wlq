@@ -22,6 +22,8 @@ namespace Wlq.Service
 
 		#region Post
 
+		string GetPostTypeName(PostType type);
+
 		PostInfo GetPost(long postId);
 		bool AddPost(PostInfo post);
 		bool UpdatePost(PostInfo post);
@@ -29,6 +31,14 @@ namespace Wlq.Service
 
 		IEnumerable<PostInfo> GetPostsByType(PostType type, bool withinTime, int pageIndex, int pageSize, out int totalNumber);
 		IEnumerable<PostInfo> GetPostsByGroup(long groupId, bool withinTime, int pageIndex, int pageSize, out int totalNumber);
+
+		#endregion
+
+		#region booking
+
+		List<BookingSchedule> GetBookingSchedules(long postId, int days);
+		bool Booking(BookingInfo booking, out string message);
+		bool CancelBooking(long userId, long postId);
 
 		#endregion
 	}

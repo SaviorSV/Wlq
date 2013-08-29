@@ -11,7 +11,5 @@ namespace Wlq.Service
 		FileUploadResult UploadTempFile(long userId, string fileType);
 		void CleanTempFile(long userId);
 		void SaveLogo(long userId, long groupId);
-
-		string GetPostTypeName(PostType type);
 	}
 }

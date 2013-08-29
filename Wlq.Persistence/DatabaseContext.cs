@@ -11,7 +11,7 @@ namespace Wlq.Persistence
 		public DbSet<PostInfo> Posts { get; set; }
 		public DbSet<VenueInfo> Venues { get; set; }
 		public DbSet<VenueConfigInfo> VenueConfigs { get; set; }
-		public DbSet<VenueBookingInfo> VenueBookings { get; set; }
+		public DbSet<BookingInfo> Bookings { get; set; }
 		public DbSet<UserInfo> Users { get; set; }
 		public DbSet<UserGroupInfo> UserGroups { get; set; }
 		public DbSet<UserPostInfo> UserPosts { get; set; }

@@ -353,7 +353,7 @@ namespace Wlq.Web.Controllers
 				{ 
 					Id = p.Id, 
 					Title = p.Title,
-					PostType = CommonService.GetPostTypeName((PostType)p.PostType),
+					PostType = PostService.GetPostTypeName((PostType)p.PostType),
 					Publisher = p.Publisher,
 					LastModified = p.LastModified.ToString("yyyy-MM-dd HH:mm:ss") 
 				});

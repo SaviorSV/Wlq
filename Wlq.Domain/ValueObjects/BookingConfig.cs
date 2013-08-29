@@ -27,14 +27,14 @@ namespace Wlq.Domain
 			}
 		}
 
-		public void AddPeriod(DayOfWeek day, int begin, int end, int limit)
+		public void AddPeriod(DayOfWeek day, int begin, int end, int limit, long venueConfigId)
 		{
 			if (!Enum.IsDefined(typeof(DayOfWeek), day))
 			{
 				throw new Exception("DayOfWeek枚举异常!");
 			}
 
-			var period = new BookingPeriod(begin, end, limit);
+			var period = new BookingPeriod(begin, end, limit, venueConfigId);
 
 			if (HasOverlappingPeriods(day, period))
 			{

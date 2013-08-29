@@ -97,25 +97,6 @@ namespace Wlq.Service.Implementation
 			}
 		}
 
-		public string GetPostTypeName(PostType type)
-		{
-			switch (type)
-			{
-				case PostType.All:
-					return "全部";
-				case PostType.Activity:
-					return "活动";
-				case PostType.Course:
-					return "课程";
-				case PostType.Venue:
-					return "场地";
-				case PostType.Health:
-					return "健康";
-				default:
-					return "其他";
-			}
-		}
-
 		/// <summary>
 		/// Dispose
 		/// </summary>

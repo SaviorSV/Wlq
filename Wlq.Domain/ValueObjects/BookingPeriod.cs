@@ -10,12 +10,15 @@ namespace Wlq.Domain
 		public int BeginTime { get; set; }
 		public int EndTime { get; set; }
 		public int LimitNumber { get; set; }
+		public int BookingNumber { get; set; }
+		public long VenueConfigId { get; set; }
 
-		public BookingPeriod(int begin, int end, int limit)
+		public BookingPeriod(int begin, int end, int limit, long venueConfigId)
 		{
 			this.BeginTime = begin;
 			this.EndTime = end;
 			this.LimitNumber = limit;
+			this.VenueConfigId = venueConfigId;
 		}
 
 		public bool IsOverlapping(BookingPeriod other)

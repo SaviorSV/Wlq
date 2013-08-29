@@ -13,6 +13,7 @@ namespace Wlq.Domain
 		public DateTime BeginDate { get; set; }
 		public DateTime EndDate { get; set; }
 		public long VenueId { get; set; }
+		public int BookingNumber { get; set; }
 
 		public PostInfo()
 		{
