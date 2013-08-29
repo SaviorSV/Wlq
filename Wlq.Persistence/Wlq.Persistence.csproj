@@ -57,6 +57,10 @@
     <Compile Include="Migrations\201308281238270_UpdatePostInfo.Designer.cs">
       <DependentUpon>201308281238270_UpdatePostInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201308291203598_UpdateEntities.cs" />
+    <Compile Include="Migrations\201308291203598_UpdateEntities.Designer.cs">
+      <DependentUpon>201308291203598_UpdateEntities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -75,6 +79,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201308281238270_UpdatePostInfo.resx">
       <DependentUpon>201308281238270_UpdatePostInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201308291203598_UpdateEntities.resx">
+      <DependentUpon>201308291203598_UpdateEntities.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
