@@ -55,10 +55,10 @@ else
 					var result = '';
 					if (data.length > 0) {
 						result += "<table class='list-tbl'>";
-						result += "<thead><tr><th>标题</th><th>发布人</th><th>最后更新时间</th><th>操作</th></tr></thead><tbody>";
+						result += "<thead><tr><th>标题</th><th>发布类型</th><th>发布人</th><th>最后更新时间</th><th>操作</th></tr></thead><tbody>";
 
 						for (var i in data) {
-							result += "<tr><td><a href='#'>" + data[i].Title + "</a></td><td>" + data[i].Publisher + "</td><td>" + data[i].LastModified + "</td><td><a href='/Admin/Post?postId=" + data[i].Id + "&groupId=" + groupId + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_post(" + data[i].Id + ");'>删除</a></td></tr>";
+							result += "<tr><td><a href='#'>" + data[i].Title + "</a></td><td>" + data[i].PostType + "</td><td>" + data[i].Publisher + "</td><td>" + data[i].LastModified + "</td><td><a href='/Admin/Post?postId=" + data[i].Id + "&groupId=" + groupId + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_post(" + data[i].Id + ");'>删除</a></td></tr>";
 						}
 
 						result += "</tbody></table>";

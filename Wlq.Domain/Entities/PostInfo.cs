@@ -13,6 +13,7 @@ namespace Wlq.Domain
 		public DateTime EndDate { get; set; }
 		public string Location { get; set; }
 		public string RelatedPlace { get; set; }
+		public string Phone { get; set; }
 		public decimal Fee { get; set; }
 		public long VenueId { get; set; }
 		public int LimitNumber { get; set; }
@@ -24,8 +25,11 @@ namespace Wlq.Domain
 			Title = string.Empty;
 			Content = string.Empty;
 			Image = string.Empty;
+			BeginDate = DateTime.Now.Date;
+			EndDate = DateTime.Now.Date;
 			Location = string.Empty;
 			RelatedPlace = string.Empty;
+			Phone = string.Empty;
 			Publisher = string.Empty;
 		}
 	}

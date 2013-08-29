@@ -242,6 +242,12 @@ namespace Wlq.Service.Implementation
 				return false;
 			}
 
+			if (post.BookingNumber >= post.LimitNumber)
+			{
+				message = "预订失败(预定人数已满)";
+				return false;
+			}
+
 			if (booking.VenueConfigId > 0)
 			{
 				var venueConfigRepository = new DatabaseRepository<VenueConfigInfo>(_databaseContext);

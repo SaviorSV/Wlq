@@ -82,28 +82,21 @@ namespace Wlq.Web.Controllers
 
 			ViewBag.ParentGroupName = parentGroup.Name;
 
-			CommonService.CleanTempFile(CurrentUserId);
+			var group = groupId > 0
+				? UserGroupService.GetGroup(groupId)
+				: new GroupInfo { ParentGroupId = parentGroupId };
 
-			if (groupId > 0)
+			if (group == null || group.ParentGroupId != parentGroupId)
 			{
-				var group = UserGroupService.GetGroup(groupId);
-
-				if (group != null)
-				{
-					if (group.ParentGroupId == parentGroupId)
-					{
-						return View(group);
-					}
-					else
-					{
-						return RedirectToAction("GroupManagement", "Admin");
-					}
-				}
+				return RedirectToAction("GroupManagement", "Admin");
 			}
 
-			return View(new GroupInfo { ParentGroupId = parentGroupId });
+			CommonService.CleanTempFile(CurrentUserId);
+
+			return View(group);
 		}
 
+		[HttpPost]
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult SaveGroup(GroupInfo groupModel)
 		{
@@ -213,6 +206,7 @@ namespace Wlq.Web.Controllers
 			return View(new VenueInfo { GroupId = groupId });
 		}
 
+		[HttpPost]
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult SaveVenue(VenueInfo venueModel, string config)
 		{
@@ -276,10 +270,79 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult Post(long postId, long groupId)
 		{
-			//todo:
-			return View();
+			var group = UserGroupService.GetGroup(groupId);
+
+			if (group == null)
+			{
+				return RedirectToAction("PostManagement", "Admin");
+			}
+
+			var venues = PostService.GetVenuesByGroup(groupId);
+
+			ViewBag.VenueList = venues;
+			ViewBag.GroupName = group.Name;
+
+			var post = postId > 0
+				? PostService.GetPost(postId)
+				: new PostInfo { GroupId = groupId };
+
+			if (post == null || post.GroupId != groupId)
+			{
+				return RedirectToAction("PostManagement", "Admin");
+			}
+
+			CommonService.CleanTempFile(CurrentUserId);
+
+			return View(post);
 		}
 
+		[HttpPost]
+		[ValidateInput(false)]
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
+		public ActionResult SavePost(PostInfo postModel)
+		{
+			var post = postModel.Id > 0
+				? PostService.GetPost(postModel.Id)
+				: new PostInfo();
+
+			if (post == null)
+			{
+				return AlertAndRedirect("保存失败(信息不存在)", "/Admin/PostManagement");
+			}
+
+			post.GroupId = postModel.GroupId;
+			post.PostType = postModel.PostType;
+			post.Title = postModel.Title;
+			post.Content = postModel.Content;
+			post.BeginDate = postModel.BeginDate;
+			post.EndDate = postModel.EndDate;
+			post.Phone = postModel.Phone;
+			post.LimitNumber = postModel.LimitNumber;
+			post.Fee = postModel.Fee;
+			post.Location = postModel.Location;
+			post.RelatedPlace = postModel.RelatedPlace;
+			post.VenueId = post.PostType == (int)PostType.Venue ? postModel.VenueId : 0;
+			post.Publisher = AdminUser.Name;
+
+			//todo: image
+
+			if (post.Id == 0)
+			{
+				if (!PostService.AddPost(post))
+				{
+					return AlertAndRedirect("保存失败(添加发布信息失败)", "/Admin/PostManagement");
+				}
+			}
+			else
+			{
+				if (!PostService.UpdatePost(post))
+				{
+					return AlertAndRedirect("保存失败(更新发布信息失败)", "/Admin/PostManagement");
+				}
+			}
+
+			return AlertAndRedirect("保存成功", "/Admin/PostManagement");
+		}
 		#endregion
 
 		#region User

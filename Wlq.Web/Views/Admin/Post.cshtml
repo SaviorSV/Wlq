@@ -2,18 +2,142 @@
 	Layout = "~/Views/Admin/_Layout.cshtml";
 }
 
+@using Hanger.Common;
+@using Wlq.Domain;
+@using Wlq.Web.Extensions;
+
+@model PostInfo
+
 <h4 class="form-tt">发布管理</h4>
 <div class="formbody">
+@using (Html.BeginForm("SavePost", "Admin", FormMethod.Post, new { id = "admin_save_post_form" }))
+{
+	<ul>
+		<li>
+			<label>所属部门或组织：@ViewBag.GroupName</label>
+		</li>
+        <li>
+			<label>发布类型：</label>
+			<select id="post_type_selector" name="PostType" class="select-1">
+				<option value="1" @Html.IsSelected(Model.PostType == 1)>活动</option>
+				<option value="2" @Html.IsSelected(Model.PostType == 2)>课程</option>
+				<option value="3" @Html.IsSelected(Model.PostType == 3)>场地</option>
+			</select>
+			<label id="venue_selector_title">场地：</label>
+			<select id="venue_selector" name="VenueId" class="select-1">
+	@{
+		var venues = ViewBag.VenueList as IEnumerable<VenueInfo>;
+		if (venues.Count() > 0)
+		{
+			foreach (var venue in ViewBag.VenueList as IEnumerable<VenueInfo>)
+			{
+				<option value="@venue.Id">@venue.Name</option>
+			}
+		}
+		else
+		{
+				<option value="0">无</option>
+		}
+	}
+			</select>
+		</li>
+        <li>
+			<label>发布标题：</label>
+			@Html.TextBoxFor(x => x.Title, new { @class = "input-1" })
+		</li>
+        <li>
+			<label>活动简介：</label>
+            <input id="post_content" name="Content" value="@Model.Content" />
+        </li>
+        <li>
+			<label>开始时间：</label>
+			<input name="BeginDate" class="input-2" type="text" value="@Model.BeginDate.ToString("yyyy-MM-dd")" />
+			<label>结束时间：</label>
+			<input name="EndDate" class="input-2" type="text" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
+		</li>
+        <li>
+			<label>联系电话：</label>
+			@Html.TextBoxFor(x => x.Phone, new { @class = "input-2" })
+			<label>限制人数：</label>
+			@Html.TextBoxFor(x => x.LimitNumber, new { @class = "input-3" })
+			<label>费用：</label>
+			@Html.TextBoxFor(x => x.Fee, new { @class = "input-3" })
+		</li>
+		<li>
+			<label>单位地点：</label>
+			@Html.TextBoxFor(x => x.Location, new { @class = "input-1" })
+		</li>
+		<li>
+			<label>相关场所：</label>
+			@Html.TextBoxFor(x => x.RelatedPlace, new { @class = "input-1" })
+		</li>
+    </ul>
+	<input name="Id" type="hidden" value="@Model.Id" />
+	<input name="GroupId" type="hidden" value="@Model.GroupId" />
+
+    <a id="save_post" href="javascript:;" class="btn-3">保　存</a>
+	<a href="/Admin/PostManagement" class="btn-3">返　回</a>
+}
 </div>
 <div class="formfooter"></div>
+@section styles
+{
+	<link href="@Url.Content("~/content/tinyeditor/style.css")" rel="stylesheet" type="text/css" />
+}
 
 @section scripts
 {
-	<script src="@Url.Content("~/Content/js/ajaxfileupload.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/content/js/ajaxfileupload.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/content/tinyeditor/tinyeditor.js")" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function () {
 			selected_left_menu(3);
+
+			ShowVenueSelector(@Model.PostType);
+
+			new TINY.editor.edit('editor', {
+				id: 'post_content',
+				width: 700,
+				height: 200,
+				cssclass: 'te',
+				controlclass: 'tecontrol',
+				rowclass: 'teheader',
+				dividerclass: 'tedivider',
+				controls: ['bold', 'italic', 'underline', 'strikethrough', 'leftalign',
+					'centeralign', 'rightalign', 'blockjustify', '|', 'font', 'size', 'style', '|'],
+				footer: true,
+				fonts: ['Verdana', 'Arial', 'Georgia', 'Trebuchet MS'],
+				xhtml: true,
+				cssfile: '/Content/tinyeditor/style.css',
+				bodyid: 'editor',
+				footerclass: 'tefooter',
+				toggle: { text: 'source', activetext: 'wysiwyg', cssclass: 'toggle' },
+				resize: { cssclass: 'resize' }
+			});
 		});
 		
+		$("#save_post").bind("click", function () {
+			editor.post();
+
+			$("#admin_save_post_form").submit();
+		});
+
+		$("#post_type_selector").bind("change", function () {
+			var postType = $("#post_type_selector").val();
+
+			ShowVenueSelector(postType);
+		});
+
+		function ShowVenueSelector(postType) {
+			if (postType == 3) {
+				$("#venue_selector_title").show();
+				$("#venue_selector").show();
+			}
+			else {
+				$("#venue_selector_title").hide();
+				$("#venue_selector").hide();
+			}
+		}
+
 	</script>
 }

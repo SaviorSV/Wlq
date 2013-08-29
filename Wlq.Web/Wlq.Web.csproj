@@ -81,6 +81,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Extensions\HtmlExtention.cs" />
     <Compile Include="Fliters\LoginAuthenticationAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -179,6 +180,12 @@
     <Content Include="Content\js\setByte.js" />
     <Content Include="Content\js\swfobject.js" />
     <Content Include="Content\js\main_admin.js" />
+    <Content Include="Content\tinyeditor\images\header-bg.gif" />
+    <Content Include="Content\tinyeditor\images\icons.png" />
+    <Content Include="Content\tinyeditor\images\resize.gif" />
+    <Content Include="Content\tinyeditor\packed.js" />
+    <Content Include="Content\tinyeditor\style.css" />
+    <Content Include="Content\tinyeditor\tinyeditor.js" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
