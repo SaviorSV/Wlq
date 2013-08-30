@@ -285,7 +285,7 @@ namespace Wlq.Service.Implementation
 				return false;
 			}
 
-			if (post.BookingNumber >= post.LimitNumber)
+			if (post.PostType != (int)PostType.Venue && post.BookingNumber >= post.LimitNumber)
 			{
 				message = "预订失败(预定人数已满)";
 				return false;
@@ -302,7 +302,7 @@ namespace Wlq.Service.Implementation
 					return false;
 				}
 
-				var venueBookingNumber = this.GetVenueBooingNumber(booking.PostId, booking.VenueConfigId, booking.BookingDate);
+				var venueBookingNumber = this.GetVenueBookingNumber(booking.PostId, booking.VenueConfigId, booking.BookingDate);
 
 				if (venueBookingNumber >= venueConfig.LimitNumber)
 				{
@@ -320,12 +320,15 @@ namespace Wlq.Service.Implementation
 			return _databaseContext.SaveChanges() > 0;
 		}
 
-		public bool CancelBooking(long userId, long postId)
+		public bool CancelBooking(long userId, long postId, long venueConfigId, DateTime bookingDate)
 		{
 			var bookingRepository = new DatabaseRepository<BookingInfo>(_databaseContext);
 
-			var bookings = bookingRepository.GetAll()
-				.Where(b => b.UserId == userId && b.PostId == postId);
+			var bookings = venueConfigId > 0
+				? bookingRepository.GetAll()
+					.Where(b => b.UserId == userId && b.PostId == postId && b.VenueConfigId == venueConfigId && b.BookingDate.Date == bookingDate.Date)
+				: bookingRepository.GetAll()
+					.Where(b => b.UserId == userId && b.PostId == postId);
 
 			foreach (var booking in bookings)
 			{
@@ -344,7 +347,7 @@ namespace Wlq.Service.Implementation
 			return _databaseContext.SaveChanges() > 0;
 		}
 
-		private int GetVenueBooingNumber(long postId, long venueConfigId, DateTime bookingDate)
+		private int GetVenueBookingNumber(long postId, long venueConfigId, DateTime bookingDate)
 		{
 			var bookingRepository = new DatabaseRepository<BookingInfo>(_databaseContext);
 
@@ -354,7 +357,7 @@ namespace Wlq.Service.Implementation
 			return bookings.Count();
 		}
 
-		public List<BookingSchedule> GetBookingSchedules(long postId, int days)
+		public List<BookingSchedule> GetBookingSchedules(long userId, long postId, int days)
 		{
 			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
 			var post = postRepository.GetById(postId);
@@ -379,13 +382,28 @@ namespace Wlq.Service.Implementation
 
 				foreach (var period in schedule.Periods)
 				{
-					period.BookingNumber = this.GetVenueBooingNumber(postId, period.VenueConfigId, date);
+					period.BookingNumber = this.GetVenueBookingNumber(postId, period.VenueConfigId, date);
+
+					if (period.BookingNumber > 0)
+					{
+						period.IsBooked = this.IsBookedVenue(postId, userId, period.VenueConfigId, date);
+					}
 				}
 
 				schedules.Add(schedule);
 			}
 
 			return schedules;
+		}
+
+		private bool IsBookedVenue(long postId, long userId, long venueConfigId, DateTime bookingDate)
+		{
+			var bookingRepository = new DatabaseRepository<BookingInfo>(_databaseContext);
+
+			var booking = bookingRepository.GetAll()
+				.FirstOrDefault(b => b.PostId == postId && b.UserId == userId && b.VenueConfigId == venueConfigId && b.BookingDate.Date == bookingDate.Date);
+
+			return booking != null;
 		}
 
 		#endregion

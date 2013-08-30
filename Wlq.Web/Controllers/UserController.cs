@@ -7,20 +7,6 @@ namespace Wlq.Web.Controllers
 {
 	public class UserController : BaseController
 	{
-		public ActionResult Header()
-		{
-			var isLogin = CurrentUser != null;
-
-			ViewBag.IsLogin = isLogin;
-
-			if (isLogin)
-				ViewBag.Name = CurrentUser.Name;
-			else
-				ViewBag.Name = string.Empty;
-
-			return PartialView("_Header");
-		}
-
 		[LoginAuthentication(RoleLevel.Normal, "Home", "INdex")]
 		public ActionResult Info()
 		{

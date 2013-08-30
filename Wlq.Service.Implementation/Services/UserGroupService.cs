@@ -121,6 +121,15 @@ namespace Wlq.Service.Implementation
 
 		#region Group
 
+		public IEnumerable<GroupInfo> GetGroups(Func<GroupInfo, bool> func, int pageIndex, int pageSize, out int totalNumber)
+		{
+			var groupRepository = new DatabaseRepository<GroupInfo>(_databaseContext);
+
+			return groupRepository.GetAll()
+				.Where(g => func(g))
+				.Paging(pageIndex, pageSize, out totalNumber);
+		}
+
 		public IEnumerable<GroupInfo> GetGroupsByUser(long userId)
 		{
 			return this.GetGroupsByRelation<UserGroupInfo>(userId);

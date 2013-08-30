@@ -1,0 +1,58 @@
+﻿@model Wlq.Web.Models.LeftMenuModel
+
+<ul class="leftmenu">
+    <li class="on"><a href="/" class="menu-1"></a></li>
+	<li><a href="@Url.Action("Health", "Home")" class="menu-2"></a></li>
+	<li><a href="@Url.Action("Activity", "Home")" class="menu-3"></a></li>
+	<li><a href="@Url.Action("Venue", "Home")" class="menu-4"></a></li>
+	<li><a href="@Url.Action("Course", "Home")" class="menu-5"></a></li>
+</ul>
+<div>
+    <h3 class="left-title"><img src="../../Content/images/common/title-1.jpg" alt="" /></h3>
+	<ul class="leftlist">
+@if (Model.Departments != null)
+{
+	foreach (var group in Model.Departments)
+	{
+		<li>
+			<a href="/Home/Group/@group.Id">
+			@if(!string.IsNullOrWhiteSpace(group.Logo))
+			{
+				<img src="@String.Format("/upload/group/{0}/logo{1}", group.Id, group.Logo)" alt="logo" />
+			}
+			else
+			{
+				<img src="/Content/images/other/ico-1.png" alt="logo" />
+			}
+			@group.Name
+			</a>
+		</li>
+	}
+}
+	</ul>
+</div>
+<div>
+    <h3 class="left-title"><img src="../../Content/images/common/title-2.jpg" alt="" /></h3>
+	<ul class="leftlist">
+@if (Model.Circles != null)
+{
+	foreach (var group in Model.Circles)
+	{
+		<li>
+			<a href="/Home/Group/@group.Id">
+			@if(!string.IsNullOrWhiteSpace(group.Logo))
+			{
+				<img src="@String.Format("/upload/group/{0}/logo{1}", group.Id, group.Logo)" alt="logo" />
+			}
+			else
+			{
+				<img src="/Content/images/other/ico-1.png" alt="logo" />
+			}
+			@group.Name
+			</a>
+		</li>
+	}
+}
+	</ul>
+	<p class="leftmore"><a href="@Url.Action("GroupList", "Home")">更多...</a></p>
+</div>

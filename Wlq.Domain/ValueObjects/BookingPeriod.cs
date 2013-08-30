@@ -12,6 +12,7 @@ namespace Wlq.Domain
 		public int LimitNumber { get; set; }
 		public int BookingNumber { get; set; }
 		public long VenueConfigId { get; set; }
+		public bool IsBooked { get; set; }
 
 		public BookingPeriod(int begin, int end, int limit, long venueConfigId)
 		{

@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 using Hanger.Common;
 using Wlq.Service.Utility;
+using Wlq.Web.Models;
 
 namespace Wlq.Web.Controllers
 {
@@ -28,5 +29,32 @@ namespace Wlq.Web.Controllers
 			return Content(result.ObjectToJson());
 		}
 
+
+		public ActionResult Header()
+		{
+			var isLogin = CurrentUser != null;
+
+			ViewBag.IsLogin = isLogin;
+
+			if (isLogin)
+				ViewBag.Name = CurrentUser.Name;
+			else
+				ViewBag.Name = string.Empty;
+
+			return PartialView("_Header");
+		}
+
+		[OutputCache(Duration = 3600)]
+		public ActionResult LeftMenu()
+		{
+			var model = new LeftMenuModel();
+			var totalNumber = 0;
+
+			model.Departments = UserGroupService.GetGroupsByParent(0);
+			model.Circles = UserGroupService.GetGroups(
+				g => g.ParentGroupId > 0, 1, 9, out totalNumber);
+
+			return PartialView("_LeftMenu", model);
+		}
     }
 }

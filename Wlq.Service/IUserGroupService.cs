@@ -24,6 +24,7 @@ namespace Wlq.Service
 
 		#region Group
 
+		IEnumerable<GroupInfo> GetGroups(Func<GroupInfo, bool> func, int pageIndex, int pageSize, out int totalNumber);
 		IEnumerable<GroupInfo> GetGroupsByUser(long userId);
 		IEnumerable<GroupInfo> GetGroupsByManager(long userId, RoleLevel role);
 		IEnumerable<GroupInfo> GetGroupsByParent(long parentGroupId);
