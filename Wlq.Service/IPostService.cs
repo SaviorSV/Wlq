@@ -29,6 +29,10 @@ namespace Wlq.Service
 		bool UpdatePost(PostInfo post);
 		bool DeletePost(long postId);
 
+		bool ConcernPost(long postId, long userId);
+		bool UnConcernPost(long postId, long userId);
+		bool IsUserConcernPost(long postId, long userId);
+
 		IEnumerable<PostInfo> GetPostsByType(PostType type, bool withinTime, int pageIndex, int pageSize, out int totalNumber);
 		IEnumerable<PostInfo> GetPostsByGroup(long groupId, bool withinTime, int pageIndex, int pageSize, out int totalNumber);
 

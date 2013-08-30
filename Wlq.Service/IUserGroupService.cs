@@ -50,6 +50,5 @@ namespace Wlq.Service
 		bool IsUserInGroup(long userId, long groupId);
 
 		#endregion
-
 	}
 }

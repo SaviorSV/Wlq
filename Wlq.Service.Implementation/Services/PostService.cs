@@ -225,6 +225,49 @@ namespace Wlq.Service.Implementation
 			return _databaseContext.SaveChanges() > 0;
 		}
 
+		public bool ConcernPost(long postId, long userId)
+		{
+			if (IsUserConcernPost(postId, userId))
+			{
+				return true;
+			}
+
+			var userPostRepository = new DatabaseRepository<UserPostInfo>(_databaseContext);
+			
+			userPostRepository.Add(new UserPostInfo
+				{
+					PostId = postId,
+					UserId = userId
+				});
+
+			return _databaseContext.SaveChanges() > 0;
+		}
+
+		public bool UnConcernPost(long postId, long userId)
+		{
+			var userPostRepository = new DatabaseRepository<UserPostInfo>(_databaseContext);
+			var userPost = userPostRepository.GetAll()
+				.FirstOrDefault(up => up.PostId == postId && up.UserId == userId);
+
+			if (userPost == null)
+			{
+				return true;
+			}
+
+			userPostRepository.DeleteById(userPost.Id);
+
+			return _databaseContext.SaveChanges() > 0; 
+		}
+
+		public bool IsUserConcernPost(long postId, long userId)
+		{
+			var userPostRepository = new DatabaseRepository<UserPostInfo>(_databaseContext);
+			var userPost = userPostRepository.GetAll()
+				.FirstOrDefault(up => up.PostId == postId && up.UserId == userId);
+
+			return userPost != null;
+		}
+
 		#endregion
 
 		#region booking
