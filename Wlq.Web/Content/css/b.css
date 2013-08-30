@@ -269,3 +269,6 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .UED_LAYER_PARENT_V1{top:50%;left:50%;position:fixed;z-index:99999;_position:absolute;_top:expression(eval(document.compatMode && document.compatMode=='CSS1Compat') ? documentElement.scrollTop+(document.documentElement.clientHeight - this.offsetHeight)/2+this.offsetHeight/2:document.body.scrollTop+(document.body.clientHeight - this.clientHeight)/2);}
 .UED_hide{display:none;}
 
+.page{ float:right; height:30px; line-height:30px;color:#979797; font-size:13px; padding-right:30px; margin-bottom:30px;}
+.page a{ color:#979797;}
+.page input{ width:30px; }

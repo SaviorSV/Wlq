@@ -1,0 +1,69 @@
+﻿@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Wlq.Domain;
+@using Wlq.Web.Models;
+@model IEnumerable<PostModel>
+
+@if ((PostType)ViewBag.PostType == PostType.All)
+{
+<div class="bannerbox">
+	<img src="/content/images/other/banner-1.jpg" alt="banner" />
+</div>
+}
+<h3 class="r-box-title">
+@switch ((PostType)ViewBag.PostType)
+{
+	case PostType.All:
+	<img src="/content/images/common/title-3.jpg" alt="title" />
+		break;
+	case PostType.Activity:
+	<img src="/content/images/common/title-3.jpg" alt="title" />
+		break;
+	case PostType.Venue:
+	<img src="/content/images/common/title-4.jpg" alt="title" />
+		break;
+	case PostType.Course:
+	<img src="/content/images/common/title-12.jpg" alt="title" />
+		break;
+	default:
+		break;
+}
+</h3>
+<div class="indexlist">
+	<div class="mainbox clearfix">
+		<a href="#" class="leftico"><img src="/content/images/other/ico-1.png" />教育局</a>
+		<div class="mainbox-r">
+			<span class="flag-2"></span>
+			<p class="time">2013-5-29 13:40</p>
+			<h3>9月--高中生学校适应</h3>
+			<p class="mainbox-txt">本活动由卢湾高级中学特级教师、国家二级心理咨询师梅洁老师担任主讲，围绕初入高中学段青少年的心理特点以及高中阶段的学习要求，探讨如何帮助高中新生顺利地适应高中学习生活。</p>
+			<div><img src="/content/images/other/img1.jpg" /></div>
+			<div class="order">已预约<strong>45</strong>人</div>
+			<div class="mainbox-b"></div>
+		</div>
+	</div>
+
+	<div class="page">
+		第 @ViewBag.PageIndex / @ViewBag.TotalPage 页 
+		<a id="previous" href="javascript:;">上一页</a>
+		<a id="next" href="javascript:;">下一页</a>
+		<input id="pager_index" type="text" />
+		<a id="pager_redirect" href="javascript:;">跳转</a>
+	</div>
+</div>
+
+@section scripts
+{
+	<script type="text/javascript">
+		pageIndex = @ViewBag.PageIndex;
+		totalPage = @ViewBag.TotalPage;
+		pageUrl = '/Home/Index?postType=@ViewBag.PostType';
+
+		$(function () {
+			
+		});
+
+	</script>
+}

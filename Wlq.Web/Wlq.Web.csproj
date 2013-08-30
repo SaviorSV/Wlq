@@ -88,6 +88,7 @@
     </Compile>
     <Compile Include="Models\AdminManagementModel.cs" />
     <Compile Include="Models\LeftMenuModel.cs" />
+    <Compile Include="Models\PostModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -203,7 +204,7 @@
     <Folder Include="Upload\Group\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -248,10 +249,7 @@
     <Content Include="Views\Home\Health.cshtml" />
     <Content Include="Views\Admin\PostManagement.cshtml" />
     <Content Include="Views\Admin\Post.cshtml" />
-    <None Include="Views\Home\Activity.cshtml" />
-    <None Include="Views\Home\Course.cshtml" />
     <Content Include="Views\Home\GroupList.cshtml" />
-    <None Include="Views\Home\Venue.cshtml" />
     <Content Include="Views\Shared\_LeftMenu.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

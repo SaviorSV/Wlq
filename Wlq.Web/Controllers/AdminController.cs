@@ -120,6 +120,9 @@ namespace Wlq.Web.Controllers
 			group.ParentGroupId = groupModel.ParentGroupId;
 			group.GroupType = (int)GroupType.Circle;
 			group.Logo = groupModel.Logo;
+			group.Address = groupModel.Address;
+			group.Phone = groupModel.Phone;
+			group.WorkTime = groupModel.WorkTime;
 
 			if (group.Id == 0)
 			{

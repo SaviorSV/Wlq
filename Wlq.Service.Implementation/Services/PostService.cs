@@ -191,6 +191,16 @@ namespace Wlq.Service.Implementation
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
+		public IEnumerable<PostInfo> GetLastPosts(int pageIndex, int pageSize, out int totalNumber)
+		{
+			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
+
+			return postRepository.GetAll()
+				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)
+				.OrderByDescending(p => p.LastModified)
+				.Paging(pageIndex, pageSize, out totalNumber);
+		}
+
 		public PostInfo GetPost(long postId)
 		{
 			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
@@ -402,6 +412,15 @@ namespace Wlq.Service.Implementation
 
 			var booking = bookingRepository.GetAll()
 				.FirstOrDefault(b => b.PostId == postId && b.UserId == userId && b.VenueConfigId == venueConfigId && b.BookingDate.Date == bookingDate.Date);
+
+			return booking != null;
+		}
+
+		public bool IsBookedPost(long postId, long userId)
+		{
+			var bookingRepository = new DatabaseRepository<BookingInfo>(_databaseContext);
+			var booking = bookingRepository.GetAll()
+				.FirstOrDefault(b => b.PostId == postId && b.UserId == userId);
 
 			return booking != null;
 		}

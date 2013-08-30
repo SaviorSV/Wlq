@@ -15,7 +15,19 @@
 		</li>
 		<li>
 			<label>组织名称：</label>
-			<input class="input-2" id="groupName" name="Name" type="text" value="@Model.Name" />
+			@Html.TextBoxFor(x => x.Name, new { @class = "input-2" })
+		</li>
+		<li>
+			<label>联系地址：</label>
+			@Html.TextBoxFor(x => x.Address, new { @class = "input-1" })
+		</li>
+		<li>
+			<label>联系电话：</label>
+			@Html.TextBoxFor(x => x.Phone, new { @class = "input-2" })
+		</li>
+		<li>
+			<label>工作时间：</label>
+			@Html.TextBoxFor(x => x.WorkTime, new { @class = "input-2" })
 		</li>
 		<li>
 			<label>头　　像：</label>
@@ -48,13 +60,7 @@
 		});
 
 		$("#save_group").bind("click", function () {
-			if ($.trim($("#groupName").val()) == '') {
-				alert("组织名称不可为空");
-				return false;
-			}
-			else {
-				$("#admin_save_group_form").submit();
-			}
+			$("#admin_save_group_form").submit();
 		});
 	</script>
 }
