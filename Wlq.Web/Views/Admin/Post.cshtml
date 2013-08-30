@@ -14,7 +14,23 @@
 {
 	<ul>
 		<li>
-			<label>所属部门或组织：@ViewBag.GroupName</label>
+			<label>所属组织：</label>
+			<select id="group_selector" name="GroupId" class="select-1">
+	@{
+		var groups = ViewBag.GroupList as IEnumerable<GroupInfo>;
+		if (groups.Count() > 0)
+		{
+			foreach (var group in groups)
+			{
+				<option value="@group.Id" @Html.IsSelected(group.Id == Model.GroupId)>@group.Name</option>
+			}
+		}
+		else
+		{
+				<option value="0">无</option>
+		}
+	}
+			</select>
 		</li>
         <li>
 			<label>发布类型：</label>
@@ -24,22 +40,7 @@
 				<option value="3" @Html.IsSelected(Model.PostType == 3)>场地</option>
 			</select>
 			<label id="venue_selector_title">场地：</label>
-			<select id="venue_selector" name="VenueId" class="select-1">
-	@{
-		var venues = ViewBag.VenueList as IEnumerable<VenueInfo>;
-		if (venues.Count() > 0)
-		{
-			foreach (var venue in venues)
-			{
-				<option value="@venue.Id" @Html.IsSelected(venue.Id == Model.VenueId)>@venue.Name</option>
-			}
-		}
-		else
-		{
-				<option value="0">无</option>
-		}
-	}
-			</select>
+			<select id="venue_selector" name="VenueId" class="select-1"></select>
 		</li>
         <li>
 			<label>发布标题：</label>
@@ -72,8 +73,8 @@
 			@Html.TextBoxFor(x => x.RelatedPlace, new { @class = "input-1" })
 		</li>
     </ul>
+	
 	<input name="Id" type="hidden" value="@Model.Id" />
-	<input name="GroupId" type="hidden" value="@Model.GroupId" />
 
     <a id="save_post" href="javascript:;" class="btn-3">保　存</a>
 	<a href="@Url.Action("PostManagement", "Admin")" class="btn-3">返　回</a>
@@ -128,8 +129,33 @@
 			ShowVenueSelector(postType);
 		});
 
+		$("#group_selector").bind("change", function () {
+			var postType = $("#post_type_selector").val();
+
+			ShowVenueSelector(postType);
+		});
+
 		function ShowVenueSelector(postType) {
 			if (postType == 3) {
+				var groupId = $("#group_selector").val();
+				var groupSelector = $("#venue_selector").empty();
+
+				if (groupId > 0) {
+					$.get("/Admin/GetVenuesByGroup/" + groupId, function (data) {
+						var result = '';
+						if (data.length > 0) {
+							for (var i in data) {
+								groupSelector.append("<option value='" + data[i].Id + "'>" + data[i].Name + "</option>")
+							}
+						}
+						else {
+							groupSelector.append("<option value='0'>无</option>")
+						}
+
+						$("#venue_list").html(result);
+					});
+				}
+
 				$("#venue_selector_title").show();
 				$("#venue_selector").show();
 			}

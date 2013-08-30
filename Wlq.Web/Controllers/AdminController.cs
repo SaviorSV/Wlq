@@ -255,14 +255,13 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult Post(long id)
 		{
-			ViewBag.VenueList = PostService.GetVenuesByGroup(groupId);
-			ViewBag.GroupName = group.Name;
+			ViewBag.GroupList = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
 
-			var post = postId > 0
-				? PostService.GetPost(postId)
-				: new PostInfo { GroupId = groupId };
+			var post = id > 0
+				? PostService.GetPost(id)
+				: new PostInfo();
 
-			if (post == null || post.GroupId != groupId)
+			if (post == null)
 			{
 				return RedirectToAction("PostManagement", "Admin");
 			}

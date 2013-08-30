@@ -15,8 +15,8 @@
 		<li>
 			<label>场地名称：</label>
 			<input class="input-2" id="venueName" name="Name" type="text" value="@Model.Name" />
-			<label>所属部门或组织：</label>
-			<select name="GroupId" class="select-1">
+			<label>所属组织：</label>
+			<select name="GroupId" class="select-2">
 	@{
 		var groups = ViewBag.GroupList as IEnumerable<GroupInfo>;
 		if (groups.Count() > 0)
@@ -33,7 +33,10 @@
 	}
 			</select>
 		</li>
-		<li><label>场地地址：</label><input class="input-1" name="Address" type="text" value="@Model.Address" /></li>
+		<li>
+			<label>场地地址：</label>
+			<input class="input-1" name="Address" type="text" value="@Model.Address" />
+		</li>
 		<li>
 			<label>时段配置：</label>
 			<select id="days_of_week" class="select-2">

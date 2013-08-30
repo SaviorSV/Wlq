@@ -51,8 +51,7 @@ namespace Wlq.Web.Controllers
 			var totalNumber = 0;
 
 			model.Departments = UserGroupService.GetGroupsByParent(0);
-			model.Circles = UserGroupService.GetGroups(
-				g => g.ParentGroupId > 0, 1, 9, out totalNumber);
+			model.Circles = UserGroupService.GetCircles(1, 9, out totalNumber);
 
 			return PartialView("_LeftMenu", model);
 		}

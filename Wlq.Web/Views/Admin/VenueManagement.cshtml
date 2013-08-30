@@ -52,7 +52,7 @@ else
 						result += "<thead><tr><th>名称</th><th>操作</th></tr></thead><tbody>";
 
 						for (var i in data) {
-							result += "<tr><td>" + data[i].Name + "</td><td><a href='/Admin/Venue/" + data[i].Id + '>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_venue(" + data[i].Id + ");'>删除</a></td></tr>";
+							result += "<tr><td>" + data[i].Name + "</td><td><a href='/Admin/Venue/" + data[i].Id + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_venue(" + data[i].Id + ");'>删除</a></td></tr>";
 						}
 
 						result += "</tbody></table>";

@@ -9,8 +9,14 @@
 @using (Html.BeginForm("SaveGroup", "Admin", FormMethod.Post, new { id = "admin_save_group_form" }))
 {
 	<ul>
-		<li><label>所属部门：</label><label>@ViewBag.ParentGroupName</label></li>
-		<li><label>组织名称：</label><input class="input-2" id="groupName" name="Name" type="text" value="@Model.Name" /></li>
+		<li>
+			<label>所属部门：</label>
+			<label>@ViewBag.ParentGroupName</label>
+		</li>
+		<li>
+			<label>组织名称：</label>
+			<input class="input-2" id="groupName" name="Name" type="text" value="@Model.Name" />
+		</li>
 		<li>
 			<label>头　　像：</label>
 			<input id="logo_uploader" name="logo_uploader" type="file" onchange="upload_file('logo');" /><br />
