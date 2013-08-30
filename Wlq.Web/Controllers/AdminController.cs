@@ -172,38 +172,23 @@ namespace Wlq.Web.Controllers
 		}
 
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
-		public ActionResult Venue(long venueId, long groupId)
+		public ActionResult Venue(long id)
 		{
-			var group = UserGroupService.GetGroup(groupId);
+			var venueConfig = PostService.GetVenueConfigs(id);
 
-			if (group == null)
+			ViewBag.GroupList = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
+			ViewBag.VenueConfig = venueConfig.ToJson();
+
+			var venue = id > 0
+				? PostService.GetVenue(id)
+				: new VenueInfo();
+
+			if (venue == null)
 			{
 				return RedirectToAction("VenueManagement", "Admin");
 			}
 
-			var venueConfig = PostService.GetVenueConfigs(venueId);
-
-			ViewBag.GroupName = group.Name;
-			ViewBag.VenueConfig = venueConfig.ToJson();
-
-			if (venueId > 0)
-			{
-				var venue = PostService.GetVenue(venueId);
-
-				if (venue != null)
-				{
-					if (venue.GroupId == groupId)
-					{
-						return View(venue);
-					}
-					else
-					{
-						return RedirectToAction("VenueManagement", "Admin");
-					}
-				}
-			}
-
-			return View(new VenueInfo { GroupId = groupId });
+			return View(venue);
 		}
 
 		[HttpPost]
@@ -268,18 +253,9 @@ namespace Wlq.Web.Controllers
 		}
 
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
-		public ActionResult Post(long postId, long groupId)
+		public ActionResult Post(long id)
 		{
-			var group = UserGroupService.GetGroup(groupId);
-
-			if (group == null)
-			{
-				return RedirectToAction("PostManagement", "Admin");
-			}
-
-			var venues = PostService.GetVenuesByGroup(groupId);
-
-			ViewBag.VenueList = venues;
+			ViewBag.VenueList = PostService.GetVenuesByGroup(groupId);
 			ViewBag.GroupName = group.Name;
 
 			var post = postId > 0

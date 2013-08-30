@@ -28,7 +28,7 @@
 	<input name="ParentGroupId" type="hidden" value="@Model.ParentGroupId" />
 	<input id="logo_hidden" name="Logo" type="hidden" value="@Model.Logo" />
 	<a id="save_group" href="javascript:;" class="btn-3">保　存</a>
-	<a href="/Admin/GroupManagement" class="btn-3">返　回</a>
+	<a href="@Url.Action("GroupManagement", "Admin")" class="btn-3">返　回</a>
 }
 </div>
 <div class="formfooter"></div>

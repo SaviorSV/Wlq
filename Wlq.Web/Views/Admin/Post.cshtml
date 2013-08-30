@@ -29,9 +29,9 @@
 		var venues = ViewBag.VenueList as IEnumerable<VenueInfo>;
 		if (venues.Count() > 0)
 		{
-			foreach (var venue in ViewBag.VenueList as IEnumerable<VenueInfo>)
+			foreach (var venue in venues)
 			{
-				<option value="@venue.Id">@venue.Name</option>
+				<option value="@venue.Id" @Html.IsSelected(venue.Id == Model.VenueId)>@venue.Name</option>
 			}
 		}
 		else
@@ -76,7 +76,7 @@
 	<input name="GroupId" type="hidden" value="@Model.GroupId" />
 
     <a id="save_post" href="javascript:;" class="btn-3">保　存</a>
-	<a href="/Admin/PostManagement" class="btn-3">返　回</a>
+	<a href="@Url.Action("PostManagement", "Admin")" class="btn-3">返　回</a>
 }
 </div>
 <div class="formfooter"></div>

@@ -2,15 +2,37 @@
 	Layout = "~/Views/Admin/_Layout.cshtml";
 }
 
-@model Wlq.Domain.VenueInfo
+@using Wlq.Domain;
+@using Wlq.Web.Extensions;
+
+@model VenueInfo
 
 <h4 class="form-tt">场地配置</h4>
 <div class="formbody">
 @using (Html.BeginForm("SaveVenue", "Admin", FormMethod.Post, new { id = "admin_save_venue_form" }))
 {
 	<ul>
-		<li><label>所属部门或组织：</label><label>@ViewBag.GroupName</label></li>
-		<li><label>场地名称：</label><input class="input-2" id="venueName" name="Name" type="text" value="@Model.Name" /></li>
+		<li>
+			<label>场地名称：</label>
+			<input class="input-2" id="venueName" name="Name" type="text" value="@Model.Name" />
+			<label>所属部门或组织：</label>
+			<select name="GroupId" class="select-1">
+	@{
+		var groups = ViewBag.GroupList as IEnumerable<GroupInfo>;
+		if (groups.Count() > 0)
+		{
+			foreach (var group in groups)
+			{
+				<option value="@group.Id" @Html.IsSelected(group.Id == Model.GroupId)>@group.Name</option>
+			}
+		}
+		else
+		{
+				<option value="0">无</option>
+		}
+	}
+			</select>
+		</li>
 		<li><label>场地地址：</label><input class="input-1" name="Address" type="text" value="@Model.Address" /></li>
 		<li>
 			<label>时段配置：</label>
@@ -85,10 +107,9 @@
 	</ul>
 	
 	<input name="Id" type="hidden" value="@Model.Id" />
-	<input name="GroupId" type="hidden" value="@Model.GroupId" />
 	<input id="config_hidden" name="config" type="hidden" />
 	<a id="save_venue" href="javascript:;" class="btn-3">保　存</a>
-	<a href="/Admin/VenueManagement" class="btn-3">返　回</a>
+	<a href="@Url.Action("VenueManagement", "Admin")" class="btn-3">返　回</a>
 }
 </div>
 <div class="formfooter"></div>
