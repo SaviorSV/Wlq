@@ -87,8 +87,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AdminManagementModel.cs" />
+    <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\LeftMenuModel.cs" />
     <Compile Include="Models\PostModel.cs" />
+    <Compile Include="Models\GroupDetailModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

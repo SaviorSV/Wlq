@@ -80,7 +80,7 @@ namespace Wlq.Web.Controllers
 				return RedirectToAction("GroupManagement", "Admin");
 			}
 
-			ViewBag.ParentGroupName = parentGroup.Name;
+			ViewBag.ParentGroupName = parentGroup == null ? "无" : parentGroup.Name;
 
 			var group = groupId > 0
 				? UserGroupService.GetGroup(groupId)
@@ -118,11 +118,12 @@ namespace Wlq.Web.Controllers
 
 			group.Name = groupModel.Name;
 			group.ParentGroupId = groupModel.ParentGroupId;
-			group.GroupType = (int)GroupType.Circle;
+			group.GroupType = groupModel.ParentGroupId == 0 ? (int)GroupType.Department : (int)GroupType.Circle;
 			group.Logo = groupModel.Logo;
 			group.Address = groupModel.Address;
 			group.Phone = groupModel.Phone;
 			group.WorkTime = groupModel.WorkTime;
+			group.Introduction = groupModel.Introduction;
 
 			if (group.Id == 0)
 			{
@@ -146,13 +147,17 @@ namespace Wlq.Web.Controllers
 
 		private bool CheckParentGroupIsLegal(long parentGroupId, ref GroupInfo parentGroup)
 		{
-			if (AdminUser.Role != (int)RoleLevel.SuperAdmin
-				&& !UserGroupService.IsManagerInGroup(AdminUser.Id, parentGroupId))
+			parentGroup = parentGroupId > 0 ? UserGroupService.GetGroup(parentGroupId) : null;
+
+			if (AdminUser.Role == (int)RoleLevel.SuperAdmin)
+			{
+				return true;
+			}
+
+			if (!UserGroupService.IsManagerInGroup(AdminUser.Id, parentGroupId))
 			{
 				return false;
 			}
-
-			parentGroup = UserGroupService.GetGroup(parentGroupId);
 
 			if (parentGroup == null)
 			{

@@ -84,7 +84,9 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 
 .mainbox{ margin-bottom:20px; overflow:hidden;}
 .mainbox .leftico{ width:80px; float:left; display:inline-block; height:150px; margin-right:10px; color:#505050; text-align:center; text-decoration:none; line-height:24px; font-size:14px; font-weight:bold}
-.mainbox .leftico img{ margin-bottom:5px;}
+.mainbox .leftico img{ margin-bottom:5px; max-width:457px;}
+.mainbox a { color:#979797; text-decoration:none;}
+.mainbox a:hover { text-decoration:underline;}
 
 .mainbox-r{ width:459px; background:url(../images/common/box-t.jpg); padding:20px 29px 0 40px; font-size:12px; line-height:24px; position:relative; float:left; color:#333333}
 .mainbox-r h3{ font-size:16px;font-family:"Microsoft Yahei"; color:#333; font-weight:normal; margin-bottom:10px;}
@@ -96,10 +98,10 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .imgbox{}
 .imgbox img{ float:left}
 
-.flag-1,.flag-2{ width:64px; height:29px; display:inline-block; position:absolute; top:11px; right:0px;}
+.flag-1,.flag-2,.flag-3{ width:64px; height:29px; display:inline-block; position:absolute; top:11px; right:0px;}
 .flag-1{background:url(../images/common/flag-1.jpg)}
 .flag-2{ background:url(../images/common/flag-2.jpg)}
-
+.flag-3{ background:url(../images/common/flag-3.jpg)}
 
 
 
@@ -180,7 +182,6 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .guanzhu-list li img{ float:left; margin-right:18px;}
 .guanzhu-list li  h4{ font-size:14px; line-height:24px; margin-bottom:10px; color:#505050}
 .guanzhu-list li p{ clear:both; padding:10px 0 0 5px; line-height:26px; color:#505050; font-size:14px;}
-.guanzhu-list li a.qxgz{ background:url(../images/common/btn-quxiaoguanzhu.png); width:124px; height:42px; display:inline-block; position:relative; left:-3px;}
 
 .useryy-list{}
 .useryy-list li{ height:69px; border-bottom:1px solid #d7d7d7; line-height:69px;padding-left:80px;}
@@ -208,6 +209,7 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .dt-detail-topl h4{ font-size:14px; padding:5px 0 10px 0; float:left; color:#505050; width:100px; }
 .dt-detail-topr{ float:right; text-align:right; font-size:12px; line-height:20px; color:#333}
 .btn-gz{ background:url(../images/common/btn-guanzhu.png); width:126px; height:44px; display:inline-block}
+.qxgz{ background:url(../images/common/btn-quxiaoguanzhu.png); width:124px; height:42px; display:inline-block; position:relative; left:-3px;}
 
 .detailtxt-box{ line-height:24px; font-size:14px; padding:20px 0 0 0 }
 .detailtxt-box h3{ font-size:16px; margin-bottom:20px; position:relative}

@@ -10,6 +10,7 @@ namespace Wlq.Domain
 		public string Address { get; set; }
 		public string Phone { get; set; }
 		public string WorkTime { get; set; }
+		public string Introduction { get; set; }
 
 		public GroupInfo()
 		{
@@ -18,6 +19,7 @@ namespace Wlq.Domain
 			Address = string.Empty;
 			Phone = string.Empty;
 			WorkTime = string.Empty;
+			Introduction = string.Empty;
 		}
 	}
 }

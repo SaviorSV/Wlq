@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 
 using Hanger.Common;
+using Wlq.Domain;
 using Wlq.Service.Utility;
 using Wlq.Web.Models;
 
@@ -28,7 +29,6 @@ namespace Wlq.Web.Controllers
 
 			return Content(result.ObjectToJson());
 		}
-
 
 		public ActionResult Header()
 		{
@@ -55,5 +55,74 @@ namespace Wlq.Web.Controllers
 
 			return PartialView("_LeftMenu", model);
 		}
-    }
+
+		#region ajax
+
+		[HttpPost]
+		public ActionResult Booking(long postId, string bookingDate, long venueConfigId = 0)
+		{
+			var success = false;
+			var message = string.Empty;
+			var date = DateTime.Now;
+
+			if (CurrentUser != null && DateTime.TryParse(bookingDate, out date))
+			{
+				var booking = new BookingInfo
+				{
+					UserId = CurrentUser.Id,
+					PostId = postId,
+					Name = CurrentUser.Name,
+					Mobile = CurrentUser.Mobile,
+					VenueConfigId = venueConfigId,
+					BookingDate = date
+				};
+
+				success = PostService.Booking(booking, out message);
+			}
+
+			return Content(new { Success = success, Message = message }.ObjectToJson(), "text/json");
+		}
+
+		[HttpPost]
+		public ActionResult CancelBooking(long postId, string bookingDate, long venueConfigId = 0)
+		{
+			var success = false;
+			var date = DateTime.Now;
+
+			if (CurrentUser != null && DateTime.TryParse(bookingDate, out date))
+			{
+				success = PostService.CancelBooking(CurrentUser.Id, postId, venueConfigId, date);
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
+		[HttpPost]
+		public ActionResult JoinGroup(long groupId)
+		{
+			var success = false;
+
+			if (CurrentUserId > 0)
+			{
+				success = UserGroupService.AddUserToGroup(CurrentUserId, groupId);
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
+		[HttpPost]
+		public ActionResult QuitGroup(long groupId)
+		{
+			var success = false;
+
+			if (CurrentUserId > 0)
+			{
+				success = UserGroupService.RemoveUserFromGroup(CurrentUserId, groupId);
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
+		#endregion
+	}
 }

@@ -20,8 +20,8 @@ else
 			<option value="@group.Id">@group.Name</option>
 		}
 		</select>
-
 		<a id="find_group" href="javascript:;" class="btn-3">查询下级组织</a>
+		<a id="edit_group" href="javascript:;" class="btn-3">编辑部门信息</a>
 		<a id="add_group" href="javascript:;" class="btn-3">+新增下级组织</a>
 	</div>
 	<div id="group_list" class="quanxian-tt"></div>
@@ -38,6 +38,12 @@ else
 
 		$("#find_group").bind("click", function () {
 			bind_group_list();
+		});
+
+		$("#edit_group").bind("click", function () {
+			var groupId = $("#department_selector").val();
+
+			window.location = "/Admin/Group?groupId=" + groupId + "&parentGroupId=0";
 		});
 
 		$("#add_group").bind("click", function () {

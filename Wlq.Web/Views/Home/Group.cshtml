@@ -2,42 +2,138 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@using Hanger.Common;
+@using Wlq.Domain;
+@using Wlq.Web.Models;
+
+@model GroupDetailModel
+
 <div class="box640">
-    <div><img src="/content/images/common/box640-t.jpg"></div>
+    <div><img src="/content/images/common/box640-t.jpg" alt="boxtop" /></div>
     <div class="dt-detail clearfix userindexbox">
-        <div class="userindexbox-img"><img src="/content/images/other/ico-1.png"></div>
-        <div class="userindexbox-info"><h4>黄浦区教育局</h4><a href="#" class="btn-gz"></a>
-            <p>联系地址：上海市延安东路300号西15楼<br>
-					联系电话：33134800-21509 <br>
-					工作时间：周一至周五8:30-17:30 </p>
+        <div class="userindexbox-img">
+		@if(string.IsNullOrWhiteSpace(Model.Group.Logo))
+		{
+			<img src="/content/images/other/ico-1.png" alt="logo" />
+		}
+		else
+		{
+			<img src="@String.Format("/upload/group/{0}/logo{1}", Model.Group.Id, Model.Group.Logo)" alt="logo" />
+		}
+		</div>
+        <div class="userindexbox-info">
+			<h4>@Model.Group.Name</h4>
+		@if(ViewBag.CurrentUserId > 0)
+		{
+			if (!Model.IsFollowing)
+			{
+				<a id='@string.Format("btn_group_{0}", @Model.Group.Id)' href="javascript:;" class="btn-gz" onclick="join_group(@Model.Group.Id)"></a>
+			}
+			else
+			{
+				<a id='@string.Format("btn_group_{0}", @Model.Group.Id)' href="javascript:;" class="qxgz" onclick="quit_group(@Model.Group.Id)"></a>
+			}
+		}
+		else
+		{
+				<a href="javascript:alert('请先登录');" class="btn-gz"></a>
+		}
+		@if (Model.Group.GroupType == (int)GroupType.Department)
+		{
+            <p>
+				联系地址：@Model.Group.Address <br />
+				联系电话：@Model.Group.Phone <br />
+				工作时间：@Model.Group.WorkTime
+			</p>
+		}
+		else
+		{
+			<p title="@Model.Group.Introduction">
+				@Model.Group.Introduction.CutString(120, "...")
+			</p>
+		}
         </div>
-        </div>
-        <div class="box640-bottom"><img src="/content/images/common/box640-b.jpg"></div>
+        <div class="box640-bottom"><img src="/content/images/common/box640-b.jpg" alt="boxbottom" /></div>
 	</div>
-    <h3 class="r-box-title"><img src="/content/images/common/title-15.jpg"></h3>
-    <div class="indexlist">
-        <div class="mainbox clearfix">
-        <a href="#" class="leftico"><img src="/content/images/other/ico-1.png">教育局</a>
-        <div class="mainbox-r">
-            <span class="flag-1"></span>
-            <p class="time">2013-5-29 13:40</p>
-            <h3>9月--高中生学校适应</h3>
-            <p class="mainbox-txt">本活动由卢湾高级中学特级教师、国家二级心理咨询师梅洁老师担任主讲，围绕初入高中学段青少年的心理特点以及高中阶段的学习要求，探讨如何帮助高中新生顺利地适应高中学习生活。</p>
-            <div><img src="/content/images/other/img1.jpg"></div>
-            <div class="order">已预约<strong>45</strong>人</div>
-            <div class="mainbox-b"></div>
-        </div>
-    </div>
-        <div class="mainbox clearfix">
-        <a href="#" class="leftico"><img src="/content/images/other/ico-1.png">教育局</a>
-        <div class="mainbox-r">
-            <span class="flag-2"></span>
-            <p class="time">2013-5-29 13:40</p>
-            <h3>9月--高中生学校适应</h3>
-            <p class="mainbox-txt">本活动由卢湾高级中学特级教师、国家二级心理咨询师梅洁老师担任主讲，围绕初入高中学段青少年的心理特点以及高中阶段的学习要求，探讨如何帮助高中新生顺利地适应高中学习生活。</p>
-            <div><img src="/content/images/other/img1.jpg"></div>
-            <div class="order">已预约<strong>45</strong>人</div>
-            <div class="mainbox-b"></div>
-        </div>
-    </div>
+	<div class="box640-bottom"><img src="/content/images/common/box640-b.jpg" /></div>
 </div>
+
+<h3 class="r-box-title"><img src="/content/images/common/title-15.jpg" alt="title" /></h3>
+<div class="indexlist">
+@foreach (var item in Model.Posts)
+{
+	<div class="mainbox clearfix">
+		<a href="/Home/Group/@item.Group.Id" class="leftico">
+		@if(string.IsNullOrWhiteSpace(item.Group.Logo))
+		{
+			<img src="/content/images/other/ico-1.png" alt="logo" />
+		}
+		else
+		{
+			<img src="@String.Format("/upload/group/{0}/logo{1}", item.Group.Id, item.Group.Logo)" alt="logo" />
+		}
+			@item.Group.Name
+		</a>
+		<div class="mainbox-r">
+		@switch ((PostType)item.Post.PostType)
+		{
+			case PostType.Activity:
+			<span class="flag-1"></span>
+				break;
+			case PostType.Venue:
+			<span class="flag-2"></span>
+				break;
+			case PostType.Course:
+			<span class="flag-3"></span>
+				break;
+			default:
+				break;
+		}
+			<p class="time">@string.Format("{0:yyyy-MM-dd HH:mm:ss}", item.Post.LastModified)</p>
+			<h3><a href="/Home/Post/@item.Post.Id">@item.Post.Title</a></h3>
+			<p class="mainbox-txt">
+				@Html.Raw(item.Post.Content)	
+			</p>
+			<div>
+			@if(!string.IsNullOrWhiteSpace(item.Post.Image))
+			{
+				<img src="/content/images/other/img1.jpg" alt="post" />
+			}
+			</div>
+			<div class="order">
+			@if(ViewBag.CurrentUserId > 0 && item.Post.PostType != (int)PostType.Venue)
+			{
+				if(!item.IsBooked)
+				{
+				<a id='@string.Format("btn_booking_{0}", item.Post.Id)' href="javascript:;" onclick="normal_booking(@item.Post.Id)" class="btn-yuyue"></a>
+				}
+				else
+				{
+				<a id='@string.Format("btn_booking_{0}", item.Post.Id)' href="javascript:;" onclick="normal_cancel_booking(@item.Post.Id)">取消预约</a>
+				}
+			}
+				已预约<strong id='@string.Format("booking_number_{0}", item.Post.Id)'>@item.Post.BookingNumber</strong>人
+			</div>
+			<div class="mainbox-b"></div>
+		</div>
+	</div>
+}
+</div>
+
+
+<div class="page">
+	第 @ViewBag.PageIndex / @ViewBag.TotalPage 页 
+	<a id="previous" href="javascript:;">上一页</a>
+	<a id="next" href="javascript:;">下一页</a>
+	<input id="pager_index" type="text" />
+	<a id="pager_redirect" href="javascript:;">跳转</a>
+</div>
+
+@section scripts
+{
+	<script type="text/javascript">
+		pageIndex = @ViewBag.PageIndex;
+		totalPage = @ViewBag.TotalPage;
+		pageUrl = '/Home/Group/@Model.Group.Id?';
+	</script>
+}

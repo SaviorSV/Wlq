@@ -2,30 +2,67 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3 class="righttitle-2"><img src="/content/images/common/title-14.jpg"></h3>
-    <ul class="guanzhu-list clearfix">
-        <li>
-            <div><img src="/content/images/other/ico-1.png"><h4>黄浦区教育局</h4><a href="#" class="btn-gz"></a></div>
-            <p>地址：上海市延安东路300号西15楼<br>
-电话：33134800-21509 <br>
-邮箱：jxbangs@hpe.cn</p>
-        </li>
-        <li>
-            <div><img src="/content/images/other/ico-1.png"><h4>黄浦区教育局</h4><a href="#" class="btn-gz"></a></div>
-            <p>地址：上海市延安东路300号西15楼<br>
-电话：33134800-21509 <br>
-邮箱：jxbangs@hpe.cn</p>
-        </li>
-        <li>
-            <div><img src="/content/images/other/ico-1.png"><h4>黄浦区教育局</h4><a href="#" class="qxgz"></a></div>
-            <p>地址：上海市延安东路300号西15楼<br>
-电话：33134800-21509 <br>
-邮箱：jxbangs@hpe.cn</p>
-        </li>
-        <li>
-            <div><img src="/content/images/other/ico-1.png"><h4>黄浦区教育局</h4><a href="#" class="qxgz"></a></div>
-            <p>地址：上海市延安东路300号西15楼<br>
-电话：33134800-21509 <br>
-邮箱：jxbangs@hpe.cn</p>
-        </li>
-    </ul>
+@using Hanger.Common;
+@using Wlq.Web.Models;
+
+@model IEnumerable<GroupModel>
+
+<h3 class="righttitle-2">
+	<img src="/content/images/common/title-13.jpg" alt="title" />
+</h3>
+
+<ul class="guanzhu-list clearfix">
+@foreach (var item in Model)
+{
+	<li>
+        <div>
+			<a href="/Home/Group/@item.Group.Id">
+			@if(string.IsNullOrWhiteSpace(item.Group.Logo))
+			{
+				<img src="/content/images/other/ico-1.png" alt="logo" />
+			}
+			else
+			{
+				<img src="@String.Format("/upload/group/{0}/logo{1}", item.Group.Id, item.Group.Logo)" alt="logo" />
+			}
+			</a>
+			<h4>@item.Group.Name</h4>
+	@if(ViewBag.CurrentUserId > 0)
+	{
+		if (!item.IsFollowing)
+		{
+			<a id='@string.Format("btn_group_{0}", @item.Group.Id)' href="javascript:;" class="btn-gz" onclick="join_group(@item.Group.Id)"></a>
+		}
+		else
+		{
+			<a id='@string.Format("btn_group_{0}", @item.Group.Id)' href="javascript:;" class="qxgz" onclick="quit_group(@item.Group.Id)"></a>
+		}
+	}
+	else
+	{
+			<a href="javascript:alert('请先登录');" class="btn-gz"></a>
+	}
+		</div>
+        <p title="@item.Group.Introduction">
+			@item.Group.Introduction.CutString(120, "...")
+		</p>
+    </li>
+}
+</ul>
+
+<div class="page">
+	第 @ViewBag.PageIndex / @ViewBag.TotalPage 页 
+	<a id="previous" href="javascript:;">上一页</a>
+	<a id="next" href="javascript:;">下一页</a>
+	<input id="pager_index" type="text" />
+	<a id="pager_redirect" href="javascript:;">跳转</a>
+</div>
+
+@section scripts
+{
+	<script type="text/javascript">
+		pageIndex = @ViewBag.PageIndex;
+		totalPage = @ViewBag.TotalPage;
+		pageUrl = '/Home/GroupList?';
+	</script>
+}

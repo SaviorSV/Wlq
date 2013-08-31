@@ -1,7 +1,7 @@
 ﻿@model Wlq.Web.Models.LeftMenuModel
 
-<ul class="leftmenu">
-    <li class="on"><a href="/" class="menu-1"></a></li>
+<ul id="leftmenu" class="leftmenu">
+    <li><a href="/" class="menu-1"></a></li>
 	<li><a href="@Url.Action("Health", "Home")" class="menu-2"></a></li>
 	<li><a href="/Home/Index?postType=Activity" class="menu-3"></a></li>
 	<li><a href="/Home/Index?postType=Venue" class="menu-4"></a></li>
@@ -16,14 +16,14 @@
 	{
 		<li>
 			<a href="/Home/Group/@group.Id">
-			@if (!string.IsNullOrWhiteSpace(group.Logo))
-   {
+		@if (!string.IsNullOrWhiteSpace(group.Logo))
+		{
 				<img src="@String.Format("/upload/group/{0}/logo{1}", group.Id, group.Logo)" alt="logo" />
-   }
-   else
-   {
+		}
+		else
+		{
 				<img src="/Content/images/other/ico-1.png" alt="logo" />
-   }
+		}
 			@group.Name
 			</a>
 		</li>
@@ -40,14 +40,14 @@
 	{
 		<li>
 			<a href="/Home/Group/@group.Id">
-			@if (!string.IsNullOrWhiteSpace(group.Logo))
-   {
+		@if (!string.IsNullOrWhiteSpace(group.Logo))
+		{
 				<img src="@String.Format("/upload/group/{0}/logo{1}", group.Id, group.Logo)" alt="logo" />
-   }
-   else
-   {
+		}
+		else
+		{
 				<img src="/Content/images/other/ico-1.png" alt="logo" />
-   }
+		}
 			@group.Name
 			</a>
 		</li>
