@@ -2,32 +2,91 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@using Wlq.Domain;
+@using Wlq.Web.Models;
+
+@model PostModel
+
 <h3 class="righttitle-2"><img src="/content/images/common/title-6.jpg" alt="title" /></h3>
 <div class="box640">
-    <div><img src="/content/images/common/box640-t.jpg" /></div>
+    <div><img src="/content/images/common/box640-t.jpg" alt="boxtop" /></div>
     <div class="dt-detail clearfix">
         <div class="dt-detail-topl">
-            <img src="/content/images/other/ico-1.png" /><h4>文化中心</h4>
-<a class="btn-gz fl"></a>
+            <a href="/Home/Group/@Model.Group.Id" class="leftico">
+			@if (string.IsNullOrWhiteSpace(Model.Group.Logo))
+			{
+				<img src="/content/images/other/ico-1.png" alt="logo" />
+			}
+			else
+			{
+				<img src="@String.Format("/upload/group/{0}/logo{1}", Model.Group.Id, Model.Group.Logo)" alt="logo" />
+			}
+		</a>
+			<h4>@Model.Group.Name</h4>
+	@if(ViewBag.CurrentUserId > 0)
+	{
+		if (!ViewBag.IsFollowing)
+		{
+			<a id='@string.Format("btn_group_{0}", @Model.Group.Id)' href="javascript:;" class="btn-gz" onclick="join_group(@Model.Group.Id)"></a>
+		}
+		else
+		{
+			<a id='@string.Format("btn_group_{0}", @Model.Group.Id)' href="javascript:;" class="qxgz" onclick="quit_group(@Model.Group.Id)"></a>
+		}
+	}
+	else
+	{
+			<a href="javascript:alert('请先登录');" class="btn-gz"></a>
+	}
 		</div>
-        <p class="dt-detail-topr">【发布时间：2013-05-31  13:50】</p>
+        <p class="dt-detail-topr">【发布时间：@string.Format("{0:yyyy-MM-dd HH:mm:ss}", Model.Post.LastModified)】</p>
 		<div>
             <div class="clear detailtxt-box">
             <h3>
-				五里健康大讲堂
-                <p>已预约<strong>207</strong>人</p>
+				@Model.Post.Title
+                <p>已预约<strong id='@string.Format("booking_number_{0}", Model.Post.Id)'>@Model.Post.BookingNumber</strong>人</p>
             </h3>
             <p>
-            本栏目由二医大、中山医院等名医、专家讲课，授课内容针对老年人常见疾病防治，科学养身和保健以及医学知识普及。
-<br><br>
-活动地点：五里桥社区文化活动中心多功能厅瞿溪路1111弄26号303室<br>
-活动时间：每周二13时30分—15时00分<br>
-限定人数：50
+				@Html.Raw(Model.Post.Content)
+				<br /><br />
+				<span>地　　点：@Model.Post.Location</span><br />
+			@if (Model.Post.PostType != (int)PostType.Venue) 
+			{
+				<span>限定人数：@Model.Post.LimitNumber</span>
+			}
             </p>
-                <div class="detailimgbox"><img src="/content/images/other/img1.jpg" /></div>
-                <div class="btnbox"><a href="#" class="btn">预 约</a><a href="#" class="btn">关 注</a></div>
+			@if (!string.IsNullOrWhiteSpace(Model.Post.Image))
+			{
+                <div class="detailimgbox">
+					<img src='@string.Format("/upload/group/{0}/{1}{2}", Model.Post.GroupId, Model.Post.Id, Model.Post.Image)' alt="post" />
+				</div>
+			}
+                <div class="btnbox">
+			@if (ViewBag.CurrentUserId > 0)
+			{
+				if (Model.Post.PostType != (int)PostType.Venue)
+				{
+					if (!Model.IsBooked)
+					{
+					<a id='@string.Format("btn_booking_{0}", Model.Post.Id)' href="javascript:;" onclick="normal_booking(@Model.Post.Id)" class="btn">预 约</a>
+					}
+					else
+					{
+					<a id='@string.Format("btn_booking_{0}", Model.Post.Id)' href="javascript:;" onclick="normal_cancel_booking(@Model.Post.Id)" class="btn-disable">取消预约</a>
+					}
+				}
+				if (!Model.IsConcerned)
+				{
+					<a id='@string.Format("btn_post_{0}", Model.Post.Id)' href="javascript:;" onclick="concern_post(@Model.Post.Id)" class="btn">关 注</a>
+				}
+				else
+				{
+					<a id='@string.Format("btn_post_{0}", Model.Post.Id)' href="javascript:;" onclick="unconcern_post(@Model.Post.Id)" class="btn-disable">取消关注</a>
+				}
+			}
+				</div>
             </div>
         </div>
-        </div>
-        <div class="box640-bottom"><img src="/content/images/common/box640-b.jpg" /></div>
+	</div>
+	<div class="box640-bottom"><img src="/content/images/common/box640-b.jpg" alt="boxbottom" /></div>
 </div>

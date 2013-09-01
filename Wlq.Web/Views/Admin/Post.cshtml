@@ -72,10 +72,23 @@
 			<label>相关场所：</label>
 			@Html.TextBoxFor(x => x.RelatedPlace, new { @class = "input-1" })
 		</li>
+		<li>
+			<label>图片上传：</label>
+			<input id="post_uploader" name="post_uploader" type="file" onchange="upload_file('post');" /><br />
+		@if (!string.IsNullOrWhiteSpace(Model.Image))
+		{
+			<img id="post_img" class="post_img" src='@string.Format("/upload/group/{0}/{1}{2}", Model.GroupId, Model.Id, Model.Image)' alt="postImage" />
+		}
+		else
+		{
+			<img id="post_img" class="post_img" src='' alt="postImage" style="display:none;" />
+		}
+		</li>
     </ul>
 	
 	<input name="Id" type="hidden" value="@Model.Id" />
-
+	<input id="post_hidden" name="Image" type="hidden" value="@Model.Image" />
+	
     <a id="save_post" href="javascript:;" class="btn-3">保　存</a>
 	<a href="@Url.Action("PostManagement", "Admin")" class="btn-3">返　回</a>
 }

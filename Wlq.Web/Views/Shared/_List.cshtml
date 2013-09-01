@@ -68,22 +68,22 @@
 			<p class="mainbox-txt">
 				@Html.Raw(item.Post.Content)	
 			</p>
-			<div>
-			@if(!string.IsNullOrWhiteSpace(item.Post.Image))
+			<div class="post-img-box">
+			@if (!string.IsNullOrWhiteSpace(item.Post.Image))
 			{
-				<img src="/content/images/other/img1.jpg" alt="post" />
+				<img src='@string.Format("/upload/group/{0}/{1}{2}", item.Post.GroupId, item.Post.Id, item.Post.Image)' alt="post" />
 			}
 			</div>
 			<div class="order">
-			@if(ViewBag.CurrentUserId > 0 && item.Post.PostType != (int)PostType.Venue)
+			@if (ViewBag.CurrentUserId > 0 && item.Post.PostType != (int)PostType.Venue)
 			{
-				if(!item.IsBooked)
+				if (!item.IsBooked)
 				{
-				<a id='@string.Format("btn_booking_{0}", item.Post.Id)' href="javascript:;" onclick="normal_booking(@item.Post.Id)" class="btn-yuyue"></a>
+				<a id='@string.Format("btn_booking_{0}", item.Post.Id)' href="javascript:;" onclick="normal_booking(@item.Post.Id)" class="btn">预 约</a>
 				}
 				else
 				{
-				<a id='@string.Format("btn_booking_{0}", item.Post.Id)' href="javascript:;" onclick="normal_cancel_booking(@item.Post.Id)">取消预约</a>
+				<a id='@string.Format("btn_booking_{0}", item.Post.Id)' href="javascript:;" onclick="normal_cancel_booking(@item.Post.Id)" class="btn-disable">取消预约</a>
 				}
 			}
 				已预约<strong id='@string.Format("booking_number_{0}", item.Post.Id)'>@item.Post.BookingNumber</strong>人

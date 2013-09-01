@@ -44,7 +44,7 @@ namespace Wlq.Web.Controllers
 			return PartialView("_Header");
 		}
 
-		[OutputCache(Duration = 3600)]
+		//[OutputCache(Duration = 3600)]
 		public ActionResult LeftMenu()
 		{
 			var model = new LeftMenuModel();
@@ -118,6 +118,32 @@ namespace Wlq.Web.Controllers
 			if (CurrentUserId > 0)
 			{
 				success = UserGroupService.RemoveUserFromGroup(CurrentUserId, groupId);
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
+		[HttpPost]
+		public ActionResult ConcernPost(long postId)
+		{
+			var success = false;
+
+			if (CurrentUserId > 0)
+			{
+				success = PostService.ConcernPost(postId, CurrentUserId);
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
+		[HttpPost]
+		public ActionResult UnconcernPost(long postId)
+		{
+			var success = false;
+
+			if (CurrentUserId > 0)
+			{
+				success = PostService.UnConcernPost(postId, CurrentUserId);
 			}
 
 			return Content(new { Success = success }.ObjectToJson(), "text/json");

@@ -26,7 +26,7 @@ namespace Wlq.Domain
 			Content = string.Empty;
 			Image = string.Empty;
 			BeginDate = DateTime.Now.Date;
-			EndDate = DateTime.Now.Date;
+			EndDate = DateTime.Now.Date.AddMonths(1);
 			Location = string.Empty;
 			RelatedPlace = string.Empty;
 			Phone = string.Empty;

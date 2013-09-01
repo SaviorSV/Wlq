@@ -85,14 +85,15 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .mainbox{ margin-bottom:20px; overflow:hidden;}
 .mainbox .leftico{ width:80px; float:left; display:inline-block; height:150px; margin-right:10px; color:#505050; text-align:center; text-decoration:none; line-height:24px; font-size:14px; font-weight:bold}
 .mainbox .leftico img{ margin-bottom:5px; max-width:457px;}
-.mainbox a { color:#979797; text-decoration:none;}
-.mainbox a:hover { text-decoration:underline;}
+.mainbox h3 a { color:#979797; text-decoration:none;}
+.mainbox h3 a:hover { text-decoration:underline;}
 
 .mainbox-r{ width:459px; background:url(../images/common/box-t.jpg); padding:20px 29px 0 40px; font-size:12px; line-height:24px; position:relative; float:left; color:#333333}
 .mainbox-r h3{ font-size:16px;font-family:"Microsoft Yahei"; color:#333; font-weight:normal; margin-bottom:10px;}
 .mainbox-r p.time{ color:#b49879}
 .mainbox-r .order{ text-align:center; color:#767676; font-size:16px;font-family:Tahoma,Verdana,Arial;padding:10px 0 20px 0 }
 .mainbox-r .order strong{ color:#ea993a; font-size:40px; margin:0 10px; font-weight:normal}
+.mainbox-r .post-img-box img { max-width:457px;}
 .mainbox-b{ background:url(../images/common/box-b.jpg); width:528px; height:15px; position:absolute; left:0px; bottom:0px;}
 .mainbox-txt{ margin-bottom:10px;}
 .imgbox{}
@@ -130,7 +131,8 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 
 .btn-yuyue{ background:url(../images/common/btn-yuyue.jpg); width:188px; height:48px; display:inline-block; position:relative; top:12px; margin-right:20px;}
 
-.btn{ background:url(../images/common/btn.png); width:216px; height:48px; line-height:48px; font-size:16px; color:#FFF; display:inline-block; text-decoration:none;}
+.btn{ background:url(../images/common/btn.png); width:188px; height:48px; line-height:48px; font-size:16px; color:#FFF; display:inline-block; text-decoration:none; font-weight:bold;}
+.btn-disable{ background:url(../images/common/btn_disable.png); width:188px; height:48px; line-height:48px; font-size:16px; color:#FFF; display:inline-block; text-decoration:none; font-weight:bold;}
 .btn-1{ background:url(../images/common/btn-bg.png) repeat-x; height:40px; display:inline-block; line-height:40px; color:#FFF; text-align:center; text-decoration:none}
 .btn-2{ background:url(../images/common/btn2-bg.png); height:38px; width:78px; display:inline-block; border:1px solid #ded8d8; line-height:38px; text-align:center; text-decoration:none; color:#686868}
 .tip-1{ background:url(../images/common/tip-1-24.png); _background:url(../images/common/tip-1-8.png); width:334px; height:256px; position:absolute}
@@ -217,6 +219,7 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .detailtxt-box h3 p{ position:absolute; right:0px; top:0px; color:#808080}
 .detailtxt-box h3 p strong{ color:#EA993A; font-size:40px; padding:0 10px; font-weight:normal}
 .detailimgbox{ padding:20px 0; text-align:center}
+.detailimgbox img{ max-width:500px;}
 .box640-bottom{ height:11px; font-size:1px; overflow:hidden}
 
 .jk-tab{ margin-bottom:40px;}

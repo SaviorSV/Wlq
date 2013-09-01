@@ -128,8 +128,35 @@ namespace Wlq.Web.Controllers
 
 		public ActionResult Post(long id)
 		{
-			//todo: post detail
-			return View();
+			var post = PostService.GetPost(id);
+
+			if (post == null)
+			{
+				return RedirectToAction("Index", "Home");
+			}
+
+			var group = UserGroupService.GetGroup(post.GroupId);
+
+			if (group == null)
+			{
+				return RedirectToAction("Index", "Home");
+			}
+
+			var model = new PostModel
+			{
+				Post = post,
+				Group = group,
+				IsBooked = CurrentUserId > 0 && post.PostType != (int)PostType.Venue
+					? PostService.IsBookedPost(post.Id, CurrentUserId) : false,
+				IsConcerned = CurrentUserId > 0
+					? PostService.IsUserConcernPost(post.Id, CurrentUserId) : false
+			};
+
+			ViewBag.CurrentUserId = CurrentUserId;
+			ViewBag.IsFollowing = CurrentUserId > 0
+				? UserGroupService.IsUserInGroup(CurrentUserId, group.Id) : false;
+
+			return View(model);
 		}
     }
 }

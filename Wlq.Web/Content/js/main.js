@@ -82,8 +82,9 @@ function normal_booking(postId) {
 			if (r.Success) {
 				var button = $("#btn_booking_" + postId);
 
-				button.removeClass('btn-yuyue');
-				button.html('取消预定');
+				button.removeClass('btn');
+				button.addClass('btn-disable');
+				button.html('取消预约');
 				button.attr("onclick", "normal_cancel_booking(" + postId + ")");
 
 				var bookingNumber = parseInt($("#booking_number_" + postId).html());
@@ -97,7 +98,7 @@ function normal_booking(postId) {
 }
 
 function normal_cancel_booking(postId) {
-	if (!confirm('是否取消预订？')) {
+	if (!confirm('是否取消预约？')) {
 		return;
 	}
 
@@ -113,8 +114,9 @@ function normal_cancel_booking(postId) {
 			if (r.Success) {
 				var button = $("#btn_booking_" + postId);
 
-				button.addClass('btn-yuyue');
-				button.html('');
+				button.removeClass('btn-disable');
+				button.addClass('btn');
+				button.html('预 约');
 				button.attr("onclick", "normal_booking(" + postId + ")");
 
 				var bookingNumber = parseInt($("#booking_number_" + postId).html());
@@ -171,4 +173,49 @@ function quit_group(groupId) {
 	});
 }
 
+function concern_post(postId) {
+	$.ajax({
+		type: "POST",
+		url: '/Common/ConcernPost',
+		dataType: 'json',
+		data: {
+			'postId': postId
+		},
+		success: function (r, status) {
+			if (r.Success) {
+				var button = $("#btn_post_" + postId);
+
+				button.removeClass('btn');
+				button.addClass('btn-disable');
+				button.html('取消关注');
+				button.attr("onclick", "unconcern_post(" + postId + ")");
+			}
+		}
+	});
+}
+
+function unconcern_post(postId) {
+	if (!confirm('是否取消关注？')) {
+		return;
+	}
+
+	$.ajax({
+		type: "POST",
+		url: '/Common/UnconcernPost',
+		dataType: 'json',
+		data: {
+			'postId': postId
+		},
+		success: function (r, status) {
+			if (r.Success) {
+				var button = $("#btn_post_" + postId);
+
+				button.removeClass('btn-disable');
+				button.addClass('btn');
+				button.html('关 注');
+				button.attr("onclick", "concern_post(" + postId + ")");
+			}
+		}
+	});
+}
 

@@ -37,8 +37,16 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult Index()
         {
-			//todo: admin index
-            return View();
+			var totalNumber = 0;
+
+			var model = new AdminIndexModel
+			{
+				ActivityList = PostService.GetPostsByType(PostType.Activity, true, 1, 8, out totalNumber),
+				CourseList = PostService.GetPostsByType(PostType.Course, true, 1, 8, out totalNumber),
+				VenueList = PostService.GetPostsByType(PostType.Venue, true, 1, 8, out totalNumber)
+			};
+
+			return View(model);
         }
 
 		#region User & Group
@@ -285,10 +293,9 @@ namespace Wlq.Web.Controllers
 			post.Fee = postModel.Fee;
 			post.Location = postModel.Location;
 			post.RelatedPlace = postModel.RelatedPlace;
-			post.VenueId = post.PostType == (int)PostType.Venue ? postModel.VenueId : 0;
+			post.VenueId = postModel.PostType == (int)PostType.Venue ? postModel.VenueId : 0;
 			post.Publisher = AdminUser.Name;
-
-			//todo: post image
+			post.Image = postModel.Image;
 
 			if (post.Id == 0)
 			{
@@ -304,6 +311,8 @@ namespace Wlq.Web.Controllers
 					return AlertAndRedirect("保存失败(更新发布信息失败)", "/Admin/PostManagement");
 				}
 			}
+
+			CommonService.SavePostImage(CurrentUserId, post.GroupId, post.Id);
 
 			return AlertAndRedirect("保存成功", "/Admin/PostManagement");
 		}
@@ -382,6 +391,7 @@ namespace Wlq.Web.Controllers
 					Id = p.Id, 
 					Title = p.Title,
 					PostType = PostService.GetPostTypeName((PostType)p.PostType),
+					BookingNumber = p.BookingNumber,
 					Publisher = p.Publisher,
 					LastModified = p.LastModified.ToString("yyyy-MM-dd HH:mm:ss") 
 				});

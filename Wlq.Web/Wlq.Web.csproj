@@ -86,6 +86,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdminIndexModel.cs" />
     <Compile Include="Models\AdminManagementModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\LeftMenuModel.cs" />
@@ -132,6 +133,7 @@
     <Content Include="Content\images\common\btn-yuyue.jpg" />
     <Content Include="Content\images\common\btn.png" />
     <Content Include="Content\images\common\btn2-bg.png" />
+    <Content Include="Content\images\common\btn_disable.png" />
     <Content Include="Content\images\common\flag-1.jpg" />
     <Content Include="Content\images\common\flag-2.jpg" />
     <Content Include="Content\images\common\flag-3.jpg" />
@@ -205,6 +207,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\Group\" />
+    <Folder Include="Upload\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_List.cshtml" />

@@ -245,10 +245,10 @@ namespace Wlq.Service.Implementation
 			var userPostRepository = new DatabaseRepository<UserPostInfo>(_databaseContext);
 			
 			userPostRepository.Add(new UserPostInfo
-				{
-					PostId = postId,
-					UserId = userId
-				});
+			{
+				PostId = postId,
+				UserId = userId
+			});
 
 			return _databaseContext.SaveChanges() > 0;
 		}

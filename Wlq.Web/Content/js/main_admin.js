@@ -21,6 +21,7 @@ function upload_file(type) {
 						case 'post':
 							if (r.Url != '' && r.Extention != '') {
 								$('#' + type + '_img').attr('src', r.Url);
+								$('#' + type + '_img').show();
 								$('#' + type + '_hidden').val(r.Extention);
 							}
 							break;

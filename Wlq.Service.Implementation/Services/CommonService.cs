@@ -68,33 +68,65 @@ namespace Wlq.Service.Implementation
 		public void SaveLogo(long userId, long groupId)
 		{
 			var realPath = FileManager.RealFilePhysicalPath + string.Format("{0}\\", groupId);
+			var file = this.GetTempFile(userId, UploadFileType.Logo);
 
+			if (file != string.Empty)
+			{
+				var extension = Path.GetExtension(file);
+
+				if (!Directory.Exists(realPath))
+					Directory.CreateDirectory(realPath);
+
+				try
+				{
+					FileManager.MakeThumbnail(
+						file, Path.Combine(realPath, string.Format("{0}{1}", UploadFileType.Logo, extension)), 78, 75, ThumbnailMode.HeightWidth);
+
+					File.Delete(file);
+				}
+				catch (Exception ex)
+				{
+					LocalLoggingService.Exception(string.Format("SaveLogo Error:{0}", ex.Message));
+				}
+			}
+		}
+
+		public void SavePostImage(long userId, long groupId, long postId)
+		{
+			var realPath = FileManager.RealFilePhysicalPath + string.Format("{0}\\", groupId);
+			var file = this.GetTempFile(userId, UploadFileType.Post);
+
+			if (file != string.Empty)
+			{
+				var extension = Path.GetExtension(file);
+
+				if (!Directory.Exists(realPath))
+					Directory.CreateDirectory(realPath);
+
+				try
+				{
+					File.Move(file, Path.Combine(realPath, string.Format("{0}{1}", postId, extension)));
+				}
+				catch (Exception ex)
+				{
+					LocalLoggingService.Exception(string.Format("SavePostImage Error:{0}", ex.Message));
+				}
+			}
+		}
+
+		private string GetTempFile(long userId, string fileType)
+		{
 			if (Directory.Exists(FileManager.TempFilePhysicalPath))
 			{
-				var tempFiles = Directory.GetFiles(FileManager.TempFilePhysicalPath, string.Format("{0}_{1}.*", userId, UploadFileType.Logo));
+				var tempFiles = Directory.GetFiles(FileManager.TempFilePhysicalPath, string.Format("{0}_{1}.*", userId, fileType));
 
 				foreach (var file in tempFiles)
 				{
-					var extension = Path.GetExtension(file);
-
-					if (!Directory.Exists(realPath))
-						Directory.CreateDirectory(realPath);
-
-					try
-					{
-						FileManager.MakeThumbnail(
-							file, Path.Combine(realPath, string.Format("{0}{1}", UploadFileType.Logo, extension)), 78, 75, ThumbnailMode.HeightWidth);
-
-						File.Delete(file);
-					}
-					catch (Exception ex)
-					{
-						LocalLoggingService.Exception(string.Format("SaveLogo Error:{0}", ex.Message));
-					}
-
-					break;
+					return file;
 				}
 			}
+
+			return string.Empty;
 		}
 
 		/// <summary>
