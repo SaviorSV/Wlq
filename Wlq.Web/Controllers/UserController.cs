@@ -7,10 +7,29 @@ namespace Wlq.Web.Controllers
 {
 	public class UserController : BaseController
 	{
-		[LoginAuthentication(RoleLevel.Normal, "Home", "INdex")]
+		[LoginAuthentication(RoleLevel.Normal, "Home", "Index")]
 		public ActionResult Info()
 		{
-			return View();
+			return View(CurrentUser);
+		}
+
+		[HttpPost]
+		[LoginAuthentication(RoleLevel.Normal, "Home", "Index")]
+		public ActionResult UpdateUser(UserInfo userModel)
+		{
+			//todo: user avatar
+			CurrentUser.Name = userModel.Name;
+			CurrentUser.Gender = userModel.Gender;
+			CurrentUser.Birth = userModel.Birth;
+			CurrentUser.Committees = userModel.Committees;
+			CurrentUser.Mobile = userModel.Mobile;
+			CurrentUser.Address = userModel.Address;
+			CurrentUser.Tags = userModel.Tags;
+
+			var message = UserGroupService.UpdateUser(CurrentUser)
+				? "保存成功" : "保存失败";
+
+			return AlertAndRedirect(message, "/User/Info");
 		}
 
 		[HttpPost]

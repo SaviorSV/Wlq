@@ -11,5 +11,13 @@ namespace Wlq.Web.Extensions
 
 			return null;
 		}
+
+		public static MvcHtmlString IsChecked(this HtmlHelper helper, bool isChecked)
+		{
+			if (isChecked)
+				return new MvcHtmlString("checked='checked'");
+
+			return null;
+		}
 	}
 }

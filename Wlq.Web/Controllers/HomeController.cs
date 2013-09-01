@@ -43,7 +43,23 @@ namespace Wlq.Web.Controllers
 			return View("_List", modelList);
         }
 
-		public ActionResult Health()
+		public ActionResult Health(int pageIndex = 1)
+		{
+			//todo: Health page
+			return View();
+		}
+
+		public ActionResult TZJC()
+		{
+			return View();
+		}
+
+		public ActionResult JKDA()
+		{
+			return View();
+		}
+
+		public ActionResult JKBD()
 		{
 			return View();
 		}
@@ -108,6 +124,12 @@ namespace Wlq.Web.Controllers
 			}
 
 			return View(modelList);
+		}
+
+		public ActionResult Post(long id)
+		{
+			//todo: post detail
+			return View();
 		}
     }
 }

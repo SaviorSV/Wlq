@@ -37,6 +37,7 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult Index()
         {
+			//todo: admin index
             return View();
         }
 
@@ -73,12 +74,12 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult Group(long groupId, long parentGroupId)
 		{
-			GroupInfo parentGroup = null;
-
-			if (!CheckParentGroupIsLegal(parentGroupId, ref parentGroup))
+			if (groupId > 0 && CurrentUser.Role != (int)RoleLevel.SuperAdmin && !UserGroupService.IsManagerInGroup(CurrentUserId, groupId))
 			{
 				return RedirectToAction("GroupManagement", "Admin");
 			}
+
+			var parentGroup = UserGroupService.GetGroup(parentGroupId);
 
 			ViewBag.ParentGroupName = parentGroup == null ? "无" : parentGroup.Name;
 
@@ -100,9 +101,11 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult SaveGroup(GroupInfo groupModel)
 		{
-			GroupInfo parentGroup = null;
-
-			if (!CheckParentGroupIsLegal(groupModel.ParentGroupId, ref parentGroup))
+			if (groupModel.Id > 0 && CurrentUser.Role != (int)RoleLevel.SuperAdmin && !UserGroupService.IsManagerInGroup(CurrentUserId, groupModel.Id))
+			{
+				return RedirectToAction("GroupManagement", "Admin");
+			}
+			else if (groupModel.Id == 0 && groupModel.ParentGroupId == 0 && CurrentUser.Role != (int)RoleLevel.SuperAdmin)
 			{
 				return RedirectToAction("GroupManagement", "Admin");
 			}
@@ -143,28 +146,6 @@ namespace Wlq.Web.Controllers
 			CommonService.SaveLogo(CurrentUserId, group.Id);
 
 			return AlertAndRedirect("保存成功", "/Admin/GroupManagement");
-		}
-
-		private bool CheckParentGroupIsLegal(long parentGroupId, ref GroupInfo parentGroup)
-		{
-			parentGroup = parentGroupId > 0 ? UserGroupService.GetGroup(parentGroupId) : null;
-
-			if (AdminUser.Role == (int)RoleLevel.SuperAdmin)
-			{
-				return true;
-			}
-
-			if (!UserGroupService.IsManagerInGroup(AdminUser.Id, parentGroupId))
-			{
-				return false;
-			}
-
-			if (parentGroup == null)
-			{
-				return false;
-			}
-
-			return true;
 		}
 
 		#endregion
@@ -307,7 +288,7 @@ namespace Wlq.Web.Controllers
 			post.VenueId = post.PostType == (int)PostType.Venue ? postModel.VenueId : 0;
 			post.Publisher = AdminUser.Name;
 
-			//todo: image
+			//todo: post image
 
 			if (post.Id == 0)
 			{
@@ -388,6 +369,7 @@ namespace Wlq.Web.Controllers
 
 		public ActionResult GetPostsByGroup(long id)
 		{
+			//todo: paging
 			if (AdminUser == null)
 			{
 				return Content("[]", "text/json");

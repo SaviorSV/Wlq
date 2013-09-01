@@ -138,6 +138,7 @@
     <Content Include="Content\images\common\footer.jpg" />
     <Content Include="Content\images\common\guanzhu-list.png" />
     <Content Include="Content\images\common\jk-tab.png" />
+    <Content Include="Content\images\common\jkda.jpg" />
     <Content Include="Content\images\common\jklist-tabbg.png" />
     <Content Include="Content\images\common\leftmenu.jpg" />
     <Content Include="Content\images\common\login-ico.jpg" />
@@ -253,6 +254,10 @@
     <Content Include="Views\Admin\Post.cshtml" />
     <Content Include="Views\Home\GroupList.cshtml" />
     <Content Include="Views\Shared\_LeftMenu.cshtml" />
+    <Content Include="Views\Home\Post.cshtml" />
+    <Content Include="Views\Home\TZJC.cshtml" />
+    <Content Include="Views\Home\JKDA.cshtml" />
+    <Content Include="Views\Home\JKBD.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
