@@ -34,11 +34,11 @@
 <div class="indexlist">
 @foreach (var item in Model)
 {
-	if(item.Group != null && item.Post != null)
+	if (item.Group != null && item.Post != null)
 	{
 	<div class="mainbox clearfix">
 		<a href="/Home/Group/@item.Group.Id" class="leftico">
-		@if(string.IsNullOrWhiteSpace(item.Group.Logo))
+		@ if(string.IsNullOrWhiteSpace(item.Group.Logo))
 		{
 			<img src="/content/images/other/ico-1.png" alt="logo" />
 		}

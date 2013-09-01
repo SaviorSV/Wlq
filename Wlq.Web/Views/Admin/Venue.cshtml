@@ -149,7 +149,7 @@
 				return false;
 			}
 
-			if(isNaN(limit) || limit <= 0) {
+			if (isNaN(limit) || limit <= 0) {
 				alert("限制人数须为大于0整数");
 				return false;
 			}
@@ -188,7 +188,7 @@
 
 		function delete_config(daysOfWeek, begin, end) {
 			for (var i = 0; i < venueConfig[daysOfWeek].length; i++) {
-				if(venueConfig[daysOfWeek][i].BeginTime == begin * 100 && venueConfig[daysOfWeek][i].EndTime == end * 100) {
+				if (venueConfig[daysOfWeek][i].BeginTime == begin * 100 && venueConfig[daysOfWeek][i].EndTime == end * 100) {
 					venueConfig[daysOfWeek].splice(i, 1);
 					show_config();
 					break;

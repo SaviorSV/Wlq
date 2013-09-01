@@ -12,7 +12,7 @@
     <div><img src="/content/images/common/box640-t.jpg" alt="boxtop" /></div>
     <div class="dt-detail clearfix userindexbox">
         <div class="userindexbox-img">
-		@if(string.IsNullOrWhiteSpace(Model.Group.Logo))
+		@if (string.IsNullOrWhiteSpace(Model.Group.Logo))
 		{
 			<img src="/content/images/other/ico-1.png" alt="logo" />
 		}
@@ -23,7 +23,7 @@
 		</div>
         <div class="userindexbox-info">
 			<h4>@Model.Group.Name</h4>
-		@if(ViewBag.CurrentUserId > 0)
+		@if (ViewBag.CurrentUserId > 0)
 		{
 			if (!Model.IsFollowing)
 			{
@@ -93,16 +93,16 @@
 			<p class="mainbox-txt">
 				@Html.Raw(item.Post.Content)	
 			</p>
-			<div>
-			@if(!string.IsNullOrWhiteSpace(item.Post.Image))
+			<div class="post-img-box">
+			@if (!string.IsNullOrWhiteSpace(item.Post.Image))
 			{
-				<img src="/content/images/other/img1.jpg" alt="post" />
+				<img src='@string.Format("/upload/group/{0}/{1}{2}", item.Post.GroupId, item.Post.Id, item.Post.Image)' alt="post" />
 			}
 			</div>
 			<div class="order">
-			@if(ViewBag.CurrentUserId > 0 && item.Post.PostType != (int)PostType.Venue)
+			@if (ViewBag.CurrentUserId > 0 && item.Post.PostType != (int)PostType.Venue)
 			{
-				if(!item.IsBooked)
+				if (!item.IsBooked)
 				{
 				<a id='@string.Format("btn_booking_{0}", item.Post.Id)' href="javascript:;" onclick="normal_booking(@item.Post.Id)" class="btn-yuyue"></a>
 				}

@@ -17,7 +17,7 @@
 	<li>
         <div>
 			<a href="/Home/Group/@item.Group.Id">
-			@if(string.IsNullOrWhiteSpace(item.Group.Logo))
+			@if (string.IsNullOrWhiteSpace(item.Group.Logo))
 			{
 				<img src="/content/images/other/ico-1.png" alt="logo" />
 			}
@@ -27,7 +27,7 @@
 			}
 			</a>
 			<h4>@item.Group.Name</h4>
-	@if(ViewBag.CurrentUserId > 0)
+	@if (ViewBag.CurrentUserId > 0)
 	{
 		if (!item.IsFollowing)
 		{
