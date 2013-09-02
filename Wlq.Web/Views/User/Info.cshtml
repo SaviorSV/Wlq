@@ -10,10 +10,17 @@
 <h4 class="r-subtitle">头像修改</h4>
 <div class="upload-img clearfix">
 	<span>
-		<img src="/content/images/user/touxiang.png" alt="avatar" />
+	@if(string.IsNullOrWhiteSpace(Model.Avatar))
+	{
+		<img id="avatar_img" src="/content/images/user/touxiang.png" alt="avatar" />
+	}
+	else
+	{
+		<img id="avatar_img" src='@string.Format("/upload/user/{0}/avatar{1}", Model.Id, Model.Avatar)' alt="avatar" />
+	}
 	</span>
 	<div>
-		<a href="javascript:;" class="btn-1" style="width:140px;">头像上传</a>
+		<input id="avatar_uploader" name="avatar_uploader" type="file" onchange="upload_file('avatar');" /><br />
 		<p>（仅限格式JPG、GIF、PNG，且文件大小需2M以内）</p>
 	</div>
 </div>
@@ -47,6 +54,7 @@
 	</li>
 </ul>
 @Html.HiddenFor(x => x.Tags)
+<input id="avatar_hidden" name="Avatar" type="hidden" value="@Model.Avatar" />
 }
 <h4 class="r-subtitle">个人标签</h4>
 <ul id="user_tags" class="usertag-list clearfix">

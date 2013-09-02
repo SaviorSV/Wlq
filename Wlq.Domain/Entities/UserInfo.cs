@@ -11,6 +11,7 @@ namespace Wlq.Domain
 		public string Mobile { get; set; }
 		public string Committees { get; set; }
 		public string Address { get; set; }
+		public string Avatar { get; set; }
 		public int Tags { get; set; }
 		public int Role { get; set; }
 
@@ -24,6 +25,7 @@ namespace Wlq.Domain
 			Mobile = string.Empty;
 			Committees = string.Empty;
 			Address = string.Empty;
+			Avatar = string.Empty;
 		}
 	}
 }

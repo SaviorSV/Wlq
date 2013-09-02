@@ -10,6 +10,8 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Normal, "Home", "Index")]
 		public ActionResult Info()
 		{
+			CommonService.CleanTempFile(CurrentUserId);
+
 			return View(CurrentUser);
 		}
 
@@ -17,7 +19,6 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Normal, "Home", "Index")]
 		public ActionResult UpdateUser(UserInfo userModel)
 		{
-			//todo: user avatar
 			CurrentUser.Name = userModel.Name;
 			CurrentUser.Gender = userModel.Gender;
 			CurrentUser.Birth = userModel.Birth;
@@ -25,9 +26,15 @@ namespace Wlq.Web.Controllers
 			CurrentUser.Mobile = userModel.Mobile;
 			CurrentUser.Address = userModel.Address;
 			CurrentUser.Tags = userModel.Tags;
+			CurrentUser.Avatar = userModel.Avatar;
 
-			var message = UserGroupService.UpdateUser(CurrentUser)
-				? "保存成功" : "保存失败";
+			var success =  UserGroupService.UpdateUser(CurrentUser);
+			var message = success ? "保存成功" : "保存失败";
+
+			if (success)
+			{
+				CommonService.SaveUserAvatar(CurrentUserId);
+			}
 
 			return AlertAndRedirect(message, "/User/Info");
 		}

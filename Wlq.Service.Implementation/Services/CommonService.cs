@@ -136,7 +136,7 @@ namespace Wlq.Service.Implementation
 				try
 				{
 					FileManager.MakeThumbnail(
-						tempFile, Path.Combine(realPath, string.Format("avatar{0}", extension)), 140, 132, ThumbnailMode.HeightWidth);
+						tempFile, Path.Combine(realPath, string.Format("{0}{1}", UploadFileType.Avatar, extension)), 140, 132, ThumbnailMode.HeightWidth);
 
 					File.Delete(tempFile);
 				}
