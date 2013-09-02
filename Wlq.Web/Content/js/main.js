@@ -54,12 +54,6 @@ $(function () {
 	});
 });
 
-function selected_left_menu(index) {
-	var li = $('#leftmenu li:eq(' + index + ')');
-
-	li.addClass('on');
-}
-
 function GetToday() {
 	var today = new Date();
 	return today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate();

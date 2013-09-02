@@ -151,7 +151,7 @@ namespace Wlq.Web.Controllers
 				}
 			}
 
-			CommonService.SaveLogo(CurrentUserId, group.Id);
+			CommonService.SaveGroupLogo(CurrentUserId, group.Id);
 
 			return AlertAndRedirect("保存成功", "/Admin/GroupManagement");
 		}

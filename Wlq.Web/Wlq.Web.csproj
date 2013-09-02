@@ -186,7 +186,7 @@
     <Content Include="Content\js\main.js" />
     <Content Include="Content\js\setByte.js" />
     <Content Include="Content\js\swfobject.js" />
-    <Content Include="Content\js\main_admin.js" />
+    <Content Include="Content\js\common.js" />
     <Content Include="Content\tinyeditor\images\header-bg.gif" />
     <Content Include="Content\tinyeditor\images\icons.png" />
     <Content Include="Content\tinyeditor\images\resize.gif" />

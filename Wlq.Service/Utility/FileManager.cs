@@ -11,8 +11,7 @@ namespace Wlq.Service.Utility
 	public class FileManager
 	{
 		public static readonly string[] AllowImageExtensions = new string[] { ".jpg", ".png", ".jpeg", ".gif" };
-		public static readonly string TempFilePhysicalPath = AppDomain.CurrentDomain.BaseDirectory + "\\Upload\\Temp\\";
-		public static readonly string RealFilePhysicalPath = AppDomain.CurrentDomain.BaseDirectory + "\\Upload\\Group\\";
+		public static readonly string UploadPhysicalPath = AppDomain.CurrentDomain.BaseDirectory + "\\Upload\\";
 
 		public static void Upload(Stream stream, string physicalPath, string fileName)
 		{
@@ -130,6 +129,7 @@ namespace Wlq.Service.Utility
 	{
 		public const string Logo = "logo";
 		public const string Post = "post";
+		public const string Avatar = "avatar";
 		public const string File = "file";
 	}
 

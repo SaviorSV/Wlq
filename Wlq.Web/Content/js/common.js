@@ -19,6 +19,7 @@ function upload_file(type) {
 					switch (type) {
 						case 'logo':
 						case 'post':
+						case 'avatar':
 							if (r.Url != '' && r.Extention != '') {
 								$('#' + type + '_img').attr('src', r.Url);
 								$('#' + type + '_img').show();
@@ -49,6 +50,7 @@ function validateFile(obj, type) {
 	switch (type) {
 		case 'logo':
 		case 'post':
+		case 'avatar':
 			if (!(/^.*?\.(gif|png|jpg|jpeg)$/.test(file.val().toLowerCase()))) {
 				alert('只能上传jpg、jpeg、png或gif格式的图片！');
 				return false;
