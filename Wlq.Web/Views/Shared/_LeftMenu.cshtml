@@ -1,14 +1,14 @@
 ﻿@model Wlq.Web.Models.LeftMenuModel
 
 <ul id="leftmenu" class="leftmenu">
-    <li><a href="/" class="menu-1"></a></li>
+	<li><a href="/" class="menu-1"></a></li>
 	<li><a href="@Url.Action("Health", "Home")" class="menu-2"></a></li>
 	<li><a href="/Home/Index?postType=Activity" class="menu-3"></a></li>
 	<li><a href="/Home/Index?postType=Venue" class="menu-4"></a></li>
 	<li><a href="/Home/Index?postType=Course" class="menu-5"></a></li>
 </ul>
 <div>
-    <h3 class="left-title"><img src="../../Content/images/common/title-1.jpg" alt="" /></h3>
+	<h3 class="left-title"><img src="../../Content/images/common/title-1.jpg" alt="" /></h3>
 	<ul class="leftlist">
 @if (Model.Departments != null)
 {
@@ -32,7 +32,7 @@
 	</ul>
 </div>
 <div>
-    <h3 class="left-title"><img src="../../Content/images/common/title-2.jpg" alt="" /></h3>
+	<h3 class="left-title"><img src="../../Content/images/common/title-2.jpg" alt="" /></h3>
 	<ul class="leftlist">
 @if (Model.Circles != null)
 {

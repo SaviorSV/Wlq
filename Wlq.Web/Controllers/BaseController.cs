@@ -9,7 +9,7 @@ using Wlq.Service;
 
 namespace Wlq.Web.Controllers
 {
-    public class BaseController : Controller
+	public class BaseController : Controller
 	{
 		#region Services
 
@@ -118,5 +118,5 @@ namespace Wlq.Web.Controllers
 
 			base.Dispose(disposing);
 		}
-    }
+	}
 }

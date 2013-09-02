@@ -9,10 +9,10 @@
 
 <h3 class="righttitle-2"><img src="/content/images/common/title-6.jpg" alt="title" /></h3>
 <div class="box640">
-    <div><img src="/content/images/common/box640-t.jpg" alt="boxtop" /></div>
-    <div class="dt-detail clearfix">
-        <div class="dt-detail-topl">
-            <a href="/Home/Group/@Model.Group.Id" class="leftico">
+	<div><img src="/content/images/common/box640-t.jpg" alt="boxtop" /></div>
+	<div class="dt-detail clearfix">
+		<div class="dt-detail-topl">
+			<a href="/Home/Group/@Model.Group.Id" class="leftico">
 			@if (string.IsNullOrWhiteSpace(Model.Group.Logo))
 			{
 				<img src="/content/images/other/ico-1.png" alt="logo" />
@@ -39,31 +39,31 @@
 			<a href="javascript:alert('请先登录');" class="btn-gz"></a>
 	}
 		</div>
-        <p class="dt-detail-topr">【发布时间：@string.Format("{0:yyyy-MM-dd HH:mm:ss}", Model.Post.LastModified)】</p>
+		<p class="dt-detail-topr">【发布时间：@string.Format("{0:yyyy-MM-dd HH:mm:ss}", Model.Post.LastModified)】</p>
 		<div>
-            <div class="clear detailtxt-box">
-            <h3>
-				@Model.Post.Title
-                <p>已预约<strong id='@string.Format("booking_number_{0}", Model.Post.Id)'>@Model.Post.BookingNumber</strong>人</p>
-            </h3>
-            <p>
-				@Html.Raw(Model.Post.Content)
-				<br /><br />
-				<span>起止日期：@string.Format("{0:yyyy-MM-dd}", Model.Post.BeginDate) 至 @string.Format("{0:yyyy-MM-dd}", Model.Post.EndDate)</span><br />
-				<span>地　　点：@Model.Post.Location</span><br />
-				<span>联系电话：@Model.Post.Phone</span><br />
-			@if (Model.Post.PostType != (int)PostType.Venue) 
-			{
-				<span>限定人数：@Model.Post.LimitNumber</span>
-			}
-            </p>
+			<div class="clear detailtxt-box">
+				<h3>
+					@Model.Post.Title
+					<p>已预约<strong id='@string.Format("booking_number_{0}", Model.Post.Id)'>@Model.Post.BookingNumber</strong>人</p>
+				</h3>
+				<p>
+					@Html.Raw(Model.Post.Content)
+					<br /><br />
+					<span>起止日期：@string.Format("{0:yyyy-MM-dd}", Model.Post.BeginDate) 至 @string.Format("{0:yyyy-MM-dd}", Model.Post.EndDate)</span><br />
+					<span>地　　点：@Model.Post.Location</span><br />
+					<span>联系电话：@Model.Post.Phone</span><br />
+				@if (Model.Post.PostType != (int)PostType.Venue) 
+				{
+					<span>限定人数：@Model.Post.LimitNumber</span>
+				}
+				</p>
 			@if (!string.IsNullOrWhiteSpace(Model.Post.Image))
 			{
-                <div class="detailimgbox">
+				<div class="detailimgbox">
 					<img src='@string.Format("/upload/group/{0}/{1}{2}", Model.Post.GroupId, Model.Post.Id, Model.Post.Image)' alt="post" />
 				</div>
 			}
-                <div class="btnbox">
+				<div class="btnbox">
 			@if (ViewBag.CurrentUserId > 0)
 			{
 				if (Model.Post.PostType != (int)PostType.Venue)
@@ -87,8 +87,8 @@
 				}
 			}
 				</div>
-            </div>
-        </div>
+			</div>
+		</div>
 	</div>
 	<div class="box640-bottom"><img src="/content/images/common/box640-b.jpg" alt="boxbottom" /></div>
 </div>

@@ -9,39 +9,39 @@
 
 <h4 class="r-subtitle">头像修改</h4>
 <div class="upload-img clearfix">
-    <span>
-        <img src="/content/images/user/touxiang.png" alt="avatar" />
-    </span>
-    <div>
-        <a href="javascript:;" class="btn-1" style="width:140px;">头像上传</a>
-        <p>（仅限格式JPG、GIF、PNG，且文件大小需2M以内）</p>
+	<span>
+		<img src="/content/images/user/touxiang.png" alt="avatar" />
+	</span>
+	<div>
+		<a href="javascript:;" class="btn-1" style="width:140px;">头像上传</a>
+		<p>（仅限格式JPG、GIF、PNG，且文件大小需2M以内）</p>
 	</div>
 </div>
 <h4 class="r-subtitle">信息修改</h4>
 @using (Html.BeginForm("UpdateUser", "User", FormMethod.Post, new { id = "update_user_form" }))
 {
 <ul class="useredit-list">
-    <li>
+	<li>
 		<label class="btn-2">姓 名</label>
 		@Html.TextBoxFor(x => x.Name)
 	</li>
-    <li>
+	<li>
 		<label class="btn-2">性 别</label>
 		@Html.TextBoxFor(x => x.Gender)
 	</li>
-    <li>
+	<li>
 		<label class="btn-2">出生年月</label>
 		@Html.TextBoxFor(x => x.Birth)
 	</li>
-    <li>
+	<li>
 		<label class="btn-2">居委会</label>
 		@Html.TextBoxFor(x => x.Committees)
 	</li>
-    <li>
+	<li>
 		<label class="btn-2">联系电话</label>
 		@Html.TextBoxFor(x => x.Mobile)
 	</li>
-    <li>
+	<li>
 		<label class="btn-2">联系地址</label>
 		@Html.TextBoxFor(x => x.Address)
 	</li>
@@ -50,8 +50,8 @@
 }
 <h4 class="r-subtitle">个人标签</h4>
 <ul id="user_tags" class="usertag-list clearfix">
-    <li><label>党员</label> <input type="checkbox" value="@string.Format("{0}", (int)UserTag.PartyMember)" @Html.IsChecked(((UserTag)Model.Tags & UserTag.PartyMember) == UserTag.PartyMember) /></li>
-    <li><label>志愿者</label> <input type="checkbox" value="@string.Format("{0}", (int)UserTag.Volunteer)" @Html.IsChecked(((UserTag)Model.Tags & UserTag.Volunteer) == UserTag.Volunteer) /></li>
+	<li><label>党员</label> <input type="checkbox" value="@string.Format("{0}", (int)UserTag.PartyMember)" @Html.IsChecked(((UserTag)Model.Tags & UserTag.PartyMember) == UserTag.PartyMember) /></li>
+	<li><label>志愿者</label> <input type="checkbox" value="@string.Format("{0}", (int)UserTag.Volunteer)" @Html.IsChecked(((UserTag)Model.Tags & UserTag.Volunteer) == UserTag.Volunteer) /></li>
 </ul>
 
 <div class="btnbox">	<a id="btn_update_user" href="javascript:;" class="btn-1" style="width:200px;">确 定</a></div>@section scripts

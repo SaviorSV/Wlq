@@ -9,9 +9,9 @@
 @model GroupDetailModel
 
 <div class="box640">
-    <div><img src="/content/images/common/box640-t.jpg" alt="boxtop" /></div>
-    <div class="dt-detail clearfix userindexbox">
-        <div class="userindexbox-img">
+	<div><img src="/content/images/common/box640-t.jpg" alt="boxtop" /></div>
+	<div class="dt-detail clearfix userindexbox">
+		<div class="userindexbox-img">
 		@if (string.IsNullOrWhiteSpace(Model.Group.Logo))
 		{
 			<img src="/content/images/other/ico-1.png" alt="logo" />
@@ -21,7 +21,7 @@
 			<img src="@String.Format("/upload/group/{0}/logo{1}", Model.Group.Id, Model.Group.Logo)" alt="logo" />
 		}
 		</div>
-        <div class="userindexbox-info">
+		<div class="userindexbox-info">
 			<h4>@Model.Group.Name</h4>
 		@if (ViewBag.CurrentUserId > 0)
 		{
@@ -40,7 +40,7 @@
 		}
 		@if (Model.Group.GroupType == (int)GroupType.Department)
 		{
-            <p>
+			<p>
 				联系地址：@Model.Group.Address <br />
 				联系电话：@Model.Group.Phone <br />
 				工作时间：@Model.Group.WorkTime
@@ -52,7 +52,7 @@
 				@Model.Group.Introduction.CutString(120, "...")
 			</p>
 		}
-        </div>
+		</div>
 	</div>
 	<div class="box640-bottom"><img src="/content/images/common/box640-b.jpg" alt="boxbottom" /></div>
 </div>

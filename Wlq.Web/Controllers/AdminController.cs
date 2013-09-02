@@ -10,7 +10,7 @@ using Wlq.Web.Models;
 
 namespace Wlq.Web.Controllers
 {
-    public class AdminController : BaseController
+	public class AdminController : BaseController
 	{
 		#region Members
 
@@ -36,7 +36,7 @@ namespace Wlq.Web.Controllers
 
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult Index()
-        {
+		{
 			var totalNumber = 0;
 
 			var model = new AdminIndexModel
@@ -47,7 +47,7 @@ namespace Wlq.Web.Controllers
 			};
 
 			return View(model);
-        }
+		}
 
 		#region User & Group
 

@@ -1,13 +1,13 @@
 @charset "utf-8";
 /* 重置 */
-body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6,pre, form, fieldset, input, textarea, p, blockquote, th, td {padding:0;margin:0;}   
-fieldset, img {border:0;}   
-table{border-collapse:collapse;border-spacing:0;}   
-ol, ul {list-style:none;}   
-address, caption, cite, code, dfn, em, th, var {font-weight:normal;font-style:normal;}   
-caption, th {text-align:left;}   
-h1, h2, h3, h4, h5, h6 {font-size:100%;}   
-q:before, q:after {content:'';}  
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6,pre, form, fieldset, input, textarea, p, blockquote, th, td {padding:0;margin:0;}
+fieldset, img {border:0;}
+table{border-collapse:collapse;border-spacing:0;}
+ol, ul {list-style:none;}
+address, caption, cite, code, dfn, em, th, var {font-weight:normal;font-style:normal;}
+caption, th {text-align:left;}
+h1, h2, h3, h4, h5, h6 {font-size:100%;}
+q:before, q:after {content:'';}
 ins{ text-decoration:none;}
 
 .clearfix { *zoom:1}
@@ -122,7 +122,7 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .js-detail{border:1px solid #d7d7d7; background:#FFF; padding:26px 11px; font-size:12px; line-height:20px; font-family:simsun; min-height:500px;_height:500px; width:622px}
 
 .tabbox{ border-left:1px solid #d7d7d7}
-.tabbox li{ float:left; width:169px; height:49px;  text-align:center; line-height:49px; border-top:1px solid #d7d7d7; border-right:1px solid #d7d7d7; position:relative}
+.tabbox li{ float:left; width:169px; height:49px; text-align:center; line-height:49px; border-top:1px solid #d7d7d7; border-right:1px solid #d7d7d7; position:relative}
 .tabbox li a{ color:#979797;font-family:"Microsoft Yahei"; font-size:18px; font-weight:normal; text-decoration:none;width:169px; height:49px; display:inline-block;background:#f5f5f5;}
 .tabbox li a.on{ background:#fff; position:absolute; height:50px; left:0px; border-top:10px solid #f92e54; top:-10px;}
 
@@ -183,7 +183,7 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .guanzhu-list{ width:640px;}
 .guanzhu-list li{ background:url(../images/common/guanzhu-list.png); width:282px; height:202px; padding:20px 0 0 20px; float:left; margin:0 18px 18px 0}
 .guanzhu-list li img{ float:left; margin-right:18px;}
-.guanzhu-list li  h4{ font-size:14px; line-height:24px; margin-bottom:10px; color:#505050}
+.guanzhu-list li h4{ font-size:14px; line-height:24px; margin-bottom:10px; color:#505050}
 .guanzhu-list li p{ clear:both; padding:10px 0 0 5px; line-height:26px; color:#505050; font-size:14px;}
 
 .useryy-list{}
@@ -260,7 +260,7 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .useredit-list1 li{ margin-bottom:20px; clear:both; overflow:hidden}
 .useredit-list1 li label.btn-2{ float:left;margin-right:0px;}
 .useredit-list1 li span{ float:left; height:40px; line-height:40px;}
-.useredit-list1 li input{ height:38px; line-height:38px; width:329px; border:0px; font-size:14px;  color:#b4b4b4; float:left; border:1px solid #ded8d8; border-left:0px; text-indent:10px;}
+.useredit-list1 li input{ height:38px; line-height:38px; width:329px; border:0px; font-size:14px; color:#b4b4b4; float:left; border:1px solid #ded8d8; border-left:0px; text-indent:10px;}
 
 .userindexbox{}
 .userindexbox-img{ float:left; margin-right:22px;}

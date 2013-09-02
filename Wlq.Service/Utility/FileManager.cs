@@ -56,8 +56,8 @@ namespace Wlq.Service.Utility
 
 			var ow = originalImage.Width;
 			var oh = originalImage.Height;
-
-			int x = 0, y = 0;
+			var x = 0;
+			var y = 0;
 
 			switch (mode)
 			{
@@ -90,13 +90,10 @@ namespace Wlq.Service.Utility
 			}
 
 			var bitmap = new Bitmap(towidth, toheight);
-
 			var graphics = Graphics.FromImage(bitmap);
 
 			graphics.InterpolationMode = InterpolationMode.High;
-
 			graphics.SmoothingMode = SmoothingMode.HighQuality;
-
 			graphics.Clear(Color.Transparent);
 
 			graphics.DrawImage(

@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 using Hanger.Common;
 using Wlq.Domain;
-using Wlq.Service.Utility;
 using Wlq.Web.Models;
 
 namespace Wlq.Web.Controllers
 {
-    public class CommonController : BaseController
-    {
+	public class CommonController : BaseController
+	{
 		public ActionResult Redirect(string message, string url)
 		{
 			ViewBag.Message = HttpUtility.UrlDecode(message);

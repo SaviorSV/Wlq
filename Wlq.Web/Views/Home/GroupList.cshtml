@@ -15,7 +15,7 @@
 @foreach (var item in Model)
 {
 	<li>
-        <div>
+		<div>
 			<a href="/Home/Group/@item.Group.Id">
 			@if (string.IsNullOrWhiteSpace(item.Group.Logo))
 			{
@@ -43,10 +43,10 @@
 			<a href="javascript:alert('请先登录');" class="btn-gz"></a>
 	}
 		</div>
-        <p title="@item.Group.Introduction">
+		<p title="@item.Group.Introduction">
 			@item.Group.Introduction.CutString(120, "...")
 		</p>
-    </li>
+	</li>
 }
 </ul>
 

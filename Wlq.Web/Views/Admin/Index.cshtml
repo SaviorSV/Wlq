@@ -6,18 +6,18 @@
 
 <div class="indextab">
 	<ul class="clearfix">
-        <li><a href="/Admin/AdminManagement" class="tab-1">权限管理</a></li>
+		<li><a href="/Admin/AdminManagement" class="tab-1">权限管理</a></li>
 		<li><a href="/Admin/GroupManagement" class="tab-4">组织管理</a></li>
-        <li><a href="/Admin/PostManagement" class="tab-2">发布管理</a></li>
-        <li><a href="/Admin/VenueManagement" class="tab-3">场地管理</a></li>
-        <li><a href="#" class="tab-5">数据查询</a></li>
-    </ul>
+		<li><a href="/Admin/PostManagement" class="tab-2">发布管理</a></li>
+		<li><a href="/Admin/VenueManagement" class="tab-3">场地管理</a></li>
+		<li><a href="#" class="tab-5">数据查询</a></li>
+	</ul>
 </div>
 <div class="clearfix indexlistbody">
-    <dl class="indexlistbox">
-        <dt>最新活动信息</dt>
-        <dd>
-            <ul>
+	<dl class="indexlistbox">
+		<dt>最新活动信息</dt>
+		<dd>
+			<ul>
 			@foreach (var item in Model.ActivityList)
 			{
 				<li>
@@ -25,44 +25,43 @@
 					<a href="/Home/Post/@item.Id" target="_blank">@item.Title</a>
 				</li>
 			}	
-            </ul>
-        </dd>
-    </dl>
-    <dl class="indexlistbox">
-        <dt>最新课程信息</dt>
-        <dd>
-            <ul>
-            @foreach (var item in Model.CourseList)
-			{
-				<li>
-					<span>@string.Format("{0:yyyy-MM-dd HH:mm:ss}", item.LastModified)</span>
-					<a href="/Home/Post/@item.Id" target="_blank">@item.Title</a>
-				</li>
-			}	
-            </ul>
-        </dd>
-    </dl>
-    <dl class="indexlistbox">
-        <dt>最新场地信息</dt>
-        <dd>
-            <ul>
-            @foreach (var item in Model.VenueList)
-			{
-				<li>
-					<span>@string.Format("{0:yyyy-MM-dd HH:mm:ss}", item.LastModified)</span>
-					<a href="/Home/Post/@item.Id" target="_blank">@item.Title</a>
-				</li>
-			}	
-            </ul>
-        </dd>
-    </dl>
+			</ul>
+		</dd>
+	</dl>
 	<dl class="indexlistbox">
-        <dt>其他</dt>
-        <dd>
-            <ul>
-            </ul>
-        </dd>
-    </dl>
+		<dt>最新课程信息</dt>
+		<dd>
+			<ul>
+			@foreach (var item in Model.CourseList)
+			{
+				<li>
+					<span>@string.Format("{0:yyyy-MM-dd HH:mm:ss}", item.LastModified)</span>
+					<a href="/Home/Post/@item.Id" target="_blank">@item.Title</a>
+				</li>
+			}	
+			</ul>
+		</dd>
+	</dl>
+	<dl class="indexlistbox">
+		<dt>最新场地信息</dt>
+		<dd>
+			<ul>
+			@foreach (var item in Model.VenueList)
+			{
+				<li>
+					<span>@string.Format("{0:yyyy-MM-dd HH:mm:ss}", item.LastModified)</span>
+					<a href="/Home/Post/@item.Id" target="_blank">@item.Title</a>
+				</li>
+			}	
+			</ul>
+		</dd>
+	</dl>
+	<dl class="indexlistbox">
+		<dt>其他</dt>
+		<dd>
+			<ul></ul>
+		</dd>
+	</dl>
 </div>
 
 @section scripts

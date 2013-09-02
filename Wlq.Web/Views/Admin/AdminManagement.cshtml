@@ -25,7 +25,7 @@ else
 	{
 		<span>下级组织：</span>
 		<select id="circle_selector" class="select-2">
-		@if(Model.Circles != null && Model.Circles.Count() > 0)
+		@if (Model.Circles != null && Model.Circles.Count() > 0)
 		{
 			foreach (var group in Model.Circles)
 			{
@@ -54,10 +54,10 @@ else
 	<div class="content">
 		<table class="list-tbl">
 			<tbody>
-                <tr>
+				<tr>
 					<td>登　录　名</td><td style="text-align:left;"><input class="input-2" id="loginName" type="text" /></td>
 				</tr>
-                <tr>
+				<tr>
 					<td>姓　　　名</td><td style="text-align:left;"><input class="input-2" id="name" type="text" /></td>
 				</tr>
 				<tr>
@@ -69,7 +69,7 @@ else
 						<a id="bind_manager" href="javascript:;" class="btn-3">绑定该组</a>
 					</td>
 				</tr>
-            </tbody>
+			</tbody>
 		</table>
 	</div>
 	

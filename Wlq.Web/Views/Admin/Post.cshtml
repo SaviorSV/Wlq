@@ -32,7 +32,7 @@
 	}
 			</select>
 		</li>
-        <li>
+		<li>
 			<label>发布类型：</label>
 			<select id="post_type_selector" name="PostType" class="select-1">
 				<option value="1" @Html.IsSelected(Model.PostType == 1)>活动</option>
@@ -42,21 +42,21 @@
 			<label id="venue_selector_title">场地：</label>
 			<select id="venue_selector" name="VenueId" class="select-1"></select>
 		</li>
-        <li>
+		<li>
 			<label>发布标题：</label>
 			@Html.TextBoxFor(x => x.Title, new { @class = "input-1" })
 		</li>
-        <li>
+		<li>
 			<label>活动简介：</label>
-            <input id="post_content" name="Content" value="@Model.Content" />
-        </li>
-        <li>
+			<input id="post_content" name="Content" value="@Model.Content" />
+		</li>
+		<li>
 			<label>开始时间：</label>
 			<input name="BeginDate" class="input-2" type="text" value="@Model.BeginDate.ToString("yyyy-MM-dd")" />
 			<label>结束时间：</label>
 			<input name="EndDate" class="input-2" type="text" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
 		</li>
-        <li>
+		<li>
 			<label>联系电话：</label>
 			@Html.TextBoxFor(x => x.Phone, new { @class = "input-2" })
 			<label>限制人数：</label>
@@ -84,12 +84,12 @@
 			<img id="post_img" class="post_img" src='' alt="postImage" style="display:none;" />
 		}
 		</li>
-    </ul>
+	</ul>
 	
 	<input name="Id" type="hidden" value="@Model.Id" />
 	<input id="post_hidden" name="Image" type="hidden" value="@Model.Image" />
 	
-    <a id="save_post" href="javascript:;" class="btn-3">保　存</a>
+	<a id="save_post" href="javascript:;" class="btn-3">保　存</a>
 	<a href="@Url.Action("PostManagement", "Admin")" class="btn-3">返　回</a>
 }
 </div>

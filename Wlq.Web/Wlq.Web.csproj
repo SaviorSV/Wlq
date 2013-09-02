@@ -178,14 +178,8 @@
     <Content Include="Content\images\user\userflag.png" />
     <Content Include="Content\images\user\userinfobox.png" />
     <Content Include="Content\js\ajaxfileupload.js" />
-    <Content Include="Content\js\fed.famsg.js" />
-    <Content Include="Content\js\fed.tabs.js" />
-    <Content Include="Content\js\jq.layer.js" />
-    <Content Include="Content\js\jquery.bgiframe.min.js" />
     <Content Include="Content\js\jquery.min.js" />
     <Content Include="Content\js\main.js" />
-    <Content Include="Content\js\setByte.js" />
-    <Content Include="Content\js\swfobject.js" />
     <Content Include="Content\js\common.js" />
     <Content Include="Content\tinyeditor\images\header-bg.gif" />
     <Content Include="Content\tinyeditor\images\icons.png" />

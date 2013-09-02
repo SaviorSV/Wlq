@@ -212,4 +212,3 @@ function unconcern_post(postId) {
 		}
 	});
 }
-

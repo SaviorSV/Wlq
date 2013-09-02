@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 using Wlq.Domain;
 using Wlq.Web.Models;
-using Hanger.Common;
 
 namespace Wlq.Web.Controllers
 {
-    public class HomeController : BaseController
-    {
+	public class HomeController : BaseController
+	{
 		private const int _PostListSize = 15;
 		private const int _GroupListSize = 10;
 
 		public ActionResult Index(int pageIndex = 1, PostType postType = PostType.All)
-        {
+		{
 			var totalNumber = 0;
 			var posts = postType == PostType.All
 				? PostService.GetLastPosts(pageIndex, _PostListSize, out totalNumber)
@@ -41,7 +38,7 @@ namespace Wlq.Web.Controllers
 			}
 
 			return View("_List", modelList);
-        }
+		}
 
 		public ActionResult Health(int pageIndex = 1)
 		{
@@ -158,5 +155,5 @@ namespace Wlq.Web.Controllers
 
 			return View(model);
 		}
-    }
+	}
 }
