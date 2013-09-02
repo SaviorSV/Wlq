@@ -75,11 +75,11 @@ namespace Wlq.Service.Implementation
 		public void SaveGroupLogo(long userId, long groupId)
 		{
 			var realPath = UploadPhysicalPath + string.Format("Group\\{0}\\", groupId);
-			var file = this.GetTempFile(userId, UploadFileType.Logo);
+			var tempFile = this.GetTempFile(userId, UploadFileType.Logo);
 
-			if (file != string.Empty)
+			if (tempFile != string.Empty)
 			{
-				var extension = Path.GetExtension(file);
+				var extension = Path.GetExtension(tempFile);
 
 				if (!Directory.Exists(realPath))
 					Directory.CreateDirectory(realPath);
@@ -87,9 +87,9 @@ namespace Wlq.Service.Implementation
 				try
 				{
 					FileManager.MakeThumbnail(
-						file, Path.Combine(realPath, string.Format("{0}{1}", UploadFileType.Logo, extension)), 78, 75, ThumbnailMode.HeightWidth);
+						tempFile, Path.Combine(realPath, string.Format("{0}{1}", UploadFileType.Logo, extension)), 78, 75, ThumbnailMode.HeightWidth);
 
-					File.Delete(file);
+					File.Delete(tempFile);
 				}
 				catch (Exception ex)
 				{
@@ -101,18 +101,18 @@ namespace Wlq.Service.Implementation
 		public void SavePostImage(long userId, long groupId, long postId)
 		{
 			var realPath = UploadPhysicalPath + string.Format("Group\\{0}\\", groupId);
-			var file = this.GetTempFile(userId, UploadFileType.Post);
+			var tempFile = this.GetTempFile(userId, UploadFileType.Post);
 
-			if (file != string.Empty)
+			if (tempFile != string.Empty)
 			{
-				var extension = Path.GetExtension(file);
+				var extension = Path.GetExtension(tempFile);
 
 				if (!Directory.Exists(realPath))
 					Directory.CreateDirectory(realPath);
 
 				try
 				{
-					File.Move(file, Path.Combine(realPath, string.Format("{0}{1}", postId, extension)));
+					File.Move(tempFile, Path.Combine(realPath, string.Format("{0}{1}", postId, extension)));
 				}
 				catch (Exception ex)
 				{
@@ -124,18 +124,21 @@ namespace Wlq.Service.Implementation
 		public void SaveUserAvatar(long userId)
 		{
 			var realPath = UploadPhysicalPath + string.Format("User\\{0}\\", userId);
-			var file = this.GetTempFile(userId, UploadFileType.Avatar);
+			var tempFile = this.GetTempFile(userId, UploadFileType.Avatar);
 
-			if (file != string.Empty)
+			if (tempFile != string.Empty)
 			{
-				var extension = Path.GetExtension(file);
+				var extension = Path.GetExtension(tempFile);
 
 				if (!Directory.Exists(realPath))
 					Directory.CreateDirectory(realPath);
 
 				try
 				{
-					File.Move(file, Path.Combine(realPath, string.Format("avatar{0}", extension)));
+					FileManager.MakeThumbnail(
+						tempFile, Path.Combine(realPath, string.Format("avatar{0}", extension)), 140, 132, ThumbnailMode.HeightWidth);
+
+					File.Delete(tempFile);
 				}
 				catch (Exception ex)
 				{
