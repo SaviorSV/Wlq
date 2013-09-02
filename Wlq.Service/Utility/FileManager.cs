@@ -10,9 +10,6 @@ namespace Wlq.Service.Utility
 {
 	public class FileManager
 	{
-		public static readonly string[] AllowImageExtensions = new string[] { ".jpg", ".png", ".jpeg", ".gif" };
-		public static readonly string UploadPhysicalPath = AppDomain.CurrentDomain.BaseDirectory + "\\Upload\\";
-
 		public static void Upload(Stream stream, string physicalPath, string fileName)
 		{
 			var bufferSize = 256;
@@ -123,55 +120,5 @@ namespace Wlq.Service.Utility
 				graphics.Dispose();
 			}
 		}
-	}
-
-	public class UploadFileType
-	{
-		public const string Logo = "logo";
-		public const string Post = "post";
-		public const string Avatar = "avatar";
-		public const string File = "file";
-	}
-
-	public class FileUploadResult
-	{
-		/// <summary>
-		/// success:0, error:1
-		/// </summary>
-		public int Error { get; set; }
-		public string Message { get; set; }
-		public string Url { get; set; }
-		public string Extention { get; set; }
-
-		public FileUploadResult(int error, string message, string url, string extension)
-		{
-			this.Error = error;
-			this.Message = message;
-			this.Url = url;
-			this.Extention = extension;
-		}
-	}
-
-	public enum ThumbnailMode
-	{
-		/// <summary>
-		/// 指定高宽缩放（可能变形）
-		/// </summary>
-		HeightWidth = 1,
-
-		/// <summary>
-		/// 指定宽，高按比例  
-		/// </summary>
-		Width = 2,
-
-		/// <summary>
-		/// 指定高，宽按比例
-		/// </summary>
-		Height = 3,
-
-		/// <summary>
-		/// 指定高宽裁减（不变形）
-		/// </summary>
-		Cut = 4
 	}
 }

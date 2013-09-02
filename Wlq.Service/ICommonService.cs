@@ -12,5 +12,6 @@ namespace Wlq.Service
 		void CleanTempFile(long userId);
 		void SaveGroupLogo(long userId, long groupId);
 		void SavePostImage(long userId, long groupId, long postId);
+		void SaveUserAvatar(long userId);
 	}
 }

@@ -15,6 +15,9 @@ namespace Wlq.Service.Implementation
 {
 	public class CommonService : Disposable, ICommonService
 	{
+		private static readonly string UploadPhysicalPath = AppDomain.CurrentDomain.BaseDirectory + "\\Upload\\";
+		private static readonly string[] AllowImageExtensions = new string[] { ".jpg", ".png", ".jpeg", ".gif" };
+		
 		public CommonService() { }
 
 		public FileUploadResult UploadTempFile(long userId, string fileType)
@@ -34,31 +37,33 @@ namespace Wlq.Service.Implementation
 
 				extension = Path.GetExtension(uploadFile.FileName).ToLower();
 
-				if (!FileManager.AllowImageExtensions.Contains(extension))
+				if (!AllowImageExtensions.Contains(extension))
 				{
 					return new FileUploadResult(1, "上传失败(文件格式错误)", string.Empty, string.Empty);
 				}
 
-				fileName = string.Format("{0}_{1}{2}", userId.ToString(), fileType, extension);
+				this.CleanTempFile(userId);
 
-				FileManager.Upload(uploadFile.InputStream, FileManager.UploadPhysicalPath + "Temp\\", fileName);
+				fileName = string.Format("{0}_temp_{1}{2}", userId.ToString(), fileType, extension);
+
+				FileManager.Upload(uploadFile.InputStream, this.GetTempFilePath(userId), fileName);
 			}
 			else
 			{
 				return new FileUploadResult(1, "上传失败(上传文件为空)", string.Empty, string.Empty);
 			}
 
-			return new FileUploadResult(0, "上传成功", string.Format("/upload/temp/{0}", fileName), extension);
+			return new FileUploadResult(0, "上传成功", string.Format("/upload/user/{0}/{1}", userId, fileName), extension);
 		}
 
 		public void CleanTempFile(long userId)
 		{
-			var tempPath = FileManager.UploadPhysicalPath + "Temp\\";
+			var tempPath = this.GetTempFilePath(userId);
 
 			if (Directory.Exists(tempPath))
 			{
 				var tempFiles = Directory.GetFiles(tempPath)
-					.Where(f => Path.GetFileName(f).StartsWith(userId.ToString() + "_"));
+					.Where(f => Path.GetFileName(f).StartsWith(userId.ToString() + "_temp_"));
 
 				foreach (var file in tempFiles)
 				{
@@ -69,7 +74,7 @@ namespace Wlq.Service.Implementation
 
 		public void SaveGroupLogo(long userId, long groupId)
 		{
-			var realPath = FileManager.UploadPhysicalPath + string.Format("Group\\{0}\\", groupId);
+			var realPath = UploadPhysicalPath + string.Format("Group\\{0}\\", groupId);
 			var file = this.GetTempFile(userId, UploadFileType.Logo);
 
 			if (file != string.Empty)
@@ -95,7 +100,7 @@ namespace Wlq.Service.Implementation
 
 		public void SavePostImage(long userId, long groupId, long postId)
 		{
-			var realPath = FileManager.UploadPhysicalPath + string.Format("Group\\{0}\\", groupId);
+			var realPath = UploadPhysicalPath + string.Format("Group\\{0}\\", groupId);
 			var file = this.GetTempFile(userId, UploadFileType.Post);
 
 			if (file != string.Empty)
@@ -118,7 +123,7 @@ namespace Wlq.Service.Implementation
 
 		public void SaveUserAvatar(long userId)
 		{
-			var realPath = FileManager.UploadPhysicalPath + string.Format("User\\{0}\\", userId);
+			var realPath = UploadPhysicalPath + string.Format("User\\{0}\\", userId);
 			var file = this.GetTempFile(userId, UploadFileType.Avatar);
 
 			if (file != string.Empty)
@@ -139,13 +144,20 @@ namespace Wlq.Service.Implementation
 			}
 		}
 
+		#region private
+
+		private string GetTempFilePath(long userId)
+		{
+			return UploadPhysicalPath + string.Format("User\\{0}\\", userId);
+		}
+
 		private string GetTempFile(long userId, string fileType)
 		{
-			var tempPath = FileManager.UploadPhysicalPath + "Temp\\";
+			var tempPath = this.GetTempFilePath(userId);
 
 			if (Directory.Exists(tempPath))
 			{
-				var tempFiles = Directory.GetFiles(tempPath, string.Format("{0}_{1}.*", userId, fileType));
+				var tempFiles = Directory.GetFiles(tempPath, string.Format("{0}_temp_{1}.*", userId, fileType));
 
 				foreach (var file in tempFiles)
 				{
@@ -155,6 +167,8 @@ namespace Wlq.Service.Implementation
 
 			return string.Empty;
 		}
+
+		#endregion
 
 		/// <summary>
 		/// Dispose

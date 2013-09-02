@@ -49,6 +49,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ICommonService.cs" />
     <Compile Include="Utility\FileManager.cs" />
+    <Compile Include="Utility\FileUploadResult.cs" />
+    <Compile Include="Utility\ThumbnailMode.cs" />
+    <Compile Include="Utility\UploadFileType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wlq.Domain\Wlq.Domain.csproj">
