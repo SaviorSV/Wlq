@@ -17,7 +17,7 @@ else
 	<div class="loginbarbody">
 		<span class="login-ico"></span>
 		<span class="login-userinfo">您好，<strong>@ViewBag.Name</strong></span>
-		<a href="#" class="login-edit">我的首页</a>
+		<a href="@Url.Action("MyHome", "User")" class="login-edit">我的首页</a>
 		<a href="@Url.Action("Info", "User")" class="login-edit">个人资料</a>
 		<a href="@Url.Action("ChangePassword", "User")" class="login-edit">修改密码</a>
 		<a href="@Url.Action("SignOut", "User")" class="loginout">退出</a>

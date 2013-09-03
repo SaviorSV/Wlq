@@ -124,5 +124,11 @@ namespace Wlq.Web.Controllers
 
 			return RedirectToAction("Login", "Admin");
 		}
+
+		[LoginAuthentication(RoleLevel.Normal, "Home", "Index")]
+		public ActionResult MyHome()
+		{
+			return View();
+		}
 	}
 }
