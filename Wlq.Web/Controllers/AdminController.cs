@@ -492,13 +492,7 @@ namespace Wlq.Web.Controllers
 
 			if (AdminUser != null)
 			{
-				var user = UserGroupService.GetUser(userId);
-
-				if (user != null)
-				{
-					var result = UserGroupService.ChangePassword(user, user.Password, "111111");
-					success = result == ChangePasswordResult.Success;
-				}
+				success = UserGroupService.ResetPassword(userId, "111111");
 			}
 
 			return Content(new { Success = success }.ObjectToJson(), "text/json");

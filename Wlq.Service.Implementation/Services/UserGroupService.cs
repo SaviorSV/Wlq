@@ -96,6 +96,20 @@ namespace Wlq.Service.Implementation
 				? ChangePasswordResult.Success : ChangePasswordResult.Error;
 		}
 
+		public bool ResetPassword(long userId, string newPassword)
+		{
+			var user = this.GetUser(userId);
+
+			if (user == null)
+			{
+				return false;
+			}
+
+			user.Password = newPassword.ToMd5();
+
+			return this.UpdateUser(user);
+		}
+
 		public bool Login(string loginName, string password, bool isAdmin)
 		{
 			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);

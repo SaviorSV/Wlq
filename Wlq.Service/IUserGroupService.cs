@@ -18,6 +18,7 @@ namespace Wlq.Service
 		bool UpdateUser(UserInfo user);
 		bool DeleteUser(long userId);
 		ChangePasswordResult ChangePassword(UserInfo user, string oldPassword, string newPassword);
+		bool ResetPassword(long userId, string newPassword);
 		bool Login(string loginName, string password, bool isAdmin);
 
 		#endregion
