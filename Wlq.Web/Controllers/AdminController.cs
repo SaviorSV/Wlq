@@ -5,6 +5,7 @@ using System.Web.Mvc;
 
 using Hanger.Common;
 using Wlq.Domain;
+using Wlq.Service;
 using Wlq.Web.Fliters;
 using Wlq.Web.Models;
 
@@ -479,6 +480,25 @@ namespace Wlq.Web.Controllers
 			if (AdminUser != null)
 			{
 				success = PostService.DeletePost(postId);
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
+		[HttpPost]
+		public ActionResult ResetPassword(long userId)
+		{
+			var success = false;
+
+			if (AdminUser != null)
+			{
+				var user = UserGroupService.GetUser(userId);
+
+				if (user != null)
+				{
+					var result = UserGroupService.ChangePassword(user, user.Password, "111111");
+					success = result == ChangePasswordResult.Success;
+				}
 			}
 
 			return Content(new { Success = success }.ObjectToJson(), "text/json");

@@ -88,6 +88,7 @@
     </Compile>
     <Compile Include="Models\AdminIndexModel.cs" />
     <Compile Include="Models\AdminManagementModel.cs" />
+    <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\LeftMenuModel.cs" />
     <Compile Include="Models\PostModel.cs" />
@@ -255,6 +256,7 @@
     <Content Include="Views\Home\TZJC.cshtml" />
     <Content Include="Views\Home\JKDA.cshtml" />
     <Content Include="Views\Home\JKBD.cshtml" />
+    <Content Include="Views\User\ChangePassword.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -169,7 +169,7 @@ else
 						result += "<thead><tr><th>登录名</th><th>姓名</th><th>从组删除</th><th>密码重置</th></tr></thead><tbody>";
 
 						for (var i in data) {
-							result += "<tr><td>" + data[i].LoginName + "</td><td>" + data[i].Name + "</td><td><a href='javascript:;' onclick='remove_manager(" + data[i].Id + "," + groupId + ")' class='editico-1'></a></td><td><a href='javascript:;' class='editico-2'></a></td></tr>";
+							result += "<tr><td>" + data[i].LoginName + "</td><td>" + data[i].Name + "</td><td><a href='javascript:;' onclick='remove_manager(" + data[i].Id + "," + groupId + ")' class='editico-1'></a></td><td><a href='javascript:;' onclick='reset_password(" + data[i].Id + ")' class='editico-2'></a></td></tr>";
 						}
 
 						result += "</tbody></table>";
@@ -211,6 +211,28 @@ else
 					}
 					else {
 						alert("删除失败");
+					}
+				}
+			});
+		}
+
+		function reset_password(userId) {
+			if (!confirm("确定重置密码?"))
+				return false;
+
+			$.ajax({
+				type: "POST",
+				dataType: 'json',
+				url: "/Admin/ResetPassword",
+				data: {
+					'userId': userId
+				},
+				success: function (r, status) {
+					if (r.Success) {
+						alert("重置成功");
+					}
+					else {
+						alert("重置失败");
 					}
 				}
 			});

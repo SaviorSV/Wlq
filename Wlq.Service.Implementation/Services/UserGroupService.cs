@@ -81,11 +81,19 @@ namespace Wlq.Service.Implementation
 			return _databaseContext.SaveChanges() > 0;
 		}
 
-		public bool ChangePassword(UserInfo user, string newPassword)
+		public ChangePasswordResult ChangePassword(UserInfo user, string oldPassword, string newPassword)
 		{
+			var oldHash = oldPassword.ToMd5();
+
+			if (oldHash != user.Password)
+			{
+				return ChangePasswordResult.OldPasswordWrong;
+			}
+
 			user.Password = newPassword.ToMd5();
 
-			return this.UpdateUser(user);
+			return this.UpdateUser(user)
+				? ChangePasswordResult.Success : ChangePasswordResult.Error;
 		}
 
 		public bool Login(string loginName, string password, bool isAdmin)

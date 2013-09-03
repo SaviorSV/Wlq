@@ -44,14 +44,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\ChangePasswordResult.cs" />
     <Compile Include="IPostService.cs" />
     <Compile Include="IUserGroupService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ICommonService.cs" />
     <Compile Include="Utility\FileManager.cs" />
-    <Compile Include="Utility\FileUploadResult.cs" />
-    <Compile Include="Utility\ThumbnailMode.cs" />
-    <Compile Include="Utility\UploadFileType.cs" />
+    <Compile Include="Common\FileUploadResult.cs" />
+    <Compile Include="Common\ThumbnailMode.cs" />
+    <Compile Include="Common\UploadFileType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wlq.Domain\Wlq.Domain.csproj">

@@ -1,5 +1,5 @@
 ﻿
-namespace Wlq.Service.Utility
+namespace Wlq.Service
 {
 	public class UploadFileType
 	{

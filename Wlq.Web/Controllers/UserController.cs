@@ -1,7 +1,10 @@
 ﻿using System.Web.Mvc;
 using System.Web.Security;
-using Wlq.Web.Fliters;
+
 using Wlq.Domain;
+using Wlq.Service;
+using Wlq.Web.Fliters;
+using Wlq.Web.Models;
 
 namespace Wlq.Web.Controllers
 {
@@ -37,6 +40,45 @@ namespace Wlq.Web.Controllers
 			}
 
 			return AlertAndRedirect(message, "/User/Info");
+		}
+
+		[LoginAuthentication(RoleLevel.Normal, "Home", "Index")]
+		public ActionResult ChangePassword()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		[LoginAuthentication(RoleLevel.Normal, "Home", "Index")]
+		public ActionResult ChangePassword(ChangePasswordModel model)
+		{
+			var message = string.Empty;
+
+			if (model.NewPassword != model.NewPasswordVerify)
+			{
+				message = "两次密码输入不一致";
+			}
+			else
+			{
+				var result = UserGroupService.ChangePassword(CurrentUser, model.OldPassword, model.NewPassword);
+
+				switch (result)
+				{
+					case ChangePasswordResult.Success:
+						message = "修改成功";
+						break;
+					case ChangePasswordResult.OldPasswordWrong:
+						message = "原密码不正确";
+						break;
+					case ChangePasswordResult.Error:
+						message = "修改失败";
+						break;
+					default:
+						break;
+				}
+			}
+
+			return AlertAndRedirect(message, "/User/ChangePassword");
 		}
 
 		[HttpPost]
