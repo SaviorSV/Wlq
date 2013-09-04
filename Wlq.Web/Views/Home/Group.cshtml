@@ -61,61 +61,10 @@
 <div class="indexlist">
 @foreach (var item in Model.Posts)
 {
-	<div class="mainbox clearfix">
-		<a href="/Home/Group/@item.Group.Id" class="leftico">
-		@if (string.IsNullOrWhiteSpace(item.Group.Logo))
-		{
-			<img src="/content/images/other/ico-1.png" alt="logo" />
-		}
-		else
-		{
-			<img src="@String.Format("/upload/group/{0}/logo{1}", item.Group.Id, item.Group.Logo)" alt="logo" />
-		}
-			@item.Group.Name
-		</a>
-		<div class="mainbox-r">
-		@switch ((PostType)item.Post.PostType)
-		{
-			case PostType.Activity:
-			<span class="flag-1"></span>
-				break;
-			case PostType.Venue:
-			<span class="flag-2"></span>
-				break;
-			case PostType.Course:
-			<span class="flag-3"></span>
-				break;
-			default:
-				break;
-		}
-			<p class="time">@string.Format("{0:yyyy-MM-dd HH:mm:ss}", item.Post.LastModified)</p>
-			<h3><a href="/Home/Post/@item.Post.Id">@item.Post.Title</a></h3>
-			<p class="mainbox-txt">
-				@Html.Raw(item.Post.Content)	
-			</p>
-			<div class="post-img-box">
-			@if (!string.IsNullOrWhiteSpace(item.Post.Image))
-			{
-				<img src='@string.Format("/upload/group/{0}/{1}{2}", item.Post.GroupId, item.Post.Id, item.Post.Image)' alt="post" />
-			}
-			</div>
-			<div class="order">
-			@if (ViewBag.CurrentUserId > 0 && item.Post.PostType != (int)PostType.Venue)
-			{
-				if (!item.IsBooked)
-				{
-				<a id='@string.Format("btn_booking_{0}", item.Post.Id)' href="javascript:;" onclick="normal_booking(@item.Post.Id)" class="btn-yuyue"></a>
-				}
-				else
-				{
-				<a id='@string.Format("btn_booking_{0}", item.Post.Id)' href="javascript:;" onclick="normal_cancel_booking(@item.Post.Id)">取消预约</a>
-				}
-			}
-				已预约<strong id='@string.Format("booking_number_{0}", item.Post.Id)'>@item.Post.BookingNumber</strong>人
-			</div>
-			<div class="mainbox-b"></div>
-		</div>
-	</div>
+	if (item.Group != null && item.Post != null)
+	{
+		Html.RenderPartial("_PostItem", item);
+	}
 }
 </div>
 

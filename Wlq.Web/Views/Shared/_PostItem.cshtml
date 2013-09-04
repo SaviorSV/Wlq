@@ -1,0 +1,60 @@
+﻿@using Wlq.Domain;
+@using Wlq.Web.Models;
+
+@model PostModel
+		   
+<div class="mainbox clearfix">
+	<a href="/Home/Group/@Model.Group.Id" class="leftico">
+	@if (string.IsNullOrWhiteSpace(Model.Group.Logo))
+	{
+		<img src="/content/images/other/ico-1.png" alt="logo" />
+	}
+	else
+	{
+		<img src="@String.Format("/upload/group/{0}/logo{1}", Model.Group.Id, Model.Group.Logo)" alt="logo" />
+	}
+		@Model.Group.Name
+	</a>
+	<div class="mainbox-r">
+	@switch ((PostType)Model.Post.PostType)
+	{
+		case PostType.Activity:
+		<span class="flag-1"></span>
+			break;
+		case PostType.Venue:
+		<span class="flag-2"></span>
+			break;
+		case PostType.Course:
+		<span class="flag-3"></span>
+			break;
+		default:
+			break;
+	}
+		<p class="time">@string.Format("{0:yyyy-MM-dd HH:mm:ss}", Model.Post.LastModified)</p>
+		<h3><a href="/Home/Post/@Model.Post.Id">@Model.Post.Title</a></h3>
+		<p class="mainbox-txt">
+			@Html.Raw(Model.Post.Content)	
+		</p>
+		<div class="post-img-box">
+		@if (!string.IsNullOrWhiteSpace(Model.Post.Image))
+		{
+			<img src='@string.Format("/upload/group/{0}/{1}{2}", Model.Post.GroupId, Model.Post.Id, Model.Post.Image)' alt="post" />
+		}
+		</div>
+		<div class="order">
+		@if (ViewBag.CurrentUserId > 0 && Model.Post.PostType != (int)PostType.Venue)
+		{
+			if (!Model.IsBooked)
+			{
+			<a id='@string.Format("btn_booking_{0}", Model.Post.Id)' href="javascript:;" onclick="normal_booking(@Model.Post.Id)" class="btn-yuyue"></a>
+			}
+			else
+			{
+			<a id='@string.Format("btn_booking_{0}", Model.Post.Id)' href="javascript:;" onclick="normal_cancel_booking(@Model.Post.Id)">取消预约</a>
+			}
+		}
+			已预约<strong id='@string.Format("booking_number_{0}", Model.Post.Id)'>@Model.Post.BookingNumber</strong>人
+		</div>
+		<div class="mainbox-b"></div>
+	</div>
+</div>
