@@ -31,7 +31,7 @@ namespace Wlq.Web.Controllers
 			CurrentUser.Tags = userModel.Tags;
 			CurrentUser.Avatar = userModel.Avatar;
 
-			var success =  UserGroupService.UpdateUser(CurrentUser);
+			var success = UserGroupService.UpdateUser(CurrentUser);
 			var message = success ? "保存成功" : "保存失败";
 
 			if (success)

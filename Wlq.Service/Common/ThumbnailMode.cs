@@ -9,7 +9,7 @@ namespace Wlq.Service
 		HeightWidth = 1,
 
 		/// <summary>
-		/// 指定宽，高按比例  
+		/// 指定宽，高按比例
 		/// </summary>
 		Width = 2,
 

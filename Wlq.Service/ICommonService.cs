@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using Wlq.Domain;
-using Wlq.Service.Utility;
 
 namespace Wlq.Service
 {

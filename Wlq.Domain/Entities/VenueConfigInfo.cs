@@ -8,10 +8,5 @@ namespace Wlq.Domain
 		public int BegenTime { get; set; }
 		public int EndTime { get; set; }
 		public int LimitNumber { get; set; }
-
-		public VenueConfigInfo()
-		{
-			
-		}
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using Hanger.Common;
 using Microsoft.Practices.Unity;
-using Wlq.Service;
 
 namespace Wlq.Service.Implementation
 {

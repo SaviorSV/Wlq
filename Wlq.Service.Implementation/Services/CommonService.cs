@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Web;
 
 using Hanger.Common;
-using Wlq.Domain;
-using Wlq.Persistence;
-using Wlq.Service;
 using Wlq.Service.Utility;
 
 namespace Wlq.Service.Implementation

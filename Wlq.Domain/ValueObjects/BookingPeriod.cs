@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Hanger.Common;
-
+﻿
 namespace Wlq.Domain
 {
 	public class BookingPeriod
