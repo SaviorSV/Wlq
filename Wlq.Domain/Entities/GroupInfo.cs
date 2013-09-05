@@ -9,6 +9,7 @@ namespace Wlq.Domain
 		public int GroupType { get; set; }
 		public string Address { get; set; }
 		public string Phone { get; set; }
+		public string Email { get; set; }
 		public string WorkTime { get; set; }
 		public string Introduction { get; set; }
 
@@ -18,6 +19,7 @@ namespace Wlq.Domain
 			Logo = string.Empty;
 			Address = string.Empty;
 			Phone = string.Empty;
+			Email = string.Empty;
 			WorkTime = string.Empty;
 			Introduction = string.Empty;
 		}

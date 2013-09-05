@@ -2,6 +2,10 @@
 	$('#leftmenu li:eq(' + index + ')').addClass('on');
 }
 
+function selected_myhome_menu(index) {
+	$('#my_home_tags li:eq(' + index + ') a').addClass('on');
+}
+
 function upload_file(type) {
 	if (validateFile($('#' + type + '_uploader'), type)) {
 		$.ajaxFileUpload({

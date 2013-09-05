@@ -134,6 +134,7 @@ namespace Wlq.Web.Controllers
 			group.Logo = groupModel.Logo;
 			group.Address = groupModel.Address;
 			group.Phone = groupModel.Phone;
+			group.Email = groupModel.Email;
 			group.WorkTime = groupModel.WorkTime;
 			group.Introduction = groupModel.Introduction;
 

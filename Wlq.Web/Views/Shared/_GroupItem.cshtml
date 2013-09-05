@@ -1,0 +1,49 @@
+﻿@using Hanger.Common;
+@using Wlq.Domain;
+
+@model Wlq.Web.Models.GroupModel
+
+<li>
+	<div>
+		<a href="/Home/Group/@Model.Group.Id">
+		@if (string.IsNullOrWhiteSpace(Model.Group.Logo))
+		{
+			<img src="/content/images/other/ico-1.png" alt="logo" />
+		}
+		else
+		{
+			<img src="@String.Format("/upload/group/{0}/logo{1}", Model.Group.Id, Model.Group.Logo)" alt="logo" />
+		}
+		</a>
+		<h4>@Model.Group.Name</h4>
+@if (ViewBag.CurrentUserId > 0)
+{
+	if (!Model.IsFollowing)
+	{
+		<a id='@string.Format("btn_group_{0}", @Model.Group.Id)' href="javascript:;" class="btn-gz" onclick="join_group(@Model.Group.Id)"></a>
+	}
+	else
+	{
+		<a id='@string.Format("btn_group_{0}", @Model.Group.Id)' href="javascript:;" class="qxgz" onclick="quit_group(@Model.Group.Id)"></a>
+	}
+}
+else
+{
+		<a href="javascript:alert('请先登录');" class="btn-gz"></a>
+}
+	</div>
+@if (Model.Group.GroupType == (int)GroupType.Department)
+{
+	<p>
+		地址： @Model.Group.Address <br />
+		电话： @Model.Group.Phone <br />
+		邮箱： @Model.Group.Email
+	</p>
+}
+else
+{
+	<p title="@Model.Group.Introduction">
+		@Model.Group.Introduction.CutString(120, "...")
+	</p>
+}
+</li>

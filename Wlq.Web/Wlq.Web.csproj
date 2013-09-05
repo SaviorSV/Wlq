@@ -257,8 +257,12 @@
     <Content Include="Views\Home\JKDA.cshtml" />
     <Content Include="Views\Home\JKBD.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
-    <Content Include="Views\User\MyHome.cshtml" />
+    <Content Include="Views\User\MyPosts.cshtml" />
     <Content Include="Views\Shared\_PostItem.cshtml" />
+    <Content Include="Views\User\MyHomeHeader.cshtml" />
+    <Content Include="Views\User\MyBooking.cshtml" />
+    <Content Include="Views\User\MyGroups.cshtml" />
+    <Content Include="Views\Shared\_GroupItem.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

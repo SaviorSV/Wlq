@@ -201,6 +201,36 @@ namespace Wlq.Service.Implementation
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
+		public IEnumerable<PostInfo> GetPostsByGroupsUserConcerned(long userId, int pageIndex, int pageSize, out int totalNumber)
+		{
+			var userGroupRepository = new DatabaseRepository<UserGroupInfo>(_databaseContext);
+			var groupIds = userGroupRepository.GetAll()
+				.Where(ug => ug.UserId == userId)
+				.Select(ug => ug.GroupId);
+
+			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
+
+			return postRepository.GetAll()
+				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && groupIds.Contains(p.GroupId))
+				.OrderByDescending(p => p.LastModified)
+				.Paging(pageIndex, pageSize, out totalNumber);
+		}
+
+		public IEnumerable<PostInfo> GetPostsByUser(long userId, int pageIndex, int pageSize, out int totalNumber)
+		{
+			var userPostRepository = new DatabaseRepository<UserPostInfo>(_databaseContext);
+			var postIds = userPostRepository.GetAll()
+				.Where(up => up.UserId == userId)
+				.Select(up => up.PostId);
+
+			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
+
+			return postRepository.GetAll()
+				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && postIds.Contains(p.Id))
+				.OrderByDescending(p => p.LastModified)
+				.Paging(pageIndex, pageSize, out totalNumber);
+		}
+
 		public PostInfo GetPost(long postId)
 		{
 			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);

@@ -5,6 +5,8 @@ using Wlq.Domain;
 using Wlq.Service;
 using Wlq.Web.Fliters;
 using Wlq.Web.Models;
+using System;
+using System.Collections.Generic;
 
 namespace Wlq.Web.Controllers
 {
@@ -126,9 +128,68 @@ namespace Wlq.Web.Controllers
 		}
 
 		[LoginAuthentication(RoleLevel.Normal, "Home", "Index")]
-		public ActionResult MyHome()
+		public ActionResult MyHome(int tag = 0, int pageIndex = 1)
 		{
-			return View();
+			var totalNumber = 0;
+
+			ViewBag.Tag = tag;
+			ViewBag.PageIndex = pageIndex;
+			ViewBag.CurrentUserId = CurrentUserId;
+
+			switch (tag)
+			{
+				case 0:
+				case 3:
+					var posts = tag == 0
+						? PostService.GetPostsByGroupsUserConcerned(CurrentUserId, pageIndex, _PostListSize, out totalNumber)
+						: PostService.GetPostsByUser(CurrentUserId, pageIndex, _PostListSize, out totalNumber);
+
+					var myPostsModel = new List<PostModel>();
+
+					foreach (var post in posts)
+					{
+						myPostsModel.Add(new PostModel
+						{
+							Post = post,
+							Group = UserGroupService.GetGroup(post.GroupId),
+							IsBooked = CurrentUserId > 0 && post.PostType != (int)PostType.Venue
+								? PostService.IsBookedPost(post.Id, CurrentUserId) : false
+						});
+					}
+
+					ViewBag.TotalPage = totalNumber > 0 ? Math.Ceiling((decimal)totalNumber / _PostListSize) : 1;
+
+					return View("MyPosts", myPostsModel);
+				case 1:
+					//todo: my booking
+
+					ViewBag.TotalPage = totalNumber > 0 ? Math.Ceiling((decimal)totalNumber / _PostListSize) : 1;
+
+					return View("MyBooking");
+				case 2:
+					var groups = UserGroupService.GetGroupsByUser(CurrentUserId);
+					var myGroupsModel = new List<GroupModel>();
+
+					foreach (var group in groups)
+					{
+						myGroupsModel.Add(new GroupModel
+						{
+							Group = group,
+							IsFollowing = true
+						});
+					}
+
+					ViewBag.TotalPage = totalNumber > 0 ? Math.Ceiling((decimal)totalNumber / _PostListSize) : 1;
+
+					return View("MyGroups", myGroupsModel);
+				case 4:
+					//todo: my messages
+					return View();
+				default:
+					break;
+			}
+
+			return RedirectToAction("Index", "Home");
 		}
 	}
 }

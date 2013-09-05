@@ -103,6 +103,9 @@ namespace Wlq.Web.Controllers
 
 		#endregion
 
+		protected const int _PostListSize = 15;
+		protected const int _GroupListSize = 10;
+
 		public BaseController() { }
 
 		public ActionResult AlertAndRedirect(string message, string url)

@@ -279,6 +279,6 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .page a{ color:#979797;}
 .page input{ width:30px; }
 
-.changepassword-list{ padding:0 0 0 50px; text-align:center;}
+.changepassword-list{ padding:0 0 0 50px;}
 .changepassword-list li{ margin-bottom:20px; clear:both; overflow:hidden}
-.changepassword-list li input{ width:146px; height:26px; border:1px solid #cccccc;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius:5px; margin-right:30px;}
+.changepassword-list li input{ width:146px; height:30px; border:1px solid #cccccc;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius:5px; margin-right:30px;}

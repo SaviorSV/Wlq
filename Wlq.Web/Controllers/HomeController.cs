@@ -9,9 +9,6 @@ namespace Wlq.Web.Controllers
 {
 	public class HomeController : BaseController
 	{
-		private const int _PostListSize = 15;
-		private const int _GroupListSize = 10;
-
 		public ActionResult Index(int pageIndex = 1, PostType postType = PostType.All)
 		{
 			var totalNumber = 0;

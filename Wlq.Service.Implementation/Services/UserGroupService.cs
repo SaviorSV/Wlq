@@ -249,7 +249,8 @@ namespace Wlq.Service.Implementation
 			var relationRepository = new DatabaseRepository<TEntity>(_databaseContext);
 
 			var relations = relationRepository.GetAll()
-				.Where(r => r.GroupId == groupId).Select(r => r.UserId);
+				.Where(r => r.GroupId == groupId)
+				.Select(r => r.UserId);
 
 			return userRepository.GetAll()
 				.Where(u => relations.Contains(u.Id));
@@ -262,7 +263,8 @@ namespace Wlq.Service.Implementation
 			var relationRepository = new DatabaseRepository<TEntity>(_databaseContext);
 
 			var relations = relationRepository.GetAll()
-				.Where(r => r.UserId == userId).Select(r => r.GroupId);
+				.Where(r => r.UserId == userId)
+				.Select(r => r.GroupId);
 
 			return groupRepository.GetAll()
 				.Where(g => relations.Contains(g.Id));

@@ -46,11 +46,11 @@
 		{
 			if (!Model.IsBooked)
 			{
-			<a id='@string.Format("btn_booking_{0}", Model.Post.Id)' href="javascript:;" onclick="normal_booking(@Model.Post.Id)" class="btn-yuyue"></a>
+			<a id='@string.Format("btn_booking_{0}", Model.Post.Id)' href="javascript:;" onclick="normal_booking(@Model.Post.Id)" class="btn">预 约</a>
 			}
 			else
 			{
-			<a id='@string.Format("btn_booking_{0}", Model.Post.Id)' href="javascript:;" onclick="normal_cancel_booking(@Model.Post.Id)">取消预约</a>
+			<a id='@string.Format("btn_booking_{0}", Model.Post.Id)' href="javascript:;" onclick="normal_cancel_booking(@Model.Post.Id)" class="btn-disable">取消预约</a>
 			}
 		}
 			已预约<strong id='@string.Format("booking_number_{0}", Model.Post.Id)'>@Model.Post.BookingNumber</strong>人
