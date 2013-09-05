@@ -30,13 +30,6 @@ namespace Wlq.Service.Implementation
 			return userRepository.GetById(userId);
 		}
 
-		public UserInfo GetUser(string loginName)
-		{
-			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
-
-			return userRepository.GetAll().FirstOrDefault(u => u.LoginName == loginName);
-		}
-
 		public bool AddUser(UserInfo user)
 		{
 			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
@@ -66,17 +59,8 @@ namespace Wlq.Service.Implementation
 		public bool DeleteUser(long userId)
 		{
 			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
-			var userGroupRepository = new DatabaseRepository<UserGroupInfo>(_databaseContext);
 			
 			userRepository.DeleteById(userId);
-
-			var userGroups = userGroupRepository.GetAll()
-				.Where(ug => ug.UserId == userId);
-
-			foreach (var userGroup in userGroups)
-			{
-				userGroupRepository.DeleteById(userGroup.Id);
-			}
 
 			return _databaseContext.SaveChanges() > 0;
 		}
@@ -205,17 +189,8 @@ namespace Wlq.Service.Implementation
 		public bool DeleteGroup(long groupId)
 		{
 			var groupRepository = new DatabaseRepository<GroupInfo>(_databaseContext);
-			var userGroupRepository = new DatabaseRepository<UserGroupInfo>(_databaseContext);
 			
 			groupRepository.DeleteById(groupId);
-
-			var userGroups = userGroupRepository.GetAll()
-				.Where(ug => ug.GroupId == groupId);
-
-			foreach (var userGroup in userGroups)
-			{
-				userGroupRepository.DeleteById(userGroup.Id);
-			}
 
 			return _databaseContext.SaveChanges() > 0;
 		}
