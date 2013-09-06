@@ -148,15 +148,13 @@ namespace Wlq.Web.Controllers
 			};
 
 			var venueSchedules = CurrentUserId > 0 && post.PostType == (int)PostType.Venue
-				? PostService.GetBookingSchedules(CurrentUserId, id, 7)
-				: null;
+				? PostService.GetBookingSchedules(CurrentUserId, id, 7) : null;
 
 			ViewBag.CurrentUserId = CurrentUserId;
 			ViewBag.IsFollowing = CurrentUserId > 0
 				? UserGroupService.IsUserInGroup(CurrentUserId, group.Id) : false;
 			ViewBag.Schedules = venueSchedules != null
-				? venueSchedules.ObjectToJson()
-				: "[]";
+				? venueSchedules.ObjectToJson() : "[]";
 
 			return View(model);
 		}
