@@ -39,6 +39,7 @@ namespace Wlq.Service
 
 		IEnumerable<PostInfo> GetPostsByGroupsUserConcerned(long userId, int pageIndex, int pageSize, out int totalNumber);
 		IEnumerable<PostInfo> GetPostsByUser(long userId, int pageIndex, int pageSize, out int totalNumber);
+		IEnumerable<PostInfo> GetPostsByUserBooking(long userId, int pageIndex, int pageSize, out int totalNumber);
 
 		#endregion
 

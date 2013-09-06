@@ -140,13 +140,13 @@ namespace Wlq.Web.Controllers
 			{
 				case 0:
 				case 3:
-					var posts = tag == 0
+					var myPosts = tag == 0
 						? PostService.GetPostsByGroupsUserConcerned(CurrentUserId, pageIndex, _PostListSize, out totalNumber)
 						: PostService.GetPostsByUser(CurrentUserId, pageIndex, _PostListSize, out totalNumber);
 
 					var myPostsModel = new List<PostModel>();
 
-					foreach (var post in posts)
+					foreach (var post in myPosts)
 					{
 						myPostsModel.Add(new PostModel
 						{
@@ -161,11 +161,11 @@ namespace Wlq.Web.Controllers
 
 					return View("MyPosts", myPostsModel);
 				case 1:
-					//todo: my booking
+					var bookingPosts = PostService.GetPostsByUserBooking(CurrentUserId, pageIndex, _PostListSize, out totalNumber);
 
 					ViewBag.TotalPage = totalNumber > 0 ? Math.Ceiling((decimal)totalNumber / _PostListSize) : 1;
 
-					return View("MyBooking");
+					return View("MyBooking", bookingPosts);
 				case 2:
 					var groups = UserGroupService.GetGroupsByUser(CurrentUserId);
 					var myGroupsModel = new List<GroupModel>();

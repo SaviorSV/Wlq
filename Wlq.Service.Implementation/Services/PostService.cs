@@ -231,6 +231,21 @@ namespace Wlq.Service.Implementation
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
+		public IEnumerable<PostInfo> GetPostsByUserBooking(long userId, int pageIndex, int pageSize, out int totalNumber)
+		{
+			var bookingRepository = new DatabaseRepository<BookingInfo>(_databaseContext);
+			var bookingPostIds = bookingRepository.GetAll()
+				.Where(b => b.UserId == userId && b.VenueConfigId > 0 ? b.BookingDate > DateTime.Now.Date : true)
+				.Select(b => b.PostId);
+
+			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
+
+			return postRepository.GetAll()
+				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && bookingPostIds.Contains(p.Id))
+				.OrderByDescending(p => p.LastModified)
+				.Paging(pageIndex, pageSize, out totalNumber);
+		}
+
 		public PostInfo GetPost(long postId)
 		{
 			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
@@ -409,10 +424,11 @@ namespace Wlq.Service.Implementation
 
 			var venueConfigs = this.GetVenueConfigs(post.VenueId);
 			var schedules = new List<BookingSchedule>();
+			var today = DateTime.Now.Date;
 
-			for (int i = 0; i < days; i++)
+			for (int i = 1; i <= days; i++)
 			{
-				var date = DateTime.Now.AddDays(i).Date;
+				var date = today.AddDays(i);
 
 				var schedule = new BookingSchedule
 				{
