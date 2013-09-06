@@ -378,16 +378,16 @@ namespace Wlq.Web.Controllers
 			return Content(venues.ObjectToJson(), "text/json");
 		}
 
-		public ActionResult GetPostsByGroup(long id)
+		public ActionResult GetPostsByGroup(long id, int pageIndex)
 		{
-			//todo: paging
 			if (AdminUser == null)
 			{
-				return Content("[]", "text/json");
+				return Content("{\"TotalPage\":0,\"List\":[]}", "text/json");
 			}
 
 			var totalNumber = 0;
-			var posts = PostService.GetPostsByGroup(id, false, 0, 0, out totalNumber)
+			var pageSize = 10;
+			var posts = PostService.GetPostsByGroup(id, false, pageIndex, pageSize, out totalNumber)
 				.Select(p => new 
 				{ 
 					Id = p.Id, 
@@ -398,7 +398,11 @@ namespace Wlq.Web.Controllers
 					LastModified = p.LastModified.ToString("yyyy-MM-dd HH:mm:ss") 
 				});
 
-			return Content(posts.ObjectToJson(), "text/json");
+			var json = string.Format("{{\"TotalPage\":{0},\"List\":{1}}}"
+				, totalNumber > 0 ? Math.Ceiling((decimal)totalNumber / pageSize) : 1
+				, posts.ObjectToJson());
+
+			return Content(json, "text/json");
 		}
 
 		[HttpPost]

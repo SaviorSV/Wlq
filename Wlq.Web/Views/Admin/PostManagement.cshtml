@@ -27,6 +27,11 @@ else
 	</div>
 	<div id="post_list" class="quanxian-tt"></div>
 }
+	<div id="pager" class="page">
+		第 <span id="currentPage"></span> / <span id="totalPage"></span> 页 &nbsp;&nbsp;
+		<a class="pre" id="previous" href="javascript:;">上一页</a>
+		<a class="next" id="next" href="javascript:;">下一页</a>
+	</div>
 </div>
 <div class="formfooter"></div>
 
@@ -37,7 +42,12 @@ else
 			selected_left_menu(3);
 		});
 
+		var pageIndex = 1;
+		var groupId = 0;
+
 		$("#find_post").bind("click", function () {
+			pageIndex = 1;
+			groupId = $("#department_selector").val();
 			bind_post_list();
 		});
 
@@ -47,24 +57,57 @@ else
 			window.location = "/Admin/Post?postId=0&groupId=" + groupId;
 		});
 
-		function bind_post_list() {
-			var groupId = $("#department_selector").val();
+		$("#previous").bind("click", function () {
+			if (pageIndex > 1) {
+				pageIndex--;
+				bind_post_list();
+			}
+		});
 
+		$("#next").bind("click", function () {
+			pageIndex++
+			bind_post_list();
+		});
+
+		function bind_post_list() {
 			if (groupId > 0) {
-				$.get("/Admin/GetPostsByGroup/" + groupId, function (data) {
+				$.get("/Admin/GetPostsByGroup/" + groupId + "?pageIndex=" + pageIndex, function (data) {
 					var result = '';
-					if (data.length > 0) {
+					var list = data.List;
+					var totalPage = data.TotalPage;
+
+					if (list.length > 0) {
 						result += "<table class='list-tbl'>";
 						result += "<thead><tr><th>标题</th><th>发布类型</th><th>已预约</th><th>发布人</th><th>最后更新时间</th><th>操作</th></tr></thead><tbody>";
 
-						for (var i in data) {
-							result += "<tr><td><a href='/Home/Post/" + data[i].Id + "' target='_blank'>" + data[i].Title + "</a></td><td>" + data[i].PostType + "</td><td>" + data[i].BookingNumber + "</td><td>" + data[i].Publisher + "</td><td>" + data[i].LastModified + "</td><td><a href='/Admin/Post/" + data[i].Id + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_post(" + data[i].Id + ");'>删除</a></td></tr>";
+						for (var i in list) {
+							result += "<tr><td><a href='/Home/Post/" + list[i].Id + "' target='_blank'>" + list[i].Title + "</a></td><td>" + list[i].PostType + "</td><td>" + list[i].BookingNumber + "</td><td>" + list[i].Publisher + "</td><td>" + list[i].LastModified + "</td><td><a href='/Admin/Post/" + list[i].Id + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_post(" + list[i].Id + ");'>删除</a></td></tr>";
 						}
 
 						result += "</tbody></table>";
+
+						$("#currentPage").html(pageIndex);
+						$("#totalPage").html(totalPage);
+						$("#pager").show();
+
+						if (pageIndex >= totalPage) {
+							$("#next").hide();
+						}
+						else {
+							$("#next").show();
+						}
+
+						if (pageIndex <= 1) {
+							$("#previous").hide();
+						}
+						else {
+							$("#previous").show();
+						}
 					}
 					else {
 						result = "<span>没有发布信息</span>";
+
+						$("#pager").hide();
 					}
 
 					$("#post_list").html(result);
