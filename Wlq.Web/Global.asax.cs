@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Data.Entity;
 using System.Web.Mvc;
 using System.Web.Routing;
-using System.Data.Entity;
+
 using Wlq.Persistence;
 using Wlq.Persistence.Migrations;
+using Wlq.Web.Fliters;
 
 namespace Wlq.Web
 {
@@ -17,7 +15,7 @@ namespace Wlq.Web
 	{
 		public static void RegisterGlobalFilters(GlobalFilterCollection filters)
 		{
-			filters.Add(new HandleErrorAttribute());
+			filters.Add(new HandleExceptionAttribute());
 		}
 
 		public static void RegisterRoutes(RouteCollection routes)

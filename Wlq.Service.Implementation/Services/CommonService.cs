@@ -137,7 +137,7 @@ namespace Wlq.Service.Implementation
 				}
 				catch (Exception ex)
 				{
-					LocalLoggingService.Exception(string.Format("SavePostImage Error:{0}", ex.Message));
+					LocalLoggingService.Exception(string.Format("SaveUserAvatar Error:{0}", ex.Message));
 				}
 			}
 		}

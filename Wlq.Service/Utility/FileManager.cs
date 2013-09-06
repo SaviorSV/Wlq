@@ -38,7 +38,7 @@ namespace Wlq.Service.Utility
 			}
 			catch (Exception ex)
 			{
-				LocalLoggingService.Exception(ex.ToString());
+				LocalLoggingService.Exception(ex);
 			}
 			finally
 			{
@@ -108,7 +108,7 @@ namespace Wlq.Service.Utility
 			}
 			catch (Exception ex)
 			{
-				LocalLoggingService.Exception(ex.ToString());
+				LocalLoggingService.Exception(ex);
 			}
 			finally
 			{
