@@ -207,7 +207,7 @@ namespace Wlq.Service.Implementation
 		public IEnumerable<PostInfo> GetPostsByUserBooking(long userId, int pageIndex, int pageSize, out int totalNumber)
 		{
 			var bookingPostIds = base.RepositoryProvider<BookingInfo>().Entities
-				.Where(b => b.UserId == userId && b.VenueConfigId > 0 ? b.BookingDate > DateTime.Now.Date : true)
+				.Where(b => b.UserId == userId && b.VenueConfigId > 0 ? b.BookingDate > DateTime.Now : true)
 				.Select(b => b.PostId);
 
 			return base.RepositoryProvider<PostInfo>().Entities
@@ -353,7 +353,7 @@ namespace Wlq.Service.Implementation
 		private int GetVenueBookingNumber(long postId, long venueConfigId, DateTime bookingDate)
 		{
 			var bookings = base.RepositoryProvider<BookingInfo>().Entities
-				.Where(b => b.PostId == postId && b.VenueConfigId == venueConfigId && b.BookingDate.Date == bookingDate.Date);
+				.Where(b => b.PostId == postId && b.VenueConfigId == venueConfigId && b.BookingDate == bookingDate.Date);
 
 			return bookings.Count();
 		}
@@ -377,7 +377,7 @@ namespace Wlq.Service.Implementation
 
 				var schedule = new BookingSchedule
 				{
-					Date = date,
+					Date = date.ToString("yyyy/MM/dd"),
 					Periods = venueConfigs[date.DayOfWeek]
 				};
 

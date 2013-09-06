@@ -96,6 +96,6 @@
 @section scripts
 {
 	<script type="text/javascript">
-		var schedules = @ViewBag.Schedules;
+		var schedules = @Html.Raw(ViewBag.Schedules);
 	</script>
 }

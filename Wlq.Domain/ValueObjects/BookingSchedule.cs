@@ -5,7 +5,7 @@ namespace Wlq.Domain
 {
 	public class BookingSchedule
 	{
-		public DateTime Date { get; set; }
+		public string Date { get; set; }
 		public List<BookingPeriod> Periods { get; set; }
 
 		public BookingSchedule() { }
