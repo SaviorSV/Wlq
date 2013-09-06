@@ -11,30 +11,24 @@ using Wlq.Persistence;
 
 namespace Wlq.Service.Implementation
 {
-	public class UserGroupService : Disposable, IUserGroupService
+	public class UserGroupService : ServiceBase, IUserGroupService
 	{
-		private readonly DatabaseContext _databaseContext;
-
 		[InjectionConstructor]
 		public UserGroupService(DatabaseContext databaseContext)
-		{
-			_databaseContext = databaseContext;
-		}
+			: base(databaseContext)
+		{ }
 
 		#region User
 
 		public UserInfo GetUser(long userId)
 		{
-			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
-
-			return userRepository.GetById(userId);
+			return base.RepositoryProvider<UserInfo>().GetById(userId);
 		}
 
 		public bool AddUser(UserInfo user)
 		{
-			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
-
-			var existUser = userRepository.GetAll()
+			var userRepository = base.RepositoryProvider<UserInfo>();
+			var existUser = userRepository.Entities
 				.FirstOrDefault(u => u.LoginName == user.LoginName);
 
 			if (existUser != null)
@@ -42,27 +36,17 @@ namespace Wlq.Service.Implementation
 				return false;
 			}
 
-			userRepository.Add(user);
-
-			return _databaseContext.SaveChanges() > 0;
+			return userRepository.Add(user, true) > 0;
 		}
 
 		public bool UpdateUser(UserInfo user)
 		{
-			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
-
-			userRepository.Update(user);
-
-			return _databaseContext.SaveChanges() > 0;
+			return base.RepositoryProvider<UserInfo>().Update(user, true) > 0;
 		}
 
 		public bool DeleteUser(long userId)
 		{
-			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
-			
-			userRepository.DeleteById(userId);
-
-			return _databaseContext.SaveChanges() > 0;
+			return base.RepositoryProvider<UserInfo>().DeleteById(userId, true) > 0;
 		}
 
 		public ChangePasswordResult ChangePassword(UserInfo user, string oldPassword, string newPassword)
@@ -77,12 +61,14 @@ namespace Wlq.Service.Implementation
 			user.Password = newPassword.ToMd5();
 
 			return this.UpdateUser(user)
-				? ChangePasswordResult.Success : ChangePasswordResult.Error;
+				? ChangePasswordResult.Success 
+				: ChangePasswordResult.Error;
 		}
 
 		public bool ResetPassword(long userId, string newPassword)
 		{
-			var user = this.GetUser(userId);
+			var userRepository = base.RepositoryProvider<UserInfo>();
+			var user = userRepository.GetById(userId);
 
 			if (user == null)
 			{
@@ -91,16 +77,14 @@ namespace Wlq.Service.Implementation
 
 			user.Password = newPassword.ToMd5();
 
-			return this.UpdateUser(user);
+			return userRepository.Update(user, true) > 0;
 		}
 
 		public bool Login(string loginName, string password, bool isAdmin)
 		{
-			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
-
 			var hashedPassword = password.ToMd5();
 
-			var user = userRepository.GetAll()
+			var user = base.RepositoryProvider<UserInfo>().Entities
 				.FirstOrDefault(u => u.LoginName == loginName && u.Password == hashedPassword && (!isAdmin || u.Role > (int)RoleLevel.Normal));
 
 			if (user == null)
@@ -146,53 +130,35 @@ namespace Wlq.Service.Implementation
 
 		public IEnumerable<GroupInfo> GetGroupsByParent(long parentGroupId)
 		{
-			var groupRepository = new DatabaseRepository<GroupInfo>(_databaseContext);
-
-			return groupRepository.GetAll()
+			return base.RepositoryProvider<GroupInfo>().Entities
 				.Where(g => g.ParentGroupId == parentGroupId);
 		}
 
 		public IEnumerable<GroupInfo> GetCircles(int pageIndex, int pageSize, out int totalNumber)
 		{
-			var groupRepository = new DatabaseRepository<GroupInfo>(_databaseContext);
-
-			return groupRepository.GetAll()
+			return base.RepositoryProvider<GroupInfo>().Entities
 				.Where(g => g.ParentGroupId > 0)
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
 		public GroupInfo GetGroup(long groupId)
 		{
-			var groupRepository = new DatabaseRepository<GroupInfo>(_databaseContext);
-
-			return groupRepository.GetById(groupId);
+			return base.RepositoryProvider<GroupInfo>().GetById(groupId);
 		}
 
 		public bool AddGroup(GroupInfo group)
 		{
-			var groupRepository = new DatabaseRepository<GroupInfo>(_databaseContext);
-
-			groupRepository.Add(group);
-
-			return _databaseContext.SaveChanges() > 0;
+			return base.RepositoryProvider<GroupInfo>().Add(group, true) > 0;
 		}
 
 		public bool UpdateGroup(GroupInfo group)
 		{
-			var groupRepository = new DatabaseRepository<GroupInfo>(_databaseContext);
-
-			groupRepository.Update(group);
-
-			return _databaseContext.SaveChanges() > 0;
+			return base.RepositoryProvider<GroupInfo>().Update(group, true) > 0;
 		}
 
 		public bool DeleteGroup(long groupId)
 		{
-			var groupRepository = new DatabaseRepository<GroupInfo>(_databaseContext);
-			
-			groupRepository.DeleteById(groupId);
-
-			return _databaseContext.SaveChanges() > 0;
+			return base.RepositoryProvider<GroupInfo>().DeleteById(groupId, true) > 0;
 		}
 
 		#endregion
@@ -245,28 +211,22 @@ namespace Wlq.Service.Implementation
 		private IEnumerable<UserInfo> GetUsersByRelation<TEntity>(long groupId)
 			where TEntity : Entity, IUserGroupRelation
 		{
-			var userRepository = new DatabaseRepository<UserInfo>(_databaseContext);
-			var relationRepository = new DatabaseRepository<TEntity>(_databaseContext);
-
-			var relations = relationRepository.GetAll()
+			var relations = base.RepositoryProvider<TEntity>().Entities
 				.Where(r => r.GroupId == groupId)
 				.Select(r => r.UserId);
 
-			return userRepository.GetAll()
+			return base.RepositoryProvider<UserInfo>().Entities
 				.Where(u => relations.Contains(u.Id));
 		}
 
 		private IEnumerable<GroupInfo> GetGroupsByRelation<TEntity>(long userId)
 			where TEntity : Entity, IUserGroupRelation
 		{
-			var groupRepository = new DatabaseRepository<GroupInfo>(_databaseContext);
-			var relationRepository = new DatabaseRepository<TEntity>(_databaseContext);
-
-			var relations = relationRepository.GetAll()
+			var relations = base.RepositoryProvider<TEntity>().Entities
 				.Where(r => r.UserId == userId)
 				.Select(r => r.GroupId);
 
-			return groupRepository.GetAll()
+			return base.RepositoryProvider<GroupInfo>().Entities
 				.Where(g => relations.Contains(g.Id));
 		}
 
@@ -292,23 +252,19 @@ namespace Wlq.Service.Implementation
 				GroupId = groupId
 			};
 
-			var relationRepository = new DatabaseRepository<TEntity>(_databaseContext);
-
-			relationRepository.Add(relation);
-
-			return _databaseContext.SaveChanges() > 0;
+			return base.RepositoryProvider<TEntity>().Add(relation, true) > 0;
 		}
 
 		private bool RemoveRelations<TEntity>(long userId, long groupId)
 			where TEntity : Entity, IUserGroupRelation
 		{
-			var relationRepository = new DatabaseRepository<TEntity>(_databaseContext);
-			var relations = relationRepository.GetAll()
+			var relationRepository = base.RepositoryProvider<TEntity>();
+			var relations = relationRepository.Entities
 				.Where(ug => ug.UserId == userId && ug.GroupId == groupId);
 
 			foreach (var relation in relations)
 			{
-				relationRepository.DeleteById(relation.Id);
+				relationRepository.Delete(relation, false);
 			}
 
 			return _databaseContext.SaveChanges() > 0;
@@ -317,8 +273,7 @@ namespace Wlq.Service.Implementation
 		private bool HasRelation<TEntity>(long userId, long groupId)
 			where TEntity : Entity, IUserGroupRelation
 		{
-			var relationRepository = new DatabaseRepository<TEntity>(_databaseContext);
-			var relation = relationRepository.GetAll()
+			var relation = base.RepositoryProvider<TEntity>().Entities
 				.FirstOrDefault(ug => ug.GroupId == groupId && ug.UserId == userId);
 
 			return relation != null;

@@ -18,16 +18,12 @@ namespace Wlq.Persistence
 			_dbSet = _context.Set<TEntity>();
 		}
 
-		public IQueryable<TEntity> GetAll()
+		public IQueryable<TEntity> Entities
 		{
-			return _dbSet;
-		}
-
-		public void Add(TEntity entity)
-		{
-			entity.LastModified = DateTime.Now;
-
-			_dbSet.Add(entity);
+			get
+			{
+				return _dbSet;
+			}
 		}
 
 		public TEntity GetById(long id)
@@ -35,17 +31,38 @@ namespace Wlq.Persistence
 			return _dbSet.FirstOrDefault(o => o.Id == id);
 		}
 
-		public void DeleteById(long id)
+		public int Add(TEntity entity, bool isSave)
+		{
+			entity.LastModified = DateTime.Now;
+
+			_dbSet.Add(entity);
+
+			return isSave ? _context.SaveChanges() : 0;
+		}
+
+		public int Update(TEntity entity, bool isSave)
+		{
+			entity.LastModified = DateTime.Now;
+
+			return isSave ? _context.SaveChanges() : 0;
+		}
+
+		public int DeleteById(long id, bool isSave)
 		{
 			var entity = this.GetById(id);
 
 			if (entity != null)
 				_dbSet.Remove(entity);
+
+			return isSave ? _context.SaveChanges() : 0;
 		}
 
-		public void Update(TEntity entity)
+		public int Delete(TEntity entity, bool isSave)
 		{
-			entity.LastModified = DateTime.Now;
+			if (entity != null)
+				_dbSet.Remove(entity);
+
+			return isSave ? _context.SaveChanges() : 0;
 		}
 	}
 }

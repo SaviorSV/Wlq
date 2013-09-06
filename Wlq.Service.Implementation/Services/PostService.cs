@@ -9,64 +9,47 @@ using Wlq.Persistence;
 
 namespace Wlq.Service.Implementation
 {
-	public class PostService : Disposable, IPostService
+	public class PostService : ServiceBase, IPostService
 	{
-		private readonly DatabaseContext _databaseContext;
-
 		[InjectionConstructor]
 		public PostService(DatabaseContext databaseContext)
-		{
-			_databaseContext = databaseContext;
-		}
+			: base(databaseContext)
+		{ }
 
 		#region venue
 
 		public IEnumerable<VenueInfo> GetVenuesByGroup(long groupId)
 		{
-			var venueRepository = new DatabaseRepository<VenueInfo>(_databaseContext);
-
-			return venueRepository.GetAll()
+			return base.RepositoryProvider<VenueInfo>().Entities
 				.Where(v => v.GroupId == groupId);
 		}
 
 		public VenueInfo GetVenue(long venueId)
 		{
-			var venueRepository = new DatabaseRepository<VenueInfo>(_databaseContext);
-
-			return venueRepository.GetById(venueId);
+			return base.RepositoryProvider<VenueInfo>().GetById(venueId);
 		}
 
 		public bool AddVenue(VenueInfo venue)
 		{
-			var venueRepository = new DatabaseRepository<VenueInfo>(_databaseContext);
-
-			venueRepository.Add(venue);
-
-			return _databaseContext.SaveChanges() > 0;
+			return base.RepositoryProvider<VenueInfo>().Add(venue, true) > 0;
 		}
 
 		public bool UpdateVenue(VenueInfo venue)
 		{
-			var venueRepository = new DatabaseRepository<VenueInfo>(_databaseContext);
-
-			venueRepository.Update(venue);
-
-			return _databaseContext.SaveChanges() > 0;
+			return base.RepositoryProvider<VenueInfo>().Update(venue, true) > 0;
 		}
 
 		public bool DeleteVenue(long venueId)
 		{
-			var venueRepository = new DatabaseRepository<VenueInfo>(_databaseContext);
-			var venueConfigRepository = new DatabaseRepository<VenueConfigInfo>(_databaseContext);
+			base.RepositoryProvider<VenueInfo>().DeleteById(venueId, false);
 
-			venueRepository.DeleteById(venueId);
-
-			var venueConfigsGroups = venueConfigRepository.GetAll()
+			var venueConfigRepository = base.RepositoryProvider<VenueConfigInfo>();
+			var venueConfigsGroups = venueConfigRepository.Entities
 				.Where(c => c.VenueId == venueId);
 
 			foreach (var venueConfig in venueConfigsGroups)
 			{
-				venueConfigRepository.DeleteById(venueConfig.Id);
+				venueConfigRepository.Delete(venueConfig, false);
 			}
 
 			return _databaseContext.SaveChanges() > 0;
@@ -74,8 +57,9 @@ namespace Wlq.Service.Implementation
 
 		public void SaveVenueConfigs(VenueInfo venue, Dictionary<DayOfWeek, List<BookingPeriod>> configs)
 		{
-			var venueConfigRepository = new DatabaseRepository<VenueConfigInfo>(_databaseContext);
-			var oldConfig = venueConfigRepository.GetAll().Where(v => v.VenueId == venue.Id).ToList();
+			var venueConfigRepository = base.RepositoryProvider<VenueConfigInfo>();
+			var oldConfig = venueConfigRepository.Entities
+				.Where(v => v.VenueId == venue.Id).ToList();
 
 			//traverse sunday to saturday
 			foreach (var day in configs.Keys)
@@ -103,7 +87,7 @@ namespace Wlq.Service.Implementation
 								LimitNumber = period.LimitNumber
 							};
 
-							venueConfigRepository.Add(newConfig);
+							venueConfigRepository.Add(newConfig, false);
 						}
 						//remove the existing item from list
 						else
@@ -117,7 +101,7 @@ namespace Wlq.Service.Implementation
 			//delete the rest items in list from database
 			foreach (var restOld in oldConfig)
 			{
-				venueConfigRepository.DeleteById(restOld.Id);
+				venueConfigRepository.Delete(restOld, false);
 			}
 
 			_databaseContext.SaveChanges();
@@ -125,8 +109,9 @@ namespace Wlq.Service.Implementation
 
 		public BookingConfig GetVenueConfigs(long venueId)
 		{
-			var venueConfigRepository = new DatabaseRepository<VenueConfigInfo>(_databaseContext);
-			var configs = venueConfigRepository.GetAll().Where(v => v.VenueId == venueId);
+			var configs = base.RepositoryProvider<VenueConfigInfo>().Entities
+				.Where(v => v.VenueId == venueId);
+
 			var bookingConfig = new BookingConfig();
 
 			foreach (var config in configs)
@@ -171,9 +156,7 @@ namespace Wlq.Service.Implementation
 
 		public IEnumerable<PostInfo> GetPostsByType(PostType type, bool withinTime, int pageIndex, int pageSize, out int totalNumber)
 		{
-			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
-
-			return postRepository.GetAll()
+			return base.RepositoryProvider<PostInfo>().Entities
 				.Where(p => (type == PostType.All || p.PostType == (int)type)
 					&& (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
 				.OrderByDescending(p => p.LastModified)
@@ -182,9 +165,7 @@ namespace Wlq.Service.Implementation
 
 		public IEnumerable<PostInfo> GetPostsByGroup(long groupId, bool withinTime, int pageIndex, int pageSize, out int totalNumber)
 		{
-			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
-
-			return postRepository.GetAll()
+			return base.RepositoryProvider<PostInfo>().Entities
 				.Where(p => p.GroupId == groupId
 					&& (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
 				.OrderByDescending(p => p.LastModified)
@@ -193,9 +174,7 @@ namespace Wlq.Service.Implementation
 
 		public IEnumerable<PostInfo> GetLastPosts(int pageIndex, int pageSize, out int totalNumber)
 		{
-			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
-
-			return postRepository.GetAll()
+			return base.RepositoryProvider<PostInfo>().Entities
 				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)
 				.OrderByDescending(p => p.LastModified)
 				.Paging(pageIndex, pageSize, out totalNumber);
@@ -203,14 +182,11 @@ namespace Wlq.Service.Implementation
 
 		public IEnumerable<PostInfo> GetPostsByGroupsUserConcerned(long userId, int pageIndex, int pageSize, out int totalNumber)
 		{
-			var userGroupRepository = new DatabaseRepository<UserGroupInfo>(_databaseContext);
-			var groupIds = userGroupRepository.GetAll()
+			var groupIds = base.RepositoryProvider<UserGroupInfo>().Entities
 				.Where(ug => ug.UserId == userId)
 				.Select(ug => ug.GroupId);
 
-			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
-
-			return postRepository.GetAll()
+			return base.RepositoryProvider<PostInfo>().Entities
 				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && groupIds.Contains(p.GroupId))
 				.OrderByDescending(p => p.LastModified)
 				.Paging(pageIndex, pageSize, out totalNumber);
@@ -218,14 +194,11 @@ namespace Wlq.Service.Implementation
 
 		public IEnumerable<PostInfo> GetPostsByUser(long userId, int pageIndex, int pageSize, out int totalNumber)
 		{
-			var userPostRepository = new DatabaseRepository<UserPostInfo>(_databaseContext);
-			var postIds = userPostRepository.GetAll()
+			var postIds = base.RepositoryProvider<UserPostInfo>().Entities
 				.Where(up => up.UserId == userId)
 				.Select(up => up.PostId);
 
-			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
-
-			return postRepository.GetAll()
+			return base.RepositoryProvider<PostInfo>().Entities
 				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && postIds.Contains(p.Id))
 				.OrderByDescending(p => p.LastModified)
 				.Paging(pageIndex, pageSize, out totalNumber);
@@ -233,14 +206,11 @@ namespace Wlq.Service.Implementation
 
 		public IEnumerable<PostInfo> GetPostsByUserBooking(long userId, int pageIndex, int pageSize, out int totalNumber)
 		{
-			var bookingRepository = new DatabaseRepository<BookingInfo>(_databaseContext);
-			var bookingPostIds = bookingRepository.GetAll()
+			var bookingPostIds = base.RepositoryProvider<BookingInfo>().Entities
 				.Where(b => b.UserId == userId && b.VenueConfigId > 0 ? b.BookingDate > DateTime.Now.Date : true)
 				.Select(b => b.PostId);
 
-			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
-
-			return postRepository.GetAll()
+			return base.RepositoryProvider<PostInfo>().Entities
 				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && bookingPostIds.Contains(p.Id))
 				.OrderByDescending(p => p.LastModified)
 				.Paging(pageIndex, pageSize, out totalNumber);
@@ -248,36 +218,22 @@ namespace Wlq.Service.Implementation
 
 		public PostInfo GetPost(long postId)
 		{
-			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
-
-			return postRepository.GetById(postId);
+			return base.RepositoryProvider<PostInfo>().GetById(postId);
 		}
 
 		public bool AddPost(PostInfo post)
 		{
-			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
-
-			postRepository.Add(post);
-
-			return _databaseContext.SaveChanges() > 0;
+			return base.RepositoryProvider<PostInfo>().Add(post, true) > 0;
 		}
 
 		public bool UpdatePost(PostInfo post)
 		{
-			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
-
-			postRepository.Update(post);
-
-			return _databaseContext.SaveChanges() > 0;
+			return base.RepositoryProvider<PostInfo>().Update(post, true) > 0;
 		}
 
 		public bool DeletePost(long postId)
 		{
-			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
-
-			postRepository.DeleteById(postId);
-
-			return _databaseContext.SaveChanges() > 0;
+			return base.RepositoryProvider<PostInfo>().DeleteById(postId, true) > 0;
 		}
 
 		public bool ConcernPost(long postId, long userId)
@@ -287,21 +243,18 @@ namespace Wlq.Service.Implementation
 				return true;
 			}
 
-			var userPostRepository = new DatabaseRepository<UserPostInfo>(_databaseContext);
-			
-			userPostRepository.Add(new UserPostInfo
+			var userPost = new UserPostInfo
 			{
 				PostId = postId,
 				UserId = userId
-			});
+			};
 
-			return _databaseContext.SaveChanges() > 0;
+			return base.RepositoryProvider<UserPostInfo>().Add(userPost, true) > 0;
 		}
 
 		public bool UnConcernPost(long postId, long userId)
 		{
-			var userPostRepository = new DatabaseRepository<UserPostInfo>(_databaseContext);
-			var userPost = userPostRepository.GetAll()
+			var userPost = base.RepositoryProvider<UserPostInfo>().Entities
 				.FirstOrDefault(up => up.PostId == postId && up.UserId == userId);
 
 			if (userPost == null)
@@ -309,15 +262,12 @@ namespace Wlq.Service.Implementation
 				return true;
 			}
 
-			userPostRepository.DeleteById(userPost.Id);
-
-			return _databaseContext.SaveChanges() > 0; 
+			return base.RepositoryProvider<UserPostInfo>().Delete(userPost, true) > 0;
 		}
 
 		public bool IsUserConcernPost(long postId, long userId)
 		{
-			var userPostRepository = new DatabaseRepository<UserPostInfo>(_databaseContext);
-			var userPost = userPostRepository.GetAll()
+			var userPost = base.RepositoryProvider<UserPostInfo>().Entities
 				.FirstOrDefault(up => up.PostId == postId && up.UserId == userId);
 
 			return userPost != null;
@@ -331,7 +281,7 @@ namespace Wlq.Service.Implementation
 		{
 			message = "预订成功";
 
-			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
+			var postRepository = base.RepositoryProvider<PostInfo>();
 			var post = postRepository.GetById(booking.PostId);
 
 			if (post == null || (DateTime.Now < post.BeginDate || DateTime.Now > post.EndDate))
@@ -348,8 +298,7 @@ namespace Wlq.Service.Implementation
 
 			if (booking.VenueConfigId > 0)
 			{
-				var venueConfigRepository = new DatabaseRepository<VenueConfigInfo>(_databaseContext);
-				var venueConfig = venueConfigRepository.GetById(booking.VenueConfigId);
+				var venueConfig = base.RepositoryProvider<VenueConfigInfo>().GetById(booking.VenueConfigId);
 
 				if (venueConfig == null)
 				{
@@ -366,37 +315,36 @@ namespace Wlq.Service.Implementation
 				}
 			}
 
-			var bookingRepository = new DatabaseRepository<BookingInfo>(_databaseContext);
-			bookingRepository.Add(booking);
+			base.RepositoryProvider<BookingInfo>().Add(booking, false);
 
 			post.BookingNumber++;
-			postRepository.Update(post);
+			postRepository.Update(post, false);
 
 			return _databaseContext.SaveChanges() > 0;
 		}
 
 		public bool CancelBooking(long userId, long postId, long venueConfigId, DateTime bookingDate)
 		{
-			var bookingRepository = new DatabaseRepository<BookingInfo>(_databaseContext);
+			var bookingRepository = base.RepositoryProvider<BookingInfo>();
+			var postRepository = base.RepositoryProvider<PostInfo>();
 
 			var bookings = venueConfigId > 0
-				? bookingRepository.GetAll()
+				? bookingRepository.Entities
 					.Where(b => b.UserId == userId && b.PostId == postId && b.VenueConfigId == venueConfigId && b.BookingDate.Date == bookingDate.Date)
-				: bookingRepository.GetAll()
+				: bookingRepository.Entities
 					.Where(b => b.UserId == userId && b.PostId == postId);
 
 			foreach (var booking in bookings)
 			{
-				bookingRepository.DeleteById(booking.Id);
+				bookingRepository.Delete(booking, false);
 			}
 
-			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
 			var post = postRepository.GetById(postId);
 
 			if (post != null && post.BookingNumber > 0)
 			{
 				post.BookingNumber--;
-				postRepository.Update(post);
+				postRepository.Update(post, false);
 			}
 
 			return _databaseContext.SaveChanges() > 0;
@@ -404,9 +352,7 @@ namespace Wlq.Service.Implementation
 
 		private int GetVenueBookingNumber(long postId, long venueConfigId, DateTime bookingDate)
 		{
-			var bookingRepository = new DatabaseRepository<BookingInfo>(_databaseContext);
-
-			var bookings = bookingRepository.GetAll()
+			var bookings = base.RepositoryProvider<BookingInfo>().Entities
 				.Where(b => b.PostId == postId && b.VenueConfigId == venueConfigId && b.BookingDate.Date == bookingDate.Date);
 
 			return bookings.Count();
@@ -414,8 +360,7 @@ namespace Wlq.Service.Implementation
 
 		public List<BookingSchedule> GetBookingSchedules(long userId, long postId, int days)
 		{
-			var postRepository = new DatabaseRepository<PostInfo>(_databaseContext);
-			var post = postRepository.GetById(postId);
+			var post = base.RepositoryProvider<PostInfo>().GetById(postId);
 
 			if (post == null || post.VenueId == 0)
 			{
@@ -454,9 +399,7 @@ namespace Wlq.Service.Implementation
 
 		private bool IsBookedVenue(long postId, long userId, long venueConfigId, DateTime bookingDate)
 		{
-			var bookingRepository = new DatabaseRepository<BookingInfo>(_databaseContext);
-
-			var booking = bookingRepository.GetAll()
+			var booking = base.RepositoryProvider<BookingInfo>().Entities
 				.FirstOrDefault(b => b.PostId == postId && b.UserId == userId && b.VenueConfigId == venueConfigId && b.BookingDate.Date == bookingDate.Date);
 
 			return booking != null;
@@ -464,8 +407,7 @@ namespace Wlq.Service.Implementation
 
 		public bool IsBookedPost(long postId, long userId)
 		{
-			var bookingRepository = new DatabaseRepository<BookingInfo>(_databaseContext);
-			var booking = bookingRepository.GetAll()
+			var booking = base.RepositoryProvider<BookingInfo>().Entities
 				.FirstOrDefault(b => b.PostId == postId && b.UserId == userId);
 
 			return booking != null;

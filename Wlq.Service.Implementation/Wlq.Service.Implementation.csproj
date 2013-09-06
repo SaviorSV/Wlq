@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Services\CommonService.cs" />
     <Compile Include="Services\PostService.cs" />
+    <Compile Include="ServiceBase.cs" />
     <Compile Include="Services\UserGroupService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegisterServiceTask.cs" />
