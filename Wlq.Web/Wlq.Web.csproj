@@ -180,8 +180,8 @@
     <Content Include="Content\images\user\userflag.png" />
     <Content Include="Content\images\user\userinfobox.png" />
     <Content Include="Content\js\ajaxfileupload.js" />
+    <Content Include="Content\js\front.js" />
     <Content Include="Content\js\jquery.min.js" />
-    <Content Include="Content\js\main.js" />
     <Content Include="Content\js\common.js" />
     <Content Include="Content\tinyeditor\images\header-bg.gif" />
     <Content Include="Content\tinyeditor\images\icons.png" />
