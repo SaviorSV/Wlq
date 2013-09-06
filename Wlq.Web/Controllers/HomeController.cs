@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 
+using Hanger.Common;
 using Wlq.Domain;
 using Wlq.Web.Models;
 
@@ -146,9 +147,16 @@ namespace Wlq.Web.Controllers
 					? PostService.IsUserConcernPost(post.Id, CurrentUserId) : false
 			};
 
+			var venueSchedules = CurrentUserId > 0 && post.PostType == (int)PostType.Venue
+				? PostService.GetBookingSchedules(CurrentUserId, id, 7)
+				: null;
+
 			ViewBag.CurrentUserId = CurrentUserId;
 			ViewBag.IsFollowing = CurrentUserId > 0
 				? UserGroupService.IsUserInGroup(CurrentUserId, group.Id) : false;
+			ViewBag.Schedules = venueSchedules != null
+				? venueSchedules.ObjectToJson()
+				: "[]";
 
 			return View(model);
 		}
