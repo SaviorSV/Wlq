@@ -110,7 +110,8 @@ namespace Wlq.Service.Implementation
 		public BookingConfig GetVenueConfigs(long venueId)
 		{
 			var configs = base.RepositoryProvider<VenueConfigInfo>().Entities
-				.Where(v => v.VenueId == venueId);
+				.Where(v => v.VenueId == venueId)
+				.OrderBy(v => v.BegenTime);
 
 			var bookingConfig = new BookingConfig();
 

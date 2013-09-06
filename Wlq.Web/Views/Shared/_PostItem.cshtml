@@ -16,20 +16,7 @@
 		@Model.Group.Name
 	</a>
 	<div class="mainbox-r">
-	@switch ((PostType)Model.Post.PostType)
-	{
-		case PostType.Activity:
-		<span class="flag-1"></span>
-			break;
-		case PostType.Venue:
-		<span class="flag-2"></span>
-			break;
-		case PostType.Course:
-		<span class="flag-3"></span>
-			break;
-		default:
-			break;
-	}
+		<span class="flag-@Model.Post.PostType"></span>
 		<p class="time">@string.Format("{0:yyyy-MM-dd HH:mm:ss}", Model.Post.LastModified)</p>
 		<h3><a href="/Home/Post/@Model.Post.Id">@Model.Post.Title</a></h3>
 		<p class="mainbox-txt">
