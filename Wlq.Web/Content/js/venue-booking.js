@@ -60,7 +60,7 @@
                     td = $('<td></td>').attr('rowspan', rowspan);
                 }
                 else if (rowspan == 0) {
-                    td = $('<td></td>').addClass('off');
+                    td = $('<td></td>');
                 }
 
                 if (attrs != null) {
