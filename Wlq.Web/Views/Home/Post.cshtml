@@ -108,14 +108,6 @@
         {
             $('#booking_table').booking(schedules,postId);
 
-            $('#booking_table .on').bind('mouseover', function () {
-                $(this).css('background-color', 'blue')
-            });
-
-            $('#booking_table .on').bind('mouseout', function () {
-                $(this).removeAttr("style");
-            });
-
             $('#booking_table .on').bind('click', function () {
                 var method = $(this).attr('IsBooked');
                 var info = "场地信息：" + $(this).attr('Date') + " " + $(this).parent().children('th').text() + "\n\n";
