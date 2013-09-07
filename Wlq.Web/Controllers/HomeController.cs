@@ -40,8 +40,27 @@ namespace Wlq.Web.Controllers
 
 		public ActionResult Health(int pageIndex = 1)
 		{
-			//todo: Health page
-			return View();
+			var totalNumber = 0;
+			var posts = PostService.GetLastHealthPosts(pageIndex, _PostListSize, out totalNumber);
+
+			ViewBag.PageIndex = pageIndex;
+			ViewBag.TotalPage = totalNumber > 0 ? Math.Ceiling((decimal)totalNumber / _PostListSize) : 1;
+			ViewBag.CurrentUserId = CurrentUserId;
+
+			var modelList = new List<PostModel>();
+
+			foreach (var post in posts)
+			{
+				modelList.Add(new PostModel
+				{
+					Post = post,
+					Group = UserGroupService.GetGroup(post.GroupId),
+					IsBooked = CurrentUserId > 0 && post.PostType != (int)PostType.Venue
+						? PostService.IsBookedPost(post.Id, CurrentUserId) : false
+				});
+			}
+
+			return View(modelList);
 		}
 
 		public ActionResult TZJC()

@@ -41,10 +41,16 @@
 			</select>
 			<label id="venue_selector_title">场地：</label>
 			<select id="venue_selector" name="VenueId" class="select-1"></select>
+			
 		</li>
 		<li>
 			<label>发布标题：</label>
 			@Html.TextBoxFor(x => x.Title, new { @class = "input-1" })
+		</li>
+		<li>
+			<label>健康生活：</label>
+			@Html.CheckBoxFor(x => x.IsHealthTopic)
+			<font class="gray-font">显示在健康生活版块</font>
 		</li>
 		<li>
 			<label>活动简介：</label>

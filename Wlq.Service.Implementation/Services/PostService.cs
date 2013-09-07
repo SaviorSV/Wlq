@@ -181,6 +181,14 @@ namespace Wlq.Service.Implementation
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
+		public IEnumerable<PostInfo> GetLastHealthPosts(int pageIndex, int pageSize, out int totalNumber)
+		{
+			return base.RepositoryProvider<PostInfo>().Entities
+				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && p.IsHealthTopic)
+				.OrderByDescending(p => p.LastModified)
+				.Paging(pageIndex, pageSize, out totalNumber);
+		}
+
 		public IEnumerable<PostInfo> GetPostsByGroupsUserConcerned(long userId, int pageIndex, int pageSize, out int totalNumber)
 		{
 			var groupIds = base.RepositoryProvider<UserGroupInfo>().Entities

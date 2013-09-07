@@ -295,6 +295,7 @@ namespace Wlq.Web.Controllers
 			post.Fee = postModel.Fee;
 			post.Location = postModel.Location;
 			post.RelatedPlace = postModel.RelatedPlace;
+			post.IsHealthTopic = postModel.IsHealthTopic;
 			post.VenueId = postModel.PostType == (int)PostType.Venue ? postModel.VenueId : 0;
 			post.Publisher = AdminUser.Name;
 			post.Image = postModel.Image;

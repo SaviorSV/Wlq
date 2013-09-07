@@ -36,6 +36,7 @@ namespace Wlq.Service
 		IEnumerable<PostInfo> GetPostsByType(PostType type, bool withinTime, int pageIndex, int pageSize, out int totalNumber);
 		IEnumerable<PostInfo> GetPostsByGroup(long groupId, bool withinTime, int pageIndex, int pageSize, out int totalNumber);
 		IEnumerable<PostInfo> GetLastPosts(int pageIndex, int pageSize, out int totalNumber);
+		IEnumerable<PostInfo> GetLastHealthPosts(int pageIndex, int pageSize, out int totalNumber);
 
 		IEnumerable<PostInfo> GetPostsByGroupsUserConcerned(long userId, int pageIndex, int pageSize, out int totalNumber);
 		IEnumerable<PostInfo> GetPostsByUser(long userId, int pageIndex, int pageSize, out int totalNumber);
