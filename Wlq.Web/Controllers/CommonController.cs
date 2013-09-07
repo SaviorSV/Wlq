@@ -90,7 +90,7 @@ namespace Wlq.Web.Controllers
 				success = PostService.CancelBooking(CurrentUser.Id, postId, venueConfigId, date);
 			}
 
-			return Content(new { Success = success }.ObjectToJson(), "text/json");
+			return Content(new { Success = success, Message = string.Empty }.ObjectToJson(), "text/json");
 		}
 
 		[HttpPost]
