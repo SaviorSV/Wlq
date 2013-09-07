@@ -323,6 +323,7 @@ namespace Wlq.Web.Controllers
 
 		#region User
 
+		[OutputCache(Duration = 3600)]
 		public ActionResult Login()
 		{
 			return View();

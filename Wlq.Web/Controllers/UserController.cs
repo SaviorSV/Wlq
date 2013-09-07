@@ -44,6 +44,7 @@ namespace Wlq.Web.Controllers
 			return AlertAndRedirect(message, "/User/Info");
 		}
 
+		[OutputCache(Duration = 3600)]
 		[LoginAuthentication(RoleLevel.Normal, "Home", "Index")]
 		public ActionResult ChangePassword()
 		{

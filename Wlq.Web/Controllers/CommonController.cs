@@ -40,7 +40,7 @@ namespace Wlq.Web.Controllers
 			return PartialView("_Header");
 		}
 
-		//[OutputCache(Duration = 3600)]
+		[OutputCache(Duration = 3600)]
 		public ActionResult LeftMenu()
 		{
 			var model = new LeftMenuModel();
