@@ -114,6 +114,8 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .cd-detail-tbl td,.cd-detail-tbl th{ border:1px solid #cfcecd; text-align:center; height:36px;}
 .cd-detail-tbl td{ background:#e7e5e5; width:70px;}
 .cd-detail-tbl td.on{background:#a1d514; color:#FFF}
+.cd-detail-tbl td.off{background:#e7e5e5; color:#000}
+.cd-detail-tbl td.already{background:gray; color:#FFF}
 .cd-detail-tbl thead th{ background:#a1d514; color:#FFF}
 .cd-detail-tbl thead th.none{ background:none}
 
