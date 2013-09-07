@@ -63,9 +63,7 @@
 					<img src='@string.Format("/upload/group/{0}/{1}{2}", Model.Post.GroupId, Model.Post.Id, Model.Post.Image)' alt="post" />
 				</div>
 			}
-                <div style="margin-top:10px;" id="booking_table">
-                    //table
-                </div>
+                <div style="margin-top:10px;" id="booking_table"></div>
 				<div class="btnbox">
 			@if (ViewBag.CurrentUserId > 0)
 			{
@@ -100,7 +98,7 @@
 @section scripts
 {
 
-    <script src="@Url.Content("~/Content/js/extend.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/js/venue-booking.js")" type="text/javascript"></script>
 	<script type="text/javascript">
         var postId = @Model.Post.Id;
 		var schedules = @Html.Raw(ViewBag.Schedules);
