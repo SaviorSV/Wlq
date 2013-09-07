@@ -63,6 +63,9 @@
 					<img src='@string.Format("/upload/group/{0}/{1}{2}", Model.Post.GroupId, Model.Post.Id, Model.Post.Image)' alt="post" />
 				</div>
 			}
+                <div style="margin-top:10px;" id="booking_table">
+                    //table
+                </div>
 				<div class="btnbox">
 			@if (ViewBag.CurrentUserId > 0)
 			{
@@ -93,9 +96,45 @@
 	<div class="box640-bottom"><img src="/content/images/common/box640-b.jpg" alt="boxbottom" /></div>
 </div>
 
+
 @section scripts
 {
+
+    <script src="@Url.Content("~/Content/js/extend.js")" type="text/javascript"></script>
 	<script type="text/javascript">
+        var postId = @Model.Post.Id;
 		var schedules = @Html.Raw(ViewBag.Schedules);
+        if (schedules.length)
+        {
+            $('#booking_table').booking(schedules,postId);
+
+            $('#booking_table .on').bind('mouseover', function () {
+                $(this).css('background-color', 'blue')
+            });
+
+            $('#booking_table .on').bind('mouseout', function () {
+                $(this).removeAttr("style");
+            });
+
+            $('#booking_table .on').bind('click', function () {
+                var method = $(this).attr('IsBooked');
+                var info = "场地信息：" + $(this).attr('Date') + " " + $(this).parent().children('th').text() + "\n\n";
+                info += method ? "确认预订？" : "确认取消预订？";
+                if (!confirm(info))
+                    return;
+                else {
+                    var p_d = new Array();
+                    p_d['Date'] =  $(this).attr('Date');
+                    p_d['VenueConfigId'] =  $(this).attr('VenueConfigId');
+                    p_d['postId'] =  postId;
+                    alert(typeof(p_d['Date']))
+                    $.post('/Common/Booking',{'Date':$(this).attr('Date'),'VenueConfigId':$(this).attr('VenueConfigId'),'postId':postId},function(data){
+                        alert(data)
+                    });
+                }
+
+            });
+
+        }
 	</script>
 }
