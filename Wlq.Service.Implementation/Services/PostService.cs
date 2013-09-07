@@ -305,13 +305,24 @@ namespace Wlq.Service.Implementation
 				return false;
 			}
 
+			var bookingRepository = base.RepositoryProvider<BookingInfo>();
+
 			if (booking.VenueConfigId > 0)
 			{
+				var booked = bookingRepository.Entities
+					.FirstOrDefault(b => b.UserId == booking.UserId && b.PostId == booking.PostId && b.VenueConfigId == booking.VenueConfigId && b.BookingDate == booking.BookingDate.Date);
+
+				if (booked != null)
+				{
+					message = "预订失败(已预订过该场地)";
+					return false;
+				}
+
 				var venueConfig = base.RepositoryProvider<VenueConfigInfo>().GetById(booking.VenueConfigId);
 
 				if (venueConfig == null)
 				{
-					message = "预订失败(场馆配置不存在)";
+					message = "预订失败(该场配置不存在)";
 					return false;
 				}
 
@@ -319,12 +330,12 @@ namespace Wlq.Service.Implementation
 
 				if (venueBookingNumber >= venueConfig.LimitNumber)
 				{
-					message = "预订失败(场馆预定达到人数上限)";
+					message = "预订失败(该场预定达到人数上限)";
 					return false;
 				}
 			}
 
-			base.RepositoryProvider<BookingInfo>().Add(booking, false);
+			bookingRepository.Add(booking, false);
 
 			post.BookingNumber++;
 			postRepository.Update(post, false);
@@ -339,7 +350,7 @@ namespace Wlq.Service.Implementation
 
 			var bookings = venueConfigId > 0
 				? bookingRepository.Entities
-					.Where(b => b.UserId == userId && b.PostId == postId && b.VenueConfigId == venueConfigId && b.BookingDate.Date == bookingDate.Date)
+					.Where(b => b.UserId == userId && b.PostId == postId && b.VenueConfigId == venueConfigId && b.BookingDate == bookingDate.Date)
 				: bookingRepository.Entities
 					.Where(b => b.UserId == userId && b.PostId == postId);
 
