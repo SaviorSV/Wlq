@@ -71,15 +71,15 @@
 
                     if (attrs['LimitNumber'] > attrs['BookingNumber'] && !attrs['IsBooked']) {
                         td.addClass('on');
-                        td.text('可预订');
+                        td.text('预订');
                     }
                     else if (attrs['IsBooked']) {
                         td.addClass('already');
-                        td.text('已预订');
+                        td.text('取消预订');
                     }
                     else {
                         td.addClass('off');
-                        td.text('不可预订');
+                        td.text('满');
                     }
                 }
 

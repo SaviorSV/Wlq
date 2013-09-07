@@ -108,23 +108,30 @@
         {
             $('#booking_table').booking(schedules,postId);
 
-            $('#booking_table .on').bind('click', function () {
+            $('#booking_table .on, #booking_table .already').bind('click', function () {
+                var _this = this;
                 var method = $(this).attr('IsBooked');
                 var info = "场地信息：" + $(this).attr('Date') + " " + $(this).parent().children('th').text() + "\n\n";
-                info += method ? "确认预订？" : "确认取消预订？";
+                info += (method == 'false') ? "确认预订？" : "确认取消预订？";
+                var url = (method == 'false') ? '/Common/Booking' : '/Common/CancelBooking';
                 if (!confirm(info))
                     return;
                 else {
-                    var p_d = new Array();
-                    p_d['Date'] =  $(this).attr('Date');
-                    p_d['VenueConfigId'] =  $(this).attr('VenueConfigId');
-                    p_d['postId'] =  postId;
-                    alert(typeof(p_d['Date']))
-                    $.post('/Common/Booking',{'BookingDate':$(this).attr('Date'),'VenueConfigId':$(this).attr('VenueConfigId'),'postId':postId},function(data){
-                        alert(data)
+                    $.post(url,{'BookingDate':$(this).attr('Date'),'VenueConfigId':$(this).attr('VenueConfigId'),'postId':postId},function(data){
+                        if(!data['Success'])
+                            alert(data['Message'])
+                        else if(method == 'false'){
+                            $(_this).removeClass().addClass('already');
+                            $(_this).text('取消预订');
+                            $(_this).attr('IsBooked','true');
+                        }
+                        else if (method == 'true'){
+                            $(_this).removeClass().addClass('on');
+                            $(_this).text('预订');
+                            $(_this).attr('IsBooked','false');
+                        }
                     });
                 }
-
             });
 
         }
