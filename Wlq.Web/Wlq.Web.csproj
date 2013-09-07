@@ -184,7 +184,6 @@
     <Content Include="Content\js\jquery.min.js" />
     <Content Include="Content\js\common.js" />
     <Content Include="Content\js\extend.js" />
-    <Content Include="Content\js\knockout.js" />
     <Content Include="Content\tinyeditor\images\header-bg.gif" />
     <Content Include="Content\tinyeditor\images\icons.png" />
     <Content Include="Content\tinyeditor\images\resize.gif" />

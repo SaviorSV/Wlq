@@ -409,7 +409,7 @@ namespace Wlq.Service.Implementation
 		private bool IsBookedVenue(long postId, long userId, long venueConfigId, DateTime bookingDate)
 		{
 			var booking = base.RepositoryProvider<BookingInfo>().Entities
-				.FirstOrDefault(b => b.PostId == postId && b.UserId == userId && b.VenueConfigId == venueConfigId && b.BookingDate.Date == bookingDate.Date);
+				.FirstOrDefault(b => b.PostId == postId && b.UserId == userId && b.VenueConfigId == venueConfigId && b.BookingDate == bookingDate.Date);
 
 			return booking != null;
 		}

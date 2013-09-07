@@ -128,7 +128,7 @@
                     p_d['VenueConfigId'] =  $(this).attr('VenueConfigId');
                     p_d['postId'] =  postId;
                     alert(typeof(p_d['Date']))
-                    $.post('/Common/Booking',{'Date':$(this).attr('Date'),'VenueConfigId':$(this).attr('VenueConfigId'),'postId':postId},function(data){
+                    $.post('/Common/Booking',{'BookingDate':$(this).attr('Date'),'VenueConfigId':$(this).attr('VenueConfigId'),'postId':postId},function(data){
                         alert(data)
                     });
                 }
