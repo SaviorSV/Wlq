@@ -20,6 +20,7 @@ namespace Wlq.Domain
 		public int LimitNumber { get; set; }
 		public int BookingNumber { get; set; }
 		public string Publisher { get; set; }
+		public DateTime PublishTime { get; set; }
 
 		public PostInfo()
 		{
@@ -32,6 +33,7 @@ namespace Wlq.Domain
 			RelatedPlace = string.Empty;
 			Phone = string.Empty;
 			Publisher = string.Empty;
+			PublishTime = DateTime.Now;
 		}
 	}
 }

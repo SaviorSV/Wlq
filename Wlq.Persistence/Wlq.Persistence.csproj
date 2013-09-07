@@ -85,6 +85,10 @@
     <Compile Include="Migrations\201309070321317_UpdatePostInfo2.Designer.cs">
       <DependentUpon>201309070321317_UpdatePostInfo2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201309071709115_UpdatePostInfo3.cs" />
+    <Compile Include="Migrations\201309071709115_UpdatePostInfo3.Designer.cs">
+      <DependentUpon>201309071709115_UpdatePostInfo3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -124,6 +128,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201309070321317_UpdatePostInfo2.resx">
       <DependentUpon>201309070321317_UpdatePostInfo2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201309071709115_UpdatePostInfo3.resx">
+      <DependentUpon>201309071709115_UpdatePostInfo3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

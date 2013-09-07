@@ -298,6 +298,7 @@ namespace Wlq.Web.Controllers
 			post.IsHealthTopic = postModel.IsHealthTopic;
 			post.VenueId = postModel.PostType == (int)PostType.Venue ? postModel.VenueId : 0;
 			post.Publisher = AdminUser.Name;
+			post.PublishTime = DateTime.Now;
 			post.Image = postModel.Image;
 
 			if (post.Id == 0)
@@ -397,7 +398,7 @@ namespace Wlq.Web.Controllers
 					PostType = PostService.GetPostTypeName((PostType)p.PostType),
 					BookingNumber = p.BookingNumber,
 					Publisher = p.Publisher,
-					LastModified = p.LastModified.ToString("yyyy-MM-dd HH:mm:ss") 
+					PublishTime = p.PublishTime.ToString("yyyy-MM-dd HH:mm:ss") 
 				});
 
 			var json = string.Format("{{\"TotalPage\":{0},\"List\":{1}}}"

@@ -17,7 +17,7 @@
 	</a>
 	<div class="mainbox-r">
 		<span class="flag-@Model.Post.PostType"></span>
-		<p class="time">@string.Format("{0:yyyy-MM-dd HH:mm:ss}", Model.Post.LastModified)</p>
+		<p class="time">@string.Format("{0:yyyy-MM-dd HH:mm:ss}", Model.Post.PublishTime)</p>
 		<h3><a href="/Home/Post/@Model.Post.Id">@Model.Post.Title</a></h3>
 		<p class="mainbox-txt">
 			@Html.Raw(Model.Post.Content)	

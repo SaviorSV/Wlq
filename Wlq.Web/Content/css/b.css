@@ -104,8 +104,6 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .flag-2{ background:url(../images/common/flag-2.jpg)}
 .flag-3{ background:url(../images/common/flag-3.jpg)}
 
-
-
 .righttitle-1{ font-size:22px; color:#333; font-weight:normal; font-family:"Microsoft Yahei"; text-align:center; height:30px; line-height:30px; margin-bottom:30px;}
 .righttitle-2{ padding:10px 0 40px 0; text-align:center}
 .cd-detail{ border:1px solid #d7d7d7; background:#FFF; padding:26px; font-size:12px; line-height:20px; font-family:simsun}
@@ -115,7 +113,7 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .cd-detail-tbl td{ background:#e7e5e5; width:70px;}
 .cd-detail-tbl td.on{background:#a1d514; color:#FFF; cursor:pointer;}
 .cd-detail-tbl td.on:hover{background:#a7da7d;}
-.cd-detail-tbl td.off{background:#e7e5e5; color:#000}
+.cd-detail-tbl td.off{background:#aaa; color:#fff}
 .cd-detail-tbl td.already{background:#aaa; color:#FFF; cursor:pointer;}
 .cd-detail-tbl thead th{ background:#a1d514; color:#FFF}
 .cd-detail-tbl thead th.none{ background:none}

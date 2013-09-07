@@ -160,7 +160,7 @@ namespace Wlq.Service.Implementation
 			return base.RepositoryProvider<PostInfo>().Entities
 				.Where(p => (type == PostType.All || p.PostType == (int)type)
 					&& (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
-				.OrderByDescending(p => p.LastModified)
+				.OrderByDescending(p => p.PublishTime)
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
@@ -169,7 +169,7 @@ namespace Wlq.Service.Implementation
 			return base.RepositoryProvider<PostInfo>().Entities
 				.Where(p => p.GroupId == groupId
 					&& (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
-				.OrderByDescending(p => p.LastModified)
+				.OrderByDescending(p => p.PublishTime)
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
@@ -177,7 +177,7 @@ namespace Wlq.Service.Implementation
 		{
 			return base.RepositoryProvider<PostInfo>().Entities
 				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)
-				.OrderByDescending(p => p.LastModified)
+				.OrderByDescending(p => p.PublishTime)
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
@@ -185,7 +185,7 @@ namespace Wlq.Service.Implementation
 		{
 			return base.RepositoryProvider<PostInfo>().Entities
 				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && p.IsHealthTopic)
-				.OrderByDescending(p => p.LastModified)
+				.OrderByDescending(p => p.PublishTime)
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
@@ -197,7 +197,7 @@ namespace Wlq.Service.Implementation
 
 			return base.RepositoryProvider<PostInfo>().Entities
 				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && groupIds.Contains(p.GroupId))
-				.OrderByDescending(p => p.LastModified)
+				.OrderByDescending(p => p.PublishTime)
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
@@ -209,7 +209,7 @@ namespace Wlq.Service.Implementation
 
 			return base.RepositoryProvider<PostInfo>().Entities
 				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && postIds.Contains(p.Id))
-				.OrderByDescending(p => p.LastModified)
+				.OrderByDescending(p => p.PublishTime)
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
@@ -221,7 +221,7 @@ namespace Wlq.Service.Implementation
 
 			return base.RepositoryProvider<PostInfo>().Entities
 				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && bookingPostIds.Contains(p.Id))
-				.OrderByDescending(p => p.LastModified)
+				.OrderByDescending(p => p.PublishTime)
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
