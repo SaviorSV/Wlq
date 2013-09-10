@@ -8,6 +8,7 @@ using Hanger.Common;
 using Microsoft.Practices.Unity;
 using Wlq.Domain;
 using Wlq.Persistence;
+using Wlq.Service.Utility;
 
 namespace Wlq.Service.Implementation
 {
@@ -141,9 +142,22 @@ namespace Wlq.Service.Implementation
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
-		public GroupInfo GetGroup(long groupId)
+		public GroupInfo GetGroup(long groupId, bool fromCache)
 		{
-			return base.RepositoryProvider<GroupInfo>().GetById(groupId);
+			var key = string.Format("Wlq.Domain.GroupInfo.{0}", groupId);
+			var group = fromCache ? CacheHelper<GroupInfo>.Get(key) : null;
+
+			if (group == null)
+			{
+				group = base.RepositoryProvider<GroupInfo>().GetById(groupId);
+
+				if (group != null && fromCache)
+				{
+					CacheHelper<GroupInfo>.Set(key, group, new TimeSpan(0, 15, 0));
+				}
+			}
+
+			return group;
 		}
 
 		public bool AddGroup(GroupInfo group)
@@ -153,12 +167,30 @@ namespace Wlq.Service.Implementation
 
 		public bool UpdateGroup(GroupInfo group)
 		{
-			return base.RepositoryProvider<GroupInfo>().Update(group, true) > 0;
+			var success = base.RepositoryProvider<GroupInfo>().Update(group, true) > 0;
+
+			if (success)
+			{
+				var key = string.Format("Wlq.Domain.GroupInfo.{0}", group.Id);
+
+				CacheHelper<GroupInfo>.Set(key, group, new TimeSpan(0, 15, 0));
+			}
+
+			return success;
 		}
 
 		public bool DeleteGroup(long groupId)
 		{
-			return base.RepositoryProvider<GroupInfo>().DeleteById(groupId, true) > 0;
+			var success = base.RepositoryProvider<GroupInfo>().DeleteById(groupId, true) > 0;
+
+			if (success)
+			{
+				var key = string.Format("Wlq.Domain.GroupInfo.{0}", groupId);
+
+				CacheHelper<GroupInfo>.RemoveKey(key);
+			}
+
+			return success;
 		}
 
 		#endregion
@@ -241,7 +273,7 @@ namespace Wlq.Service.Implementation
 			if (user == null)
 				return false;
 
-			var group = this.GetGroup(groupId);
+			var group = this.GetGroup(groupId, true);
 
 			if (group == null)
 				return false;

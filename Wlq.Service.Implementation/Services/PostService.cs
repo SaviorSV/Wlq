@@ -6,6 +6,7 @@ using Hanger.Common;
 using Microsoft.Practices.Unity;
 using Wlq.Domain;
 using Wlq.Persistence;
+using Wlq.Service.Utility;
 
 namespace Wlq.Service.Implementation
 {
@@ -225,9 +226,22 @@ namespace Wlq.Service.Implementation
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
-		public PostInfo GetPost(long postId)
+		public PostInfo GetPost(long postId, bool fromCache)
 		{
-			return base.RepositoryProvider<PostInfo>().GetById(postId);
+			var key = string.Format("Wlq.Domain.PostInfo.{0}", postId);
+			var post = fromCache ? CacheHelper<PostInfo>.Get(key) : null;
+
+			if (post == null)
+			{
+				post = base.RepositoryProvider<PostInfo>().GetById(postId);
+
+				if (post != null && fromCache)
+				{
+					CacheHelper<PostInfo>.Set(key, post, new TimeSpan(0, 5, 0));
+				}
+			}
+
+			return post;
 		}
 
 		public bool AddPost(PostInfo post)
@@ -237,12 +251,30 @@ namespace Wlq.Service.Implementation
 
 		public bool UpdatePost(PostInfo post)
 		{
-			return base.RepositoryProvider<PostInfo>().Update(post, true) > 0;
+			var success = base.RepositoryProvider<PostInfo>().Update(post, true) > 0;
+
+			if (success)
+			{
+				var key = string.Format("Wlq.Domain.PostInfo.{0}", post.Id);
+
+				CacheHelper<PostInfo>.Set(key, post, new TimeSpan(0, 5, 0));
+			}
+
+			return success;
 		}
 
 		public bool DeletePost(long postId)
 		{
-			return base.RepositoryProvider<PostInfo>().DeleteById(postId, true) > 0;
+			var success = base.RepositoryProvider<PostInfo>().DeleteById(postId, true) > 0;
+
+			if (success)
+			{
+				var key = string.Format("Wlq.Domain.PostInfo.{0}", postId);
+
+				CacheHelper<PostInfo>.RemoveKey(key);
+			}
+
+			return success;
 		}
 
 		public bool ConcernPost(long postId, long userId)

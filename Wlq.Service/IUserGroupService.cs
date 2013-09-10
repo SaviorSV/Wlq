@@ -28,7 +28,7 @@ namespace Wlq.Service
 		IEnumerable<GroupInfo> GetGroupsByUser(long userId);
 		IEnumerable<GroupInfo> GetGroupsByManager(long userId, RoleLevel role);
 		IEnumerable<GroupInfo> GetGroupsByParent(long parentGroupId);
-		GroupInfo GetGroup(long groupId);
+		GroupInfo GetGroup(long groupId, bool fromCache);
 		bool AddGroup(GroupInfo group);
 		bool UpdateGroup(GroupInfo group);
 		bool DeleteGroup(long groupId);

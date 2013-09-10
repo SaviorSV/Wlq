@@ -29,7 +29,7 @@ namespace Wlq.Web.Controllers
 				modelList.Add(new PostModel
 				{
 					Post = post,
-					Group = UserGroupService.GetGroup(post.GroupId),
+					Group = UserGroupService.GetGroup(post.GroupId, true),
 					IsBooked = CurrentUserId > 0 && post.PostType != (int)PostType.Venue
 						? PostService.IsBookedPost(post.Id, CurrentUserId) : false
 				});
@@ -54,7 +54,7 @@ namespace Wlq.Web.Controllers
 				modelList.Add(new PostModel
 				{
 					Post = post,
-					Group = UserGroupService.GetGroup(post.GroupId),
+					Group = UserGroupService.GetGroup(post.GroupId, true),
 					IsBooked = CurrentUserId > 0 && post.PostType != (int)PostType.Venue
 						? PostService.IsBookedPost(post.Id, CurrentUserId) : false
 				});
@@ -80,7 +80,7 @@ namespace Wlq.Web.Controllers
 
 		public ActionResult Group(long id, int pageIndex = 1)
 		{
-			var group = UserGroupService.GetGroup(id);
+			var group = UserGroupService.GetGroup(id, true);
 
 			if (group == null)
 			{
@@ -142,14 +142,14 @@ namespace Wlq.Web.Controllers
 
 		public ActionResult Post(long id)
 		{
-			var post = PostService.GetPost(id);
+			var post = PostService.GetPost(id, true);
 
 			if (post == null)
 			{
 				return RedirectToAction("Index", "Home");
 			}
 
-			var group = UserGroupService.GetGroup(post.GroupId);
+			var group = UserGroupService.GetGroup(post.GroupId, true);
 
 			if (group == null)
 			{

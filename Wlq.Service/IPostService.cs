@@ -24,7 +24,7 @@ namespace Wlq.Service
 
 		string GetPostTypeName(PostType type);
 
-		PostInfo GetPost(long postId);
+		PostInfo GetPost(long postId, bool fromCache);
 		bool AddPost(PostInfo post);
 		bool UpdatePost(PostInfo post);
 		bool DeletePost(long postId);

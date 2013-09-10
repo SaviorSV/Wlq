@@ -52,11 +52,21 @@ namespace Wlq.Service.Utility
 			}
 		}
 
+		public static void RemoveKey(string key)
+		{
+			lock (_locker)
+			{
+				if (_cache.ContainsKey(key))
+				{
+					_cache.Remove(key);
+				}
+			}
+		}
+
 		internal class CacheItem
 		{
 			public T Value { get; set; }
 			public DateTime Expired { get; set; }
 		}
 	}
-
 }

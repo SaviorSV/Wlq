@@ -88,12 +88,12 @@ namespace Wlq.Web.Controllers
 				return RedirectToAction("GroupManagement", "Admin");
 			}
 
-			var parentGroup = UserGroupService.GetGroup(parentGroupId);
+			var parentGroup = UserGroupService.GetGroup(parentGroupId, false);
 
 			ViewBag.ParentGroupName = parentGroup == null ? "无" : parentGroup.Name;
 
 			var group = groupId > 0
-				? UserGroupService.GetGroup(groupId)
+				? UserGroupService.GetGroup(groupId, false)
 				: new GroupInfo { ParentGroupId = parentGroupId };
 
 			if (group == null || group.ParentGroupId != parentGroupId)
@@ -120,7 +120,7 @@ namespace Wlq.Web.Controllers
 			}
 
 			var group = groupModel.Id > 0
-				? UserGroupService.GetGroup(groupModel.Id)
+				? UserGroupService.GetGroup(groupModel.Id, false)
 				: new GroupInfo();
 
 			if (group == null)
@@ -257,7 +257,7 @@ namespace Wlq.Web.Controllers
 			ViewBag.GroupList = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
 
 			var post = id > 0
-				? PostService.GetPost(id)
+				? PostService.GetPost(id, false)
 				: new PostInfo();
 
 			if (post == null)
@@ -276,7 +276,7 @@ namespace Wlq.Web.Controllers
 		public ActionResult SavePost(PostInfo postModel)
 		{
 			var post = postModel.Id > 0
-				? PostService.GetPost(postModel.Id)
+				? PostService.GetPost(postModel.Id, false)
 				: new PostInfo();
 
 			if (post == null)

@@ -152,7 +152,7 @@ namespace Wlq.Web.Controllers
 						myPostsModel.Add(new PostModel
 						{
 							Post = post,
-							Group = UserGroupService.GetGroup(post.GroupId),
+							Group = UserGroupService.GetGroup(post.GroupId, true),
 							IsBooked = CurrentUserId > 0 && post.PostType != (int)PostType.Venue
 								? PostService.IsBookedPost(post.Id, CurrentUserId) : false
 						});
