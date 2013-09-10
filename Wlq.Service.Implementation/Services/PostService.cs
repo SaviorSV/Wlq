@@ -163,7 +163,7 @@ namespace Wlq.Service.Implementation
 			var key = string.Format("PostService.GetPostsByType.{0}.{1}.{2}.{3}"
 				, (int)type, withinTime, pageIndex, pageSize);
 
-			var postList = CacheService.GetList<PostInfo>(fromCache, key, pageIndex, pageSize, _PostListCachedTime,
+			var postList = base.GetList<PostInfo>(fromCache, key, pageIndex, pageSize, _PostListCachedTime,
 			() =>
 			{
 				return base.RepositoryProvider<PostInfo>().Entities
@@ -181,7 +181,7 @@ namespace Wlq.Service.Implementation
 			var key = string.Format("PostService.GetPostsByGroup.{0}.{1}.{2}.{3}"
 				, groupId, withinTime, pageIndex, pageSize);
 
-			var postList = CacheService.GetList<PostInfo>(fromCache, key, pageIndex, pageSize, _PostListCachedTime,
+			var postList = base.GetList<PostInfo>(fromCache, key, pageIndex, pageSize, _PostListCachedTime,
 			() =>
 			{
 				return base.RepositoryProvider<PostInfo>().Entities
@@ -199,7 +199,7 @@ namespace Wlq.Service.Implementation
 			var key = string.Format("PostService.GetLastPosts.{0}.{1}"
 				, pageIndex, pageSize);
 
-			var postList = CacheService.GetList<PostInfo>(fromCache, key, pageIndex, pageSize, _PostListCachedTime,
+			var postList = base.GetList<PostInfo>(fromCache, key, pageIndex, pageSize, _PostListCachedTime,
 			() =>
 			{
 				return base.RepositoryProvider<PostInfo>().Entities
@@ -217,7 +217,7 @@ namespace Wlq.Service.Implementation
 			var key = string.Format("PostService.GetLastHealthPosts.{0}.{1}"
 				, pageIndex, pageSize);
 
-			var postList = CacheService.GetList<PostInfo>(fromCache, key, pageIndex, pageSize, _PostListCachedTime,
+			var postList = base.GetList<PostInfo>(fromCache, key, pageIndex, pageSize, _PostListCachedTime,
 			() =>
 			{
 				return base.RepositoryProvider<PostInfo>().Entities
