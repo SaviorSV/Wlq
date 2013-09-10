@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Hanger.Common;
 using Wlq.Domain;
@@ -46,7 +47,7 @@ namespace Wlq.Service.Implementation
 			{
 				var entities = getEntities().Paging(pageIndex, pageSize, out totalNumber);
 
-				entityList = new EntityList<TEntity> { TotalNumber = totalNumber, List = entities };
+				entityList = new EntityList<TEntity> { TotalNumber = totalNumber, List = entities.ToList() };
 
 				if (fromCache)
 				{

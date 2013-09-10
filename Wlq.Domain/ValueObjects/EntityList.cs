@@ -5,6 +5,6 @@ namespace Wlq.Domain
 	public class EntityList<TEntity>
 	{
 		public int TotalNumber { get; set; }
-		public IEnumerable<TEntity> List { get; set; }
+		public IList<TEntity> List { get; set; }
 	}
 }
