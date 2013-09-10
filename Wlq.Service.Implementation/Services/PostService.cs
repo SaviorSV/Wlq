@@ -163,7 +163,8 @@ namespace Wlq.Service.Implementation
 			var key = string.Format("PostService.GetPostsByType.{0}.{1}.{2}.{3}"
 				, (int)type, withinTime, pageIndex, pageSize);
 
-			var postList = this.GetPostList(fromCache, key, pageIndex, pageSize, () =>
+			var postList = CacheService.GetList<PostInfo>(fromCache, key, pageIndex, pageSize, _PostListCachedTime,
+			() =>
 			{
 				return base.RepositoryProvider<PostInfo>().Entities
 					.Where(p => (type == PostType.All || p.PostType == (int)type) && (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
@@ -180,7 +181,8 @@ namespace Wlq.Service.Implementation
 			var key = string.Format("PostService.GetPostsByGroup.{0}.{1}.{2}.{3}"
 				, groupId, withinTime, pageIndex, pageSize);
 
-			var postList = this.GetPostList(fromCache, key, pageIndex, pageSize, () =>
+			var postList = CacheService.GetList<PostInfo>(fromCache, key, pageIndex, pageSize, _PostListCachedTime,
+			() =>
 			{
 				return base.RepositoryProvider<PostInfo>().Entities
 					.Where(p => p.GroupId == groupId && (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
@@ -197,7 +199,8 @@ namespace Wlq.Service.Implementation
 			var key = string.Format("PostService.GetLastPosts.{0}.{1}"
 				, pageIndex, pageSize);
 
-			var postList = this.GetPostList(fromCache, key, pageIndex, pageSize, () =>
+			var postList = CacheService.GetList<PostInfo>(fromCache, key, pageIndex, pageSize, _PostListCachedTime,
+			() =>
 			{
 				return base.RepositoryProvider<PostInfo>().Entities
 					.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)
@@ -214,7 +217,9 @@ namespace Wlq.Service.Implementation
 			var key = string.Format("PostService.GetLastHealthPosts.{0}.{1}"
 				, pageIndex, pageSize);
 
-			var postList = this.GetPostList(fromCache, key, pageIndex, pageSize, () => {
+			var postList = CacheService.GetList<PostInfo>(fromCache, key, pageIndex, pageSize, _PostListCachedTime,
+			() =>
+			{
 				return base.RepositoryProvider<PostInfo>().Entities
 					.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && p.IsHealthTopic)
 					.OrderByDescending(p => p.PublishTime);
@@ -223,26 +228,6 @@ namespace Wlq.Service.Implementation
 			totalNumber = postList.TotalNumber;
 
 			return postList.List;
-		}
-
-		private PostList GetPostList(bool fromCache, string key, int pageIndex, int pageSize, Func<IEnumerable<PostInfo>> getPost)
-		{
-			var totalNumber = 0;
-			var postList = fromCache ? CacheHelper<PostList>.Get(key) : null;
-
-			if (postList == null)
-			{
-				var posts = getPost().Paging(pageIndex, pageSize, out totalNumber);
-
-				postList = new PostList { TotalNumber = totalNumber, List = posts };
-
-				if (fromCache)
-				{
-					CacheHelper<PostList>.Set(key, postList, _PostListCachedTime);
-				}
-			}
-
-			return postList;
 		}
 
 		public IEnumerable<PostInfo> GetPostsByGroupsUserConcerned(long userId, int pageIndex, int pageSize, out int totalNumber)

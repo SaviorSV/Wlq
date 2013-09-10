@@ -63,7 +63,7 @@
     <Compile Include="ValueObjects\BookingConfig.cs" />
     <Compile Include="ValueObjects\BookingPeriod.cs" />
     <Compile Include="ValueObjects\BookingSchedule.cs" />
-    <Compile Include="ValueObjects\PostList.cs" />
+    <Compile Include="ValueObjects\EntityList.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

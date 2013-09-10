@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Services\CommonService.cs" />
+    <Compile Include="InternalServices\CacheService.cs" />
     <Compile Include="Services\PostService.cs" />
     <Compile Include="ServiceBase.cs" />
     <Compile Include="Services\UserGroupService.cs" />
