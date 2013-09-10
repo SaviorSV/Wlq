@@ -31,8 +31,6 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .o-hidden{ overflow:hidden}
 .txt-c{ text-align:center}
 
-
-
 .top{ height:279px; background:url(../images/common/top-bg.jpg) no-repeat top center}
 .logo{width:235px; height:140px; float:left;position:absolute; top:29px; left:37px;}
 .logo a{ background:url(../images/common/logo.jpg); width:235px; height:140px; display:inline-block}
@@ -119,7 +117,6 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .cd-detail-tbl thead th.none{ background:none}
 
 .indexlist{ padding:0 0 0 10px;}
-
 .js-detail{border:1px solid #d7d7d7; background:#FFF; padding:26px 11px; font-size:12px; line-height:20px; font-family:simsun; min-height:500px;_height:500px; width:622px}
 
 .tabbox{ border-left:1px solid #d7d7d7}
@@ -267,6 +264,17 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .userindexbox-img{ float:left; margin-right:22px;}
 .userindexbox-info{ float:left; width:500px; line-height:26px; font-size:14px; color:#333}
 .userindexbox-info h4{ height:50px; line-height:50px; float:left; margin-right:20px;}
+
+
+/*轮播*/
+#banner {position:relative; width:646px; height:364px;  overflow:hidden; font-size:16px} 
+#banner_list img {border:0px;width:646px; height:364px;} 
+#banner_bg {position:absolute; bottom:0;background-color:#000;height:50px;filter: Alpha(Opacity=70);opacity:0.7;z-index:1000;cursor:pointer; width:646px; } 
+#banner_info{position:absolute; bottom:0px; left:15px;height:50px; line-height:50px;color:#fff;z-index:1001;cursor:pointer} 
+#banner_text {position:absolute;width:120px;z-index:1002; right:3px; bottom:3px;} 
+#banner ul {position:absolute;list-style-type:none;filter: Alpha(Opacity=70);opacity:0.7; z-index:1002; margin:0; padding:0; bottom:0px; right:0px; height:42px; padding:8px 0 0 0;} 
+#banner ul li { line-height:35px; height:35px; width:35px;float:left;display:block;color:#FFF;background-color:#999;cursor:pointer; margin:0; font-size:20px; margin-right:7px; text-align:center;} 
+#banner_list a{position:absolute;} 
 
 /*mask*/
 .UED_SHUCOVER_V1{background-color:#0ff;position:fixed;left:0;top:0;width:100%;height:100%;filter:alpha(opacity=50);opacity:.5;z-index:99997;_position:absolute;_top:expression(eval(document.compatMode && document.compatMode=='CSS1Compat') ? documentElement.scrollTop+(document.documentElement.clientHeight-this.offsetHeight)/2:document.body.scrollTop+(document.body.clientHeight - this.clientHeight)/2);}
