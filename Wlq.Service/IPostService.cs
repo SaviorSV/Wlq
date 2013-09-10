@@ -33,10 +33,10 @@ namespace Wlq.Service
 		bool UnConcernPost(long postId, long userId);
 		bool IsUserConcernPost(long postId, long userId);
 
-		IEnumerable<PostInfo> GetPostsByType(PostType type, bool withinTime, int pageIndex, int pageSize, out int totalNumber);
-		IEnumerable<PostInfo> GetPostsByGroup(long groupId, bool withinTime, int pageIndex, int pageSize, out int totalNumber);
-		IEnumerable<PostInfo> GetLastPosts(int pageIndex, int pageSize, out int totalNumber);
-		IEnumerable<PostInfo> GetLastHealthPosts(int pageIndex, int pageSize, out int totalNumber);
+		IEnumerable<PostInfo> GetPostsByType(bool fromCache, PostType type, bool withinTime, int pageIndex, int pageSize, out int totalNumber);
+		IEnumerable<PostInfo> GetPostsByGroup(bool fromCache, long groupId, bool withinTime, int pageIndex, int pageSize, out int totalNumber);
+		IEnumerable<PostInfo> GetLastPosts(bool fromCache, int pageIndex, int pageSize, out int totalNumber);
+		IEnumerable<PostInfo> GetLastHealthPosts(bool fromCache, int pageIndex, int pageSize, out int totalNumber);
 
 		IEnumerable<PostInfo> GetPostsByGroupsUserConcerned(long userId, int pageIndex, int pageSize, out int totalNumber);
 		IEnumerable<PostInfo> GetPostsByUser(long userId, int pageIndex, int pageSize, out int totalNumber);

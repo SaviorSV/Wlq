@@ -42,9 +42,9 @@ namespace Wlq.Web.Controllers
 
 			var model = new AdminIndexModel
 			{
-				ActivityList = PostService.GetPostsByType(PostType.Activity, true, 1, 8, out totalNumber),
-				CourseList = PostService.GetPostsByType(PostType.Course, true, 1, 8, out totalNumber),
-				VenueList = PostService.GetPostsByType(PostType.Venue, true, 1, 8, out totalNumber)
+				ActivityList = PostService.GetPostsByType(true, PostType.Activity, true, 1, 8, out totalNumber),
+				CourseList = PostService.GetPostsByType(true, PostType.Course, true, 1, 8, out totalNumber),
+				VenueList = PostService.GetPostsByType(true, PostType.Venue, true, 1, 8, out totalNumber)
 			};
 
 			return View(model);
@@ -390,7 +390,7 @@ namespace Wlq.Web.Controllers
 
 			var totalNumber = 0;
 			var pageSize = 10;
-			var posts = PostService.GetPostsByGroup(id, false, pageIndex, pageSize, out totalNumber)
+			var posts = PostService.GetPostsByGroup(false, id, false, pageIndex, pageSize, out totalNumber)
 				.Select(p => new 
 				{ 
 					Id = p.Id, 

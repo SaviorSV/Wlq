@@ -12,6 +12,8 @@ namespace Wlq.Service.Implementation
 {
 	public class PostService : ServiceBase, IPostService
 	{
+		private static readonly TimeSpan _PostListCachedTime = new TimeSpan(0, 10, 0);
+
 		[InjectionConstructor]
 		public PostService(DatabaseContext databaseContext)
 			: base(databaseContext)
@@ -156,38 +158,91 @@ namespace Wlq.Service.Implementation
 			}
 		}
 
-		public IEnumerable<PostInfo> GetPostsByType(PostType type, bool withinTime, int pageIndex, int pageSize, out int totalNumber)
+		public IEnumerable<PostInfo> GetPostsByType(bool fromCache, PostType type, bool withinTime, int pageIndex, int pageSize, out int totalNumber)
 		{
-			return base.RepositoryProvider<PostInfo>().Entities
-				.Where(p => (type == PostType.All || p.PostType == (int)type)
-					&& (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
-				.OrderByDescending(p => p.PublishTime)
-				.Paging(pageIndex, pageSize, out totalNumber);
+			var key = string.Format("PostService.GetPostsByType.{0}.{1}.{2}.{3}"
+				, (int)type, withinTime, pageIndex, pageSize);
+
+			var postList = this.GetPostList(fromCache, key, pageIndex, pageSize, () =>
+			{
+				return base.RepositoryProvider<PostInfo>().Entities
+					.Where(p => (type == PostType.All || p.PostType == (int)type) && (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
+					.OrderByDescending(p => p.PublishTime);
+			});
+		
+			totalNumber = postList.TotalNumber;
+
+			return postList.List;
 		}
 
-		public IEnumerable<PostInfo> GetPostsByGroup(long groupId, bool withinTime, int pageIndex, int pageSize, out int totalNumber)
+		public IEnumerable<PostInfo> GetPostsByGroup(bool fromCache, long groupId, bool withinTime, int pageIndex, int pageSize, out int totalNumber)
 		{
-			return base.RepositoryProvider<PostInfo>().Entities
-				.Where(p => p.GroupId == groupId
-					&& (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
-				.OrderByDescending(p => p.PublishTime)
-				.Paging(pageIndex, pageSize, out totalNumber);
+			var key = string.Format("PostService.GetPostsByGroup.{0}.{1}.{2}.{3}"
+				, groupId, withinTime, pageIndex, pageSize);
+
+			var postList = this.GetPostList(fromCache, key, pageIndex, pageSize, () =>
+			{
+				return base.RepositoryProvider<PostInfo>().Entities
+					.Where(p => p.GroupId == groupId && (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
+					.OrderByDescending(p => p.PublishTime);
+			});
+
+			totalNumber = postList.TotalNumber;
+
+			return postList.List;
 		}
 
-		public IEnumerable<PostInfo> GetLastPosts(int pageIndex, int pageSize, out int totalNumber)
+		public IEnumerable<PostInfo> GetLastPosts(bool fromCache, int pageIndex, int pageSize, out int totalNumber)
 		{
-			return base.RepositoryProvider<PostInfo>().Entities
-				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)
-				.OrderByDescending(p => p.PublishTime)
-				.Paging(pageIndex, pageSize, out totalNumber);
+			var key = string.Format("PostService.GetLastPosts.{0}.{1}"
+				, pageIndex, pageSize);
+
+			var postList = this.GetPostList(fromCache, key, pageIndex, pageSize, () =>
+			{
+				return base.RepositoryProvider<PostInfo>().Entities
+					.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)
+					.OrderByDescending(p => p.PublishTime);
+			});
+
+			totalNumber = postList.TotalNumber;
+
+			return postList.List;
 		}
 
-		public IEnumerable<PostInfo> GetLastHealthPosts(int pageIndex, int pageSize, out int totalNumber)
+		public IEnumerable<PostInfo> GetLastHealthPosts(bool fromCache, int pageIndex, int pageSize, out int totalNumber)
 		{
-			return base.RepositoryProvider<PostInfo>().Entities
-				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && p.IsHealthTopic)
-				.OrderByDescending(p => p.PublishTime)
-				.Paging(pageIndex, pageSize, out totalNumber);
+			var key = string.Format("PostService.GetLastHealthPosts.{0}.{1}"
+				, pageIndex, pageSize);
+
+			var postList = this.GetPostList(fromCache, key, pageIndex, pageSize, () => {
+				return base.RepositoryProvider<PostInfo>().Entities
+					.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && p.IsHealthTopic)
+					.OrderByDescending(p => p.PublishTime);
+			});
+
+			totalNumber = postList.TotalNumber;
+
+			return postList.List;
+		}
+
+		private PostList GetPostList(bool fromCache, string key, int pageIndex, int pageSize, Func<IEnumerable<PostInfo>> getPost)
+		{
+			var totalNumber = 0;
+			var postList = fromCache ? CacheHelper<PostList>.Get(key) : null;
+
+			if (postList == null)
+			{
+				var posts = getPost().Paging(pageIndex, pageSize, out totalNumber);
+
+				postList = new PostList { TotalNumber = totalNumber, List = posts };
+
+				if (fromCache)
+				{
+					CacheHelper<PostList>.Set(key, postList, _PostListCachedTime);
+				}
+			}
+
+			return postList;
 		}
 
 		public IEnumerable<PostInfo> GetPostsByGroupsUserConcerned(long userId, int pageIndex, int pageSize, out int totalNumber)
@@ -228,20 +283,7 @@ namespace Wlq.Service.Implementation
 
 		public PostInfo GetPost(long postId, bool fromCache)
 		{
-			var key = string.Format("Wlq.Domain.PostInfo.{0}", postId);
-			var post = fromCache ? CacheHelper<PostInfo>.Get(key) : null;
-
-			if (post == null)
-			{
-				post = base.RepositoryProvider<PostInfo>().GetById(postId);
-
-				if (post != null && fromCache)
-				{
-					CacheHelper<PostInfo>.Set(key, post, new TimeSpan(0, 5, 0));
-				}
-			}
-
-			return post;
+			return base.RepositoryProvider<PostInfo>().GetById(postId); ;
 		}
 
 		public bool AddPost(PostInfo post)
@@ -251,30 +293,12 @@ namespace Wlq.Service.Implementation
 
 		public bool UpdatePost(PostInfo post)
 		{
-			var success = base.RepositoryProvider<PostInfo>().Update(post, true) > 0;
-
-			if (success)
-			{
-				var key = string.Format("Wlq.Domain.PostInfo.{0}", post.Id);
-
-				CacheHelper<PostInfo>.Set(key, post, new TimeSpan(0, 5, 0));
-			}
-
-			return success;
+			return base.RepositoryProvider<PostInfo>().Update(post, true) > 0;
 		}
 
 		public bool DeletePost(long postId)
 		{
-			var success = base.RepositoryProvider<PostInfo>().DeleteById(postId, true) > 0;
-
-			if (success)
-			{
-				var key = string.Format("Wlq.Domain.PostInfo.{0}", postId);
-
-				CacheHelper<PostInfo>.RemoveKey(key);
-			}
-
-			return success;
+			return base.RepositoryProvider<PostInfo>().DeleteById(postId, true) > 0;
 		}
 
 		public bool ConcernPost(long postId, long userId)

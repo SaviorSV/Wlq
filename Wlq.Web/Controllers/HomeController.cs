@@ -14,8 +14,8 @@ namespace Wlq.Web.Controllers
 		{
 			var totalNumber = 0;
 			var posts = postType == PostType.All
-				? PostService.GetLastPosts(pageIndex, _PostListSize, out totalNumber)
-				: PostService.GetPostsByType(postType, true, pageIndex, _PostListSize, out totalNumber);
+				? PostService.GetLastPosts(true, pageIndex, _PostListSize, out totalNumber)
+				: PostService.GetPostsByType(true, postType, true, pageIndex, _PostListSize, out totalNumber);
 
 			ViewBag.PageIndex = pageIndex;
 			ViewBag.TotalPage = totalNumber > 0 ? Math.Ceiling((decimal)totalNumber / _PostListSize) : 1;
@@ -41,7 +41,7 @@ namespace Wlq.Web.Controllers
 		public ActionResult Health(int pageIndex = 1)
 		{
 			var totalNumber = 0;
-			var posts = PostService.GetLastHealthPosts(pageIndex, _PostListSize, out totalNumber);
+			var posts = PostService.GetLastHealthPosts(true, pageIndex, _PostListSize, out totalNumber);
 
 			ViewBag.PageIndex = pageIndex;
 			ViewBag.TotalPage = totalNumber > 0 ? Math.Ceiling((decimal)totalNumber / _PostListSize) : 1;
@@ -88,7 +88,7 @@ namespace Wlq.Web.Controllers
 			}
 
 			var totalNumber = 0;
-			var posts = PostService.GetPostsByGroup(id, true, pageIndex, _GroupListSize, out totalNumber);
+			var posts = PostService.GetPostsByGroup(true, id, true, pageIndex, _GroupListSize, out totalNumber);
 			var postModels = new List<PostModel>();
 
 			foreach (var post in posts)
