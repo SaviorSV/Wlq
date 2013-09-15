@@ -216,3 +216,32 @@ function unconcern_post(postId) {
 		}
 	});
 }
+
+/******************* 轮播 *******************/
+
+var banner_t = banner_n = 0, banner_count;
+
+$(document).ready(function () {
+	banner_count = $("#banner_list a").length;
+	$("#banner_list a:not(:first-child)").hide();
+	$("#banner_info").html($("#banner_list a:first-child").find("img").attr('alt'));
+	$("#banner_info").click(function () { window.open($("#banner_list a:first-child").attr('href'), "_blank") });
+	$("#banner li").click(function () {
+		var i = $(this).text() - 1; //获取Li元素内的值，即1，2，3，4 
+		banner_n = i;
+		if (i >= banner_count) return;
+		$("#banner_info").html($("#banner_list a").eq(i).find("img").attr('alt'));
+		$("#banner_info").unbind().click(function () { window.open($("#banner_list a").eq(i).attr('href'), "_blank") })
+		$("#banner_list a").filter(":visible").fadeOut(500).parent().children().eq(i).fadeIn(1000);
+		$(this).css({ "background": "#1f8fcf", 'color': '#fff' }).siblings().css({ "background": "#999", 'color': '#fff' });
+	});
+	banner_t = setInterval("showAuto()", 4000);
+	$("#banner").hover(function () { clearInterval(banner_t) }, function () { banner_t = setInterval("showAuto()", 4000); });
+});
+
+function showAuto() {
+	banner_n = banner_n >= (banner_count - 1) ? 0 : ++banner_n;
+	$("#banner li").eq(banner_n).trigger('click');
+}
+
+/******************* 轮播 *******************/
