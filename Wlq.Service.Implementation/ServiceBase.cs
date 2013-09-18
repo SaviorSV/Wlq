@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Hanger.Common;
 using Wlq.Domain;
 using Wlq.Persistence;
-using Wlq.Service.Utility;
 
 namespace Wlq.Service.Implementation
 {
@@ -36,26 +34,6 @@ namespace Wlq.Service.Implementation
 
 				return repository;
 			}
-		}
-
-		protected EntityList<TEntity> GetList<TEntity>(bool fromCache, string key, int pageIndex, int pageSize, TimeSpan cacheTime, Func<IEnumerable<TEntity>> getEntities)
-		{
-			var totalNumber = 0;
-			var entityList = fromCache ? CacheHelper<EntityList<TEntity>>.Get(key) : null;
-
-			if (entityList == null)
-			{
-				var entities = getEntities().Paging(pageIndex, pageSize, out totalNumber);
-
-				entityList = new EntityList<TEntity> { TotalNumber = totalNumber, List = entities.ToList() };
-
-				if (fromCache)
-				{
-					CacheHelper<EntityList<TEntity>>.Set(key, entityList, cacheTime);
-				}
-			}
-
-			return entityList;
 		}
 	}
 }

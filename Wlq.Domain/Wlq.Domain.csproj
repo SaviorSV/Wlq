@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Hanger.Common">
-      <HintPath>..\References\Hanger.Common.dll</HintPath>
+    <Reference Include="Hanger">
+      <HintPath>..\References\Hanger.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -63,7 +63,6 @@
     <Compile Include="ValueObjects\BookingConfig.cs" />
     <Compile Include="ValueObjects\BookingPeriod.cs" />
     <Compile Include="ValueObjects\BookingSchedule.cs" />
-    <Compile Include="ValueObjects\EntityList.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

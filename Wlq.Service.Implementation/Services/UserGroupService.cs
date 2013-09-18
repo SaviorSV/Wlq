@@ -4,11 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 
+using Hanger.Caching;
 using Hanger.Common;
 using Microsoft.Practices.Unity;
 using Wlq.Domain;
 using Wlq.Persistence;
-using Wlq.Service.Utility;
 
 namespace Wlq.Service.Implementation
 {
@@ -145,19 +145,12 @@ namespace Wlq.Service.Implementation
 		public GroupInfo GetGroup(long groupId, bool fromCache)
 		{
 			var key = string.Format("Wlq.Domain.GroupInfo.{0}", groupId);
-			var group = fromCache ? CacheHelper<GroupInfo>.Get(key) : null;
 
-			if (group == null)
-			{
-				group = base.RepositoryProvider<GroupInfo>().GetById(groupId);
-
-				if (group != null && fromCache)
+			return CacheManager.Get<GroupInfo>(true, key, new TimeSpan(0, 15, 0),
+				() =>
 				{
-					CacheHelper<GroupInfo>.Set(key, group, new TimeSpan(0, 15, 0));
-				}
-			}
-
-			return group;
+					return base.RepositoryProvider<GroupInfo>().GetById(groupId);
+				});
 		}
 
 		public bool AddGroup(GroupInfo group)
@@ -173,7 +166,7 @@ namespace Wlq.Service.Implementation
 			{
 				var key = string.Format("Wlq.Domain.GroupInfo.{0}", group.Id);
 
-				CacheHelper<GroupInfo>.Set(key, group, new TimeSpan(0, 15, 0));
+				CacheManager.Update<GroupInfo>(key, group, new TimeSpan(0, 15, 0));
 			}
 
 			return success;
@@ -187,7 +180,7 @@ namespace Wlq.Service.Implementation
 			{
 				var key = string.Format("Wlq.Domain.GroupInfo.{0}", groupId);
 
-				CacheHelper<GroupInfo>.RemoveKey(key);
+				CacheManager.RemoveKey(key);
 			}
 
 			return success;
