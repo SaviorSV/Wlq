@@ -5,8 +5,6 @@ using System.Web;
 
 using Hanger.Common;
 using Wlq.Service.Utility;
-using Wlq.Domain;
-using System.Collections.Generic;
 
 namespace Wlq.Service.Implementation
 {
