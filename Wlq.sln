@@ -5,7 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wlq.Web", "Wlq.Web\Wlq.Web.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{3CCF9FA2-4FFE-405A-AC25-ABD84324D0D2}"
 	ProjectSection(SolutionItems) = preProject
-		References\Hanger.Common.dll = References\Hanger.Common.dll
 		References\Microsoft.Practices.ServiceLocation.dll = References\Microsoft.Practices.ServiceLocation.dll
 		References\Microsoft.Practices.Unity.dll = References\Microsoft.Practices.Unity.dll
 		References\Newtonsoft.Json.dll = References\Newtonsoft.Json.dll

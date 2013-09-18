@@ -4,11 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 
+using Hanger.Caching;
 using Hanger.Common;
 using Microsoft.Practices.Unity;
 using Wlq.Domain;
 using Wlq.Persistence;
-using Wlq.Service.Utility;
 
 namespace Wlq.Service.Implementation
 {
