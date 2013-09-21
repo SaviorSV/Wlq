@@ -48,11 +48,6 @@
 			@Html.TextBoxFor(x => x.Title, new { @class = "input-1" })
 		</li>
 		<li>
-			<label>健康生活：</label>
-			@Html.CheckBoxFor(x => x.IsHealthTopic)
-			<font class="gray-font">显示在健康生活版块</font>
-		</li>
-		<li>
 			<label>活动简介：</label>
 			<input id="post_content" name="Content" value="@Model.Content" />
 		</li>
@@ -79,6 +74,10 @@
 			@Html.TextBoxFor(x => x.RelatedPlace, new { @class = "input-1" })
 		</li>
 		<li>
+			<label>安全须知：</label>
+			@Html.TextBoxFor(x => x.Remark, new { @class = "input-1" })
+		</li>
+		<li>
 			<label>图片上传：</label>
 			<input id="post_uploader" name="post_uploader" type="file" onchange="upload_file('post');" /><br />
 		@if (!string.IsNullOrWhiteSpace(Model.Image))
@@ -91,10 +90,8 @@
 		}
 		</li>
 	</ul>
-	
 	<input name="Id" type="hidden" value="@Model.Id" />
 	<input id="post_hidden" name="Image" type="hidden" value="@Model.Image" />
-	
 	<a id="save_post" href="javascript:;" class="btn-3">保　存</a>
 	<a href="@Url.Action("PostManagement", "Admin")" class="btn-3">返　回</a>
 }

@@ -21,6 +21,45 @@ namespace Wlq.Service.Implementation
 
 		#region venue
 
+		public IEnumerable<VenueGroupInfo> GetVenueGroupsByGroup(long groupId)
+		{
+			return base.RepositoryProvider<VenueGroupInfo>().Entities
+				.Where(v => v.GroupId == groupId);
+		}
+
+		public VenueGroupInfo GetVenueGroup(long venueGroupId)
+		{
+			return base.RepositoryProvider<VenueGroupInfo>().GetById(venueGroupId);
+		}
+
+		public bool AddVenueGroup(VenueGroupInfo venueGroup)
+		{
+			return base.RepositoryProvider<VenueGroupInfo>().Add(venueGroup, true) > 0;
+		}
+
+		public bool UpdateVenueGroup(VenueGroupInfo venueGroup)
+		{
+			return base.RepositoryProvider<VenueGroupInfo>().Update(venueGroup, true) > 0;
+		}
+
+		public bool DeleteVenueGroup(long venueGroupId)
+		{
+			var venues = this.GetVenuesByVenueGroup(venueGroupId);
+
+			foreach (var venue in venues)
+			{
+				this.DeleteVenue(venue.Id);
+			}
+
+			return base.RepositoryProvider<VenueGroupInfo>().DeleteById(venueGroupId, true) > 0; 
+		}
+
+		public IEnumerable<VenueInfo> GetVenuesByVenueGroup(long venueGroupId)
+		{
+			return base.RepositoryProvider<VenueInfo>().Entities
+				   .Where(v => v.VenueGroupId == venueGroupId); 
+		}
+
 		public IEnumerable<VenueInfo> GetVenuesByGroup(long groupId)
 		{
 			return base.RepositoryProvider<VenueInfo>().Entities

@@ -12,6 +12,7 @@ namespace Wlq.Domain
 		public string Email { get; set; }
 		public string WorkTime { get; set; }
 		public string Introduction { get; set; }
+		public bool IsHealth { get; set; }
 
 		public GroupInfo()
 		{

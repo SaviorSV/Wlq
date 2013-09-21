@@ -190,6 +190,23 @@ namespace Wlq.Web.Controllers
 			return View(venue);
 		}
 
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
+		public ActionResult VenueGroup(long id)
+		{
+			ViewBag.GroupList = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
+
+			var venueGroup = id > 0
+				? PostService.GetVenue(id)
+				: new VenueInfo();
+
+			if (venueGroup == null)
+			{
+				return RedirectToAction("VenueManagement", "Admin");
+			}
+
+			return View(venueGroup);
+		}
+
 		[HttpPost]
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult SaveVenue(VenueInfo venueModel, string config)
@@ -284,6 +301,13 @@ namespace Wlq.Web.Controllers
 				return AlertAndRedirect("保存失败(信息不存在)", "/Admin/PostManagement");
 			}
 
+			var group = UserGroupService.GetGroup(postModel.GroupId, false);
+
+			if (group == null)
+			{
+				return AlertAndRedirect("保存失败(组织信息不存在)", "/Admin/PostManagement");
+			}
+
 			post.GroupId = postModel.GroupId;
 			post.PostType = postModel.PostType;
 			post.Title = postModel.Title;
@@ -295,7 +319,7 @@ namespace Wlq.Web.Controllers
 			post.Fee = postModel.Fee;
 			post.Location = postModel.Location;
 			post.RelatedPlace = postModel.RelatedPlace;
-			post.IsHealthTopic = postModel.IsHealthTopic;
+			post.IsHealthTopic = group.IsHealth;
 			post.VenueId = postModel.PostType == (int)PostType.Venue ? postModel.VenueId : 0;
 			post.Publisher = AdminUser.Name;
 			post.PublishTime = DateTime.Now;

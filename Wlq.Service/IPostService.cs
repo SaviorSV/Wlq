@@ -10,10 +10,17 @@ namespace Wlq.Service
 		#region Venue
 
 		IEnumerable<VenueInfo> GetVenuesByGroup(long groupId);
+		IEnumerable<VenueInfo> GetVenuesByVenueGroup(long venueGroupId);
 		VenueInfo GetVenue(long venueId);
 		bool AddVenue(VenueInfo venue);
 		bool UpdateVenue(VenueInfo venue);
 		bool DeleteVenue(long venueId);
+
+		IEnumerable<VenueGroupInfo> GetVenueGroupsByGroup(long groupId);
+		VenueGroupInfo GetVenueGroup(long venueGroupId);
+		bool AddVenueGroup(VenueGroupInfo venueGroup);
+		bool UpdateVenueGroup(VenueGroupInfo venueGroup);
+		bool DeleteVenueGroup(long venueGroupId);
 
 		void SaveVenueConfigs(VenueInfo venue, Dictionary<DayOfWeek, List<BookingPeriod>> configs);
 		BookingConfig GetVenueConfigs(long venueId);
