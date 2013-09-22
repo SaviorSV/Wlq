@@ -9,6 +9,7 @@ namespace Wlq.Service
 	{
 		#region Venue
 
+		string GetVenueTypeName(VenueType type);
 		IEnumerable<VenueInfo> GetVenuesByGroup(long groupId);
 		IEnumerable<VenueInfo> GetVenuesByVenueGroup(long venueGroupId);
 		VenueInfo GetVenue(long venueId);

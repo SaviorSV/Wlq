@@ -21,6 +21,23 @@ namespace Wlq.Service.Implementation
 
 		#region venue
 
+		public string GetVenueTypeName(VenueType type)
+		{
+			switch (type)
+			{
+				case VenueType.Sports:
+					return "体育场馆";
+				case VenueType.Cultural:
+					return "文化场馆";
+				case VenueType.Education:
+					return "教育场馆";
+				default:
+					break;
+			}
+
+			return "其他";
+		}
+
 		public IEnumerable<VenueGroupInfo> GetVenueGroupsByGroup(long groupId)
 		{
 			return base.RepositoryProvider<VenueGroupInfo>().Entities
