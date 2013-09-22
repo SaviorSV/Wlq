@@ -20,7 +20,7 @@ else
 			<option value="@group.Id">@group.Name</option>
 		}
 		</select>
-		<a id="find_group" href="javascript:;" class="btn-3">查询下级组织</a>
+		@*<a id="find_group" href="javascript:;" class="btn-3">查询下级组织</a>*@
 		<a id="edit_group" href="javascript:;" class="btn-3">编辑部门信息</a>
 		<a id="add_group" href="javascript:;" class="btn-3">+新增下级组织</a>
 	</div>
@@ -34,9 +34,11 @@ else
 	<script type="text/javascript">
 		$(document).ready(function () {
 			selected_left_menu(2);
+
+			bind_group_list();
 		});
 
-		$("#find_group").bind("click", function () {
+		$("#department_selector").bind("change", function () {
 			bind_group_list();
 		});
 

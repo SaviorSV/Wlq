@@ -63,7 +63,25 @@
 					<img src='@string.Format("/upload/group/{0}/{1}{2}", Model.Post.GroupId, Model.Post.Id, Model.Post.Image)' alt="post" />
 				</div>
 			}
-                <div style="margin-top:10px;" id="booking_table"></div>
+			
+			@if (Model.Venues != null && Model.Venues.Count() > 0)
+			{
+				<div class="booking_tab">
+					<ul id="tab_menu" class="tab_menu">
+						<li class="current" value="@Model.Venues.First().Id">@Model.Venues.First().Name</li>
+					@foreach (var venue in Model.Venues.Skip(1))
+					{
+						<li value="@venue.Id">@venue.Name</li>
+					}
+					</ul>
+	
+					<div class="tab_wrapper">
+						<div id="tab_content" class="tab_content">
+							<div id="booking_table"></div>
+						</div>
+					</div>
+				</div>
+			}   
 				<div class="btnbox">
 			@if (ViewBag.CurrentUserId > 0)
 			{
@@ -72,21 +90,21 @@
 					if (!Model.IsBooked)
 					{
 					<a id='@string.Format("btn_booking_{0}", Model.Post.Id)' href="javascript:;" onclick="normal_booking(@Model.Post.Id)" class="btn">预 约</a>
-					}
-					else
-					{
-					<a id='@string.Format("btn_booking_{0}", Model.Post.Id)' href="javascript:;" onclick="normal_cancel_booking(@Model.Post.Id)" class="btn-disable">取消预约</a>
-					}
-				}
-				if (!Model.IsConcerned)
-				{
-					<a id='@string.Format("btn_post_{0}", Model.Post.Id)' href="javascript:;" onclick="concern_post(@Model.Post.Id)" class="btn">关 注</a>
 				}
 				else
 				{
-					<a id='@string.Format("btn_post_{0}", Model.Post.Id)' href="javascript:;" onclick="unconcern_post(@Model.Post.Id)" class="btn-disable">取消关注</a>
+					<a id='@string.Format("btn_booking_{0}", Model.Post.Id)' href="javascript:;" onclick="normal_cancel_booking(@Model.Post.Id)" class="btn-disable">取消预约</a>
 				}
 			}
+			if (!Model.IsConcerned)
+			{
+					<a id='@string.Format("btn_post_{0}", Model.Post.Id)' href="javascript:;" onclick="concern_post(@Model.Post.Id)" class="btn">关 注</a>
+			}
+			else
+			{
+					<a id='@string.Format("btn_post_{0}", Model.Post.Id)' href="javascript:;" onclick="unconcern_post(@Model.Post.Id)" class="btn-disable">取消关注</a>
+			}
+		}
 				</div>
 			</div>
 		</div>
@@ -100,40 +118,77 @@
 
     <script src="@Url.Content("~/Content/js/venue-booking.js")" type="text/javascript"></script>
 	<script type="text/javascript">
-        var postId = @Model.Post.Id;
-		var schedules = @Html.Raw(ViewBag.Schedules);
-        if (schedules.length)
-        {
-            $('#booking_table').booking(schedules,postId);
+		var postId = @Model.Post.Id;
+		
+		$(function () {
+			var $tabs = $("#tab_menu li");
 
-            $('#booking_table .on, #booking_table .already').bind('click', function () {
-                var _this = this;
-                var method = $(_this).attr('IsBooked');
-                var period_start = parseInt($(_this).parent().children('th').text().substring(0,2))
-                var period = period_start + ":00-" + (period_start + parseInt($(_this).attr('rowspan'))) + ":00";
-                var info = "场地信息：" + $(_this).attr('Date') + " " + period + "\n\n";
-                info += (method == 'false') ? "确认预订？" : "确认取消预订？";
-                var url = (method == 'false') ? '/Common/Booking' : '/Common/CancelBooking';
-                if (!confirm(info))
-                    return;
-                else {
-                    $.post(url,{'BookingDate':$(_this).attr('Date'),'VenueConfigId':$(_this).attr('VenueConfigId'),'postId':postId},function(data){
-                        if(!data['Success'])
-                            alert(data['Message'])
-                        else if(method == 'false'){
-                            $(_this).removeClass().addClass('already');
-                            $(_this).text('取消预订');
-                            $(_this).attr('IsBooked','true');
-                        }
-                        else if (method == 'true'){
-                            $(_this).removeClass().addClass('on');
-                            $(_this).text('预订');
-                            $(_this).attr('IsBooked','false');
-                        }
-                    });
-                }
-            });
+			$tabs.click(function () {
+				var index = $tabs.index($(this));
 
-        }
+				$tabs.removeClass("current");
+				$($tabs.get(index)).addClass("current")
+
+				var venueId = $($tabs.get(index)).val();
+
+				$.post(
+					'/Common/GetBookingSchedules',
+					{
+						'postId': postId, 
+						'venueId': venueId
+					}, 
+					function (data) {
+						GetBookingTable(data);
+					}
+				);
+
+				return false;
+			});
+
+			GetBookingTable(@Html.Raw(ViewBag.Schedules));
+		});
+
+		function GetBookingTable(schedules) {
+			if (schedules.length) {
+				$('#booking_table').booking(schedules, postId);
+
+				$('#booking_table .on, #booking_table .already').bind('click', function () {
+					var _this = this;
+					var method = $(_this).attr('IsBooked');
+					var period_start = parseInt($(_this).parent().children('th').text().substring(0, 2))
+					var period = period_start + ":00 - " + (period_start + parseInt($(_this).attr('rowspan'))) + ":00";
+					var info = "场地信息：" + $(_this).attr('Date') + " " + period + "\n\n";
+					info += (method == 'false') ? "确认预订？" : "确认取消预订？";
+					var url = (method == 'false') ? '/Common/Booking' : '/Common/CancelBooking';
+
+					if (!confirm(info))
+						return;
+					else {
+						$.post(
+							url,
+							{
+								'BookingDate': $(_this).attr('Date'), 
+								'VenueConfigId': $(_this).attr('VenueConfigId'),
+								'postId': postId
+							}, 
+							function (data) {
+								if (!data['Success'])
+									alert(data['Message']);
+								else if (method == 'false'){
+									$(_this).removeClass().addClass('already');
+									$(_this).text('取消预订');
+									$(_this).attr('IsBooked', 'true');
+								}
+								else if (method == 'true'){
+									$(_this).removeClass().addClass('on');
+									$(_this).text('预订');
+									$(_this).attr('IsBooked', 'false');
+								}
+							}
+						);
+					}
+				});
+			}
+		}
 	</script>
 }

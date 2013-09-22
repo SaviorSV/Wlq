@@ -55,6 +55,19 @@ namespace Wlq.Web.Controllers
 		#region ajax
 
 		[HttpPost]
+		public ActionResult GetBookingSchedules(long postId, long venueId)
+		{
+			if (CurrentUserId == 0)
+			{
+				return Content("[]", "text/json");
+			}
+
+			var venueSchedules = PostService.GetBookingSchedules(CurrentUserId, postId, venueId, 7);
+
+			return Content(venueSchedules != null ? venueSchedules.ObjectToJson() : "[]", "text/json");
+		}
+
+		[HttpPost]
 		public ActionResult Booking(long postId, string bookingDate, long venueConfigId = 0)
 		{
 			var success = false;
@@ -85,9 +98,9 @@ namespace Wlq.Web.Controllers
 			var success = false;
 			var date = DateTime.Now;
 
-			if (CurrentUser != null && DateTime.TryParse(bookingDate, out date))
+			if (CurrentUserId > 0 && DateTime.TryParse(bookingDate, out date))
 			{
-				success = PostService.CancelBooking(CurrentUser.Id, postId, venueConfigId, date);
+				success = PostService.CancelBooking(CurrentUserId, postId, venueConfigId, date);
 			}
 
 			return Content(new { Success = success, Message = string.Empty }.ObjectToJson(), "text/json");

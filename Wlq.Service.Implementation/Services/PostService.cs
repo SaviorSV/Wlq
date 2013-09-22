@@ -311,8 +311,9 @@ namespace Wlq.Service.Implementation
 		public IEnumerable<PostInfo> GetPostsByUserBooking(long userId, int pageIndex, int pageSize, out int totalNumber)
 		{
 			var bookingPostIds = base.RepositoryProvider<BookingInfo>().Entities
-				.Where(b => b.UserId == userId && b.VenueConfigId > 0 ? b.BookingDate > DateTime.Now : true)
-				.Select(b => b.PostId);
+				.Where(b => b.UserId == userId && (b.VenueConfigId == 0 || b.BookingDate > DateTime.Now))
+				.Select(b => b.PostId)
+				.Distinct();
 
 			return base.RepositoryProvider<PostInfo>().Entities
 				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && bookingPostIds.Contains(p.Id))

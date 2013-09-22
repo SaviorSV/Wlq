@@ -22,7 +22,7 @@ else
 		}
 		</select>
 
-		<a id="find_post" href="javascript:;" class="btn-3">查询发布信息</a>
+		@*<a id="find_post" href="javascript:;" class="btn-3">查询发布信息</a>*@
 		<a id="add_post" href="@Url.Action("Post", "Admin", new { Id = 0 })" class="btn-3">+新的发布</a>
 	</div>
 	<div id="post_list" class="quanxian-tt"></div>
@@ -40,12 +40,14 @@ else
 	<script type="text/javascript">
 		$(document).ready(function () {
 			selected_left_menu(3);
+
+			bind_post_list();
 		});
 
 		var pageIndex = 1;
-		var groupId = 0;
+		var groupId = $("#department_selector").val();
 
-		$("#find_post").bind("click", function () {
+		$("#department_selector").bind("change", function () {
 			pageIndex = 1;
 			groupId = $("#department_selector").val();
 			bind_post_list();

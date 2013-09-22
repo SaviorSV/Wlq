@@ -109,6 +109,7 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .cd-detail-tbl{ width:100%}
 .cd-detail-tbl td,.cd-detail-tbl th{ border:1px solid #cfcecd; text-align:center; height:36px;}
 .cd-detail-tbl td{ background:#e7e5e5; width:70px;}
+.cd-detail-tbl td span{ font-size:9px;}
 .cd-detail-tbl td.on{background:#a1d514; color:#FFF; cursor:pointer;}
 .cd-detail-tbl td.on:hover{background:#a7da7d;}
 .cd-detail-tbl td.off{background:#aaa; color:#fff}
@@ -285,3 +286,10 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .page{ float:right; height:30px; line-height:30px;color:#979797; font-size:13px; padding-right:30px; margin-bottom:30px;}
 .page a{ color:#979797;}
 .page input{ width:30px; }
+
+.booking_tab { width:600px; margin:15px 0 0 0; background:#fff; }
+.booking_tab .tab_menu { margin: 0; height:30px; background:#f0f0f0; padding-left:10px; width:590px; border-bottom:1px solid #ddd; list-style:none; }
+.booking_tab .tab_menu li { width: 80px; padding:0 15px; float:left; height:28px; line-height:28px; cursor:pointer; border:solid #f0f0f0; border-width:2px 1px 0; position:relative; }
+.booking_tab .tab_menu .current { background:#fff; color:#2C4613; border-color:#ddd; border-top-color:#5f7946; height:29px; _margin-bottom:-1px; }
+.booking_tab .tab_wrapper{ border:solid #ddd; border-width:0 1px 1px; }
+.booking_tab .tab_content div { width:558px; padding:5px 0 5px 20px; }

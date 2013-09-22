@@ -5,6 +5,8 @@
     var thead_data = new Array();
 
     function initialize(option) {
+    	period_begin = 2400;
+    	period_end = 0;
         data = option
         for (var i in data) {
             thead_data[i] = data[i]['Date'];
@@ -39,7 +41,7 @@
         for (var i = period_begin; i < period_end; i += 100) {
             var tr = $('<tr></tr>');
             t = i / 100;
-            t_period = t.toString() + ':00-' + (t + 1).toString() + ':00'
+            t_period = t.toString() + ':00 - ' + (t + 1).toString() + ':00'
             tr.append($('<th>' + t_period + '</th>'));
 
             for (var j in data) {
@@ -71,7 +73,7 @@
 
                     if (attrs['LimitNumber'] > attrs['BookingNumber'] && !attrs['IsBooked']) {
                         td.addClass('on');
-                        td.text('预订');
+                        td.html('预订<br /><span>(剩余:' + (attrs['LimitNumber'] - attrs['BookingNumber']) + ')</span>');
                     }
                     else if (attrs['IsBooked']) {
                         td.addClass('already');

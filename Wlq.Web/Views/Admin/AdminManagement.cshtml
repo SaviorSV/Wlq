@@ -38,7 +38,7 @@ else
 		}
 		</select>
 	}
-		<a id="find_manager" href="javascript:;" class="btn-3">查询管理员</a>
+		@*<a id="find_manager" href="javascript:;" class="btn-3">查询管理员</a>*@
 		<a id="add_manager" href="javascript:;" class="btn-3">+新增管理员</a>
 	</div>
 	<div id="manager_list" class="quanxian-tt"></div>
@@ -80,9 +80,15 @@ else
 	<script type="text/javascript">
 		$(document).ready(function () {
 			selected_left_menu(1);
+
+			bind_manager_list();
 		});
 
-		$("#find_manager").bind("click", function () {
+		$("#department_selector").bind("change", function () {
+			bind_manager_list();
+		});
+
+		$("#circle_selector").bind("change", function () {
 			bind_manager_list();
 		});
 
