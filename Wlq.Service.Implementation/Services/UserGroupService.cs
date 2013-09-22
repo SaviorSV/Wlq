@@ -88,6 +88,19 @@ namespace Wlq.Service.Implementation
 			var user = base.RepositoryProvider<UserInfo>().Entities
 				.FirstOrDefault(u => u.LoginName == loginName && u.Password == hashedPassword && (!isAdmin || u.Role > (int)RoleLevel.Normal));
 
+			return Login(user);
+		}
+
+		public bool LoginByCode(string code)
+		{
+			var user = base.RepositoryProvider<UserInfo>().Entities
+				.FirstOrDefault(u => u.Code == code);
+
+			return Login(user);
+		}
+
+		private static bool Login(UserInfo user)
+		{
 			if (user == null)
 				return false;
 

@@ -57,7 +57,7 @@ namespace Wlq.Service.Implementation
 		public IEnumerable<VenueInfo> GetVenuesByVenueGroup(long venueGroupId)
 		{
 			return base.RepositoryProvider<VenueInfo>().Entities
-				   .Where(v => v.VenueGroupId == venueGroupId); 
+				.Where(v => v.VenueGroupId == venueGroupId);
 		}
 
 		public IEnumerable<VenueInfo> GetVenuesByGroup(long groupId)
@@ -456,16 +456,23 @@ namespace Wlq.Service.Implementation
 			return bookings.Count();
 		}
 
-		public List<BookingSchedule> GetBookingSchedules(long userId, long postId, int days)
+		public List<BookingSchedule> GetBookingSchedules(long userId, long postId, long venueId, int days)
 		{
 			var post = base.RepositoryProvider<PostInfo>().GetById(postId);
 
-			if (post == null || post.VenueId == 0)
+			if (post == null)
 			{
 				return null;
 			}
 
-			var venueConfigs = this.GetVenueConfigs(post.VenueId);
+			var venue = base.RepositoryProvider<VenueInfo>().GetById(venueId);
+
+			if (venue == null)
+			{
+				return null;
+			}
+
+			var venueConfigs = this.GetVenueConfigs(venueId);
 			var schedules = new List<BookingSchedule>();
 			var today = DateTime.Now.Date;
 

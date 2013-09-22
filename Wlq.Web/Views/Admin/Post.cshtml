@@ -39,8 +39,8 @@
 				<option value="2" @Html.IsSelected(Model.PostType == 2)>课程</option>
 				<option value="3" @Html.IsSelected(Model.PostType == 3)>场地</option>
 			</select>
-			<label id="venue_selector_title">场地：</label>
-			<select id="venue_selector" name="VenueId" class="select-1"></select>
+			<label id="venuegroup_selector_title">场馆：</label>
+			<select id="venuegroup_selector" name="VenueGroupId" class="select-1"></select>
 			
 		</li>
 		<li>
@@ -110,7 +110,7 @@
 		$(document).ready(function () {
 			selected_left_menu(3);
 
-			ShowVenueSelector(@Model.PostType);
+			ShowVenueGroupSelector(@Model.PostType);
 
 			new TINY.editor.edit('editor', {
 				id: 'post_content',
@@ -142,42 +142,40 @@
 		$("#post_type_selector").bind("change", function () {
 			var postType = $("#post_type_selector").val();
 
-			ShowVenueSelector(postType);
+			ShowVenueGroupSelector(postType);
 		});
 
 		$("#group_selector").bind("change", function () {
 			var postType = $("#post_type_selector").val();
 
-			ShowVenueSelector(postType);
+			ShowVenueGroupSelector(postType);
 		});
 
-		function ShowVenueSelector(postType) {
+		function ShowVenueGroupSelector(postType) {
 			if (postType == 3) {
 				var groupId = $("#group_selector").val();
-				var groupSelector = $("#venue_selector").empty();
+				var venuegroupSelector = $("#venuegroup_selector").empty();
 
 				if (groupId > 0) {
-					$.get("/Admin/GetVenuesByGroup/" + groupId, function (data) {
+					$.get("/Admin/GetVenueGroupsByGroup/" + groupId, function (data) {
 						var result = '';
 						if (data.length > 0) {
 							for (var i in data) {
-								groupSelector.append("<option value='" + data[i].Id + "'>" + data[i].Name + "</option>")
+								venuegroupSelector.append("<option value='" + data[i].Id + "'>" + data[i].Name + "</option>")
 							}
 						}
 						else {
-							groupSelector.append("<option value='0'>无</option>")
+							venuegroupSelector.append("<option value='0'>无</option>")
 						}
-
-						$("#venue_list").html(result);
 					});
 				}
 
-				$("#venue_selector_title").show();
-				$("#venue_selector").show();
+				$("#venuegroup_selector_title").show();
+				$("#venuegroup_selector").show();
 			}
 			else {
-				$("#venue_selector_title").hide();
-				$("#venue_selector").hide();
+				$("#venuegroup_selector_title").hide();
+				$("#venuegroup_selector").hide();
 			}
 		}
 

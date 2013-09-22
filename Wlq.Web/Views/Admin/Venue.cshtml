@@ -13,25 +13,11 @@
 {
 	<ul>
 		<li>
+			<label>所属场馆：@ViewBag.VenueGroupName</label>
+		</li>
+		<li>
 			<label>场地名称：</label>
 			<input class="input-2" id="venueName" name="Name" type="text" value="@Model.Name" />
-			<label>所属组织：</label>
-			<select name="GroupId" class="select-2">
-	@{
-		var groups = ViewBag.GroupList as IEnumerable<GroupInfo>;
-		if (groups.Count() > 0)
-		{
-			foreach (var group in groups)
-			{
-				<option value="@group.Id" @Html.IsSelected(group.Id == Model.GroupId)>@group.Name</option>
-			}
-		}
-		else
-		{
-				<option value="0">无</option>
-		}
-	}
-			</select>
 		</li>
 		<li>
 			<label>场地地址：</label>
@@ -98,6 +84,8 @@
 	</ul>
 	
 	<input name="Id" type="hidden" value="@Model.Id" />
+	<input name="GroupId" type="hidden" value="@ViewBag.GroupId" />
+	<input name="VenueGroupId" type="hidden" value="@ViewBag.VenueGroupId" />
 	<input id="config_hidden" name="config" type="hidden" />
 	<a id="save_venue" href="javascript:;" class="btn-3">保　存</a>
 	<a href="@Url.Action("VenueManagement", "Admin")" class="btn-3">返　回</a>

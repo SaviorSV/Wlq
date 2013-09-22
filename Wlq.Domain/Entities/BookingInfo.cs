@@ -9,7 +9,9 @@ namespace Wlq.Domain
 		public string Name { get; set; }
 		public string Mobile { get; set; }
 		public long VenueConfigId { get; set; }
+		public int InvolvedType { get; set; }
 		public DateTime BookingDate { get; set; }
+		public bool IsPresent { get; set; }
 		
 		public BookingInfo()
 		{

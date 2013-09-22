@@ -1,0 +1,102 @@
+﻿@{
+	Layout = "~/Views/Admin/_Layout.cshtml";
+}
+
+@using Wlq.Domain;
+@using Wlq.Web.Extensions;
+@using Wlq.Web.Models;
+
+@model AdminVenueGroupModel
+
+<h4 class="form-tt">场馆配置</h4>
+<div class="formbody">
+@using (Html.BeginForm("SaveVenueGroup", "Admin", FormMethod.Post, new { id = "admin_save_venuegroup_form" }))
+{
+	<ul>
+		<li>
+			<label>场馆名称：</label>
+			<input class="input-2" id="venueName" name="Name" type="text" value="@Model.VenueGroup.Name" />
+			<label>所属组织：</label>
+			<select name="GroupId" class="select-2">
+		@if (Model.Groups.Count() > 0)
+		{
+			foreach (var group in Model.Groups)
+			{
+				<option value="@group.Id" @Html.IsSelected(group.Id == Model.VenueGroup.GroupId)>@group.Name</option>
+			}
+		}
+		else
+		{
+				<option value="0">无</option>
+		}
+			</select>
+		</li>
+		<li>
+			<label>场馆类型：</label>
+			<select name="VenueType" class="select-1">
+				<option value="@(int)VenueType.Cultural" @Html.IsSelected(Model.VenueGroup.VenueType == (int)VenueType.Cultural)>文化场馆</option>
+				<option value="@(int)VenueType.Education" @Html.IsSelected(Model.VenueGroup.VenueType == (int)VenueType.Education)>教育场馆</option>
+				<option value="@(int)VenueType.Sports" @Html.IsSelected(Model.VenueGroup.VenueType == (int)VenueType.Sports)>体育场馆</option>
+			</select>
+		</li>
+	</ul>
+	
+	<input name="Id" type="hidden" value="@Model.VenueGroup.Id" />
+	<a id="save_venuegroup" href="javascript:;" class="btn-3">保　存</a>
+	<a href="@Url.Action("VenueManagement", "Admin")" class="btn-3">返　回</a>
+}
+
+@if (Model.VenueGroup.Id > 0 && Model.Venues != null)
+{
+	<a href='@string.Format("/Admin/Venue/0?venueGroupId={1}", Model.VenueGroup.GroupId)' class="btn-3">新增场地</a>
+	
+	<table class='list-tbl'>
+		<thead>
+			<tr>
+				<th>名称</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		@foreach (var venue in Model.Venues)
+		{
+			<tr id="@string.Format("venue_{0}", venue.Id)">
+				<td>@venue.Name</td><td><a href='@string.Format("/Admin/Venue/{0}?venueGroupId={1}", venue.Id, Model.VenueGroup.GroupId)'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_venue(@venue.Id);'>删除</a></td>
+			</tr>
+		}
+		</tbody>
+	</table>
+}
+</div>
+<div class="formfooter"></div>
+@section scripts
+{
+	<script type="text/javascript">
+		$(document).ready(function () {
+			selected_left_menu(4);
+		});
+
+		function remove_venue(venueId) {
+			if (!confirm("确定删除该场地?"))
+				return false;
+
+			$.ajax({
+				type: "POST",
+				dataType: 'json',
+				url: "/Admin/RemoveVenue",
+				data: {
+					'venueId': venueId
+				},
+				success: function (r, status) {
+					if (r.Success) {
+						alert("删除成功");
+						$('#venue_' + venueId).remove();
+					}
+					else {
+						alert("删除失败");
+					}
+				}
+			});
+		}
+	</script>
+}

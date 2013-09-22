@@ -171,11 +171,76 @@ namespace Wlq.Web.Controllers
 		}
 
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
-		public ActionResult Venue(long id)
+		public ActionResult VenueGroup(long id)
 		{
+			var venueGroup = id > 0
+				? PostService.GetVenueGroup(id)
+				: new VenueGroupInfo();
+
+			if (venueGroup == null)
+			{
+				return RedirectToAction("VenueManagement", "Admin");
+			}
+
+			var model = new AdminVenueGroupModel();
+
+			model.VenueGroup = venueGroup;
+			model.Venues = id > 0 ? PostService.GetVenuesByVenueGroup(id) : null;
+			model.Groups = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
+
+			return View(venueGroup);
+		}
+
+		[HttpPost]
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
+		public ActionResult SaveVenueGroup(VenueGroupInfo venueGroupModel)
+		{
+			var venueGroup = venueGroupModel.Id > 0
+				? PostService.GetVenueGroup(venueGroupModel.Id)
+				: new VenueGroupInfo();
+
+			if (venueGroup == null)
+			{
+				return AlertAndRedirect("保存失败(场馆不存在)", "/Admin/VenueManagement");
+			}
+
+			venueGroup.Name = venueGroupModel.Name;
+			venueGroup.VenueType = venueGroupModel.VenueType;
+			venueGroup.GroupId = venueGroupModel.GroupId;
+
+			if (venueGroup.Id == 0)
+			{
+				if (!PostService.AddVenueGroup(venueGroup))
+				{
+					return AlertAndRedirect("保存失败(添加场馆失败)", "/Admin/VenueManagement");
+				}
+			}
+			else
+			{
+				if (!PostService.UpdateVenueGroup(venueGroup))
+				{
+					return AlertAndRedirect("保存失败(更新场馆失败)", "/Admin/VenueManagement");
+				}
+			}
+
+			return AlertAndRedirect("保存成功", "/Admin/VenueManagement");
+		}
+
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
+		public ActionResult Venue(long id, long venueGroupId)
+		{
+			var venueGroup = PostService.GetVenueGroup(venueGroupId);
+
+			if (venueGroup == null)
+			{
+				return RedirectToAction("VenueManagement", "Admin");
+			}
+
 			var venueConfig = PostService.GetVenueConfigs(id);
 
-			ViewBag.GroupList = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
+			ViewBag.GroupId = venueGroup.GroupId;
+			ViewBag.VenueGroupId = venueGroup.Id;
+			ViewBag.VenueGroupName = venueGroup.Name;
 			ViewBag.VenueConfig = venueConfig.ToJson();
 
 			var venue = id > 0
@@ -188,23 +253,6 @@ namespace Wlq.Web.Controllers
 			}
 
 			return View(venue);
-		}
-
-		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
-		public ActionResult VenueGroup(long id)
-		{
-			ViewBag.GroupList = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
-
-			var venueGroup = id > 0
-				? PostService.GetVenue(id)
-				: new VenueInfo();
-
-			if (venueGroup == null)
-			{
-				return RedirectToAction("VenueManagement", "Admin");
-			}
-
-			return View(venueGroup);
 		}
 
 		[HttpPost]
@@ -320,7 +368,7 @@ namespace Wlq.Web.Controllers
 			post.Location = postModel.Location;
 			post.RelatedPlace = postModel.RelatedPlace;
 			post.IsHealthTopic = group.IsHealth;
-			post.VenueId = postModel.PostType == (int)PostType.Venue ? postModel.VenueId : 0;
+			post.VenueGroupId = postModel.PostType == (int)PostType.Venue ? postModel.VenueGroupId : 0;
 			post.Publisher = AdminUser.Name;
 			post.PublishTime = DateTime.Now;
 			post.Image = postModel.Image;
@@ -403,6 +451,19 @@ namespace Wlq.Web.Controllers
 				.Select(v => new { Id = v.Id, Name = v.Name });
 
 			return Content(venues.ObjectToJson(), "text/json");
+		}
+
+		public ActionResult GetVenueGroupsByGroup(long id)
+		{
+			if (AdminUser == null)
+			{
+				return Content("[]", "text/json");
+			}
+
+			var venueGroups = PostService.GetVenueGroupsByGroup(id)
+				.Select(v => new { Id = v.Id, Name = v.Name });
+
+			return Content(venueGroups.ObjectToJson(), "text/json");
 		}
 
 		public ActionResult GetPostsByGroup(long id, int pageIndex)
@@ -499,6 +560,19 @@ namespace Wlq.Web.Controllers
 			if (AdminUser != null)
 			{
 				success = PostService.DeleteVenue(venueId);
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
+		[HttpPost]
+		public ActionResult RemoveVenueGroup(long venueGroupId)
+		{
+			var success = false;
+
+			if (AdminUser != null)
+			{
+				success = PostService.DeleteVenueGroup(venueGroupId);
 			}
 
 			return Content(new { Success = success }.ObjectToJson(), "text/json");

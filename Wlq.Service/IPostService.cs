@@ -53,7 +53,7 @@ namespace Wlq.Service
 
 		#region booking
 
-		List<BookingSchedule> GetBookingSchedules(long userId, long postId, int days);
+		List<BookingSchedule> GetBookingSchedules(long userId, long postId, long venueId, int days);
 		bool Booking(BookingInfo booking, out string message);
 		bool CancelBooking(long userId, long postId, long venueConfigId, DateTime bookingDate);
 		bool IsBookedPost(long postId, long userId);

@@ -3,6 +3,7 @@ namespace Wlq.Domain
 {
 	public class UserInfo : Entity
 	{
+		public string Code { get; set; }
 		public string LoginName { get; set; }
 		public string Password { get; set; }
 		public string Name { get; set; }
@@ -17,6 +18,7 @@ namespace Wlq.Domain
 
 		public UserInfo()
 		{
+			Code = string.Empty;
 			LoginName = string.Empty;
 			Password = string.Empty;
 			Name = string.Empty;

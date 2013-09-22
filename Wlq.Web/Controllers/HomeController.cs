@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 using Hanger.Common;
 using Wlq.Domain;
 using Wlq.Web.Models;
+using Wlq.Web.Fliters;
 
 namespace Wlq.Web.Controllers
 {
@@ -140,6 +142,7 @@ namespace Wlq.Web.Controllers
 			return View(modelList);
 		}
 
+		[LoginAuthentication(RoleLevel.Normal, "Home", "Index")]
 		public ActionResult Post(long id)
 		{
 			var post = PostService.GetPost(id, true);
@@ -160,18 +163,18 @@ namespace Wlq.Web.Controllers
 			{
 				Post = post,
 				Group = group,
-				IsBooked = CurrentUserId > 0 && post.PostType != (int)PostType.Venue
+				Venues = post.PostType == (int)PostType.Venue && post.VenueGroupId > 0
+					? PostService.GetVenuesByVenueGroup(post.VenueGroupId) : null,
+				IsBooked = post.PostType != (int)PostType.Venue
 					? PostService.IsBookedPost(post.Id, CurrentUserId) : false,
-				IsConcerned = CurrentUserId > 0
-					? PostService.IsUserConcernPost(post.Id, CurrentUserId) : false
+				IsConcerned = PostService.IsUserConcernPost(post.Id, CurrentUserId)
 			};
 
-			var venueSchedules = CurrentUserId > 0 && post.PostType == (int)PostType.Venue
-				? PostService.GetBookingSchedules(CurrentUserId, id, 7) : null;
+			var venueSchedules = model.Venues != null && model.Venues.Count() > 0
+				? PostService.GetBookingSchedules(CurrentUserId, id, model.Venues.First().Id, 7) : null;
 
 			ViewBag.CurrentUserId = CurrentUserId;
-			ViewBag.IsFollowing = CurrentUserId > 0
-				? UserGroupService.IsUserInGroup(CurrentUserId, group.Id) : false;
+			ViewBag.IsFollowing = UserGroupService.IsUserInGroup(CurrentUserId, group.Id);
 			ViewBag.Schedules = venueSchedules != null
 				? venueSchedules.ObjectToJson() : "[]";
 

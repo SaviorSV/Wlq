@@ -17,7 +17,7 @@ namespace Wlq.Domain
 		public decimal Fee { get; set; }
 		public string Remark { get; set; }
 		public bool IsHealthTopic { get; set; }
-		public long VenueId { get; set; }
+		public long VenueGroupId { get; set; }
 		public int LimitNumber { get; set; }
 		public int BookingNumber { get; set; }
 		public string Publisher { get; set; }

@@ -56,6 +56,8 @@
     <Compile Include="Entities\UserPostInfo.cs" />
     <Compile Include="Entities\VenueInfo.cs" />
     <Compile Include="Entities\VenueGroupInfo.cs" />
+    <Compile Include="Enums\BookingType.cs" />
+    <Compile Include="Enums\InvolvedType.cs" />
     <Compile Include="Enums\GroupType.cs" />
     <Compile Include="Enums\PostType.cs" />
     <Compile Include="Enums\RoleLevel.cs" />

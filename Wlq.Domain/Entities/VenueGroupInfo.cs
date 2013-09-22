@@ -1,4 +1,6 @@
-﻿
+﻿using System.Collections;
+using System.Collections.Generic;
+
 namespace Wlq.Domain
 {
 	public class VenueGroupInfo : Entity
