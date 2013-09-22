@@ -44,7 +44,13 @@
 			<div class="clear detailtxt-box">
 				<h3>
 					@Model.Post.Title
-					<p>已预约<strong id='@string.Format("booking_number_{0}", Model.Post.Id)'>@Model.Post.BookingNumber</strong>人</p>
+				@if (Model.Post.PostType != (int)PostType.Venue)
+				{
+					<p>
+						已预约<strong id='@string.Format("booking_number_{0}", Model.Post.Id)'>@Model.Post.BookingNumber</strong>人,
+						还可预约<strong id='@string.Format("booking_number_left_{0}", Model.Post.Id)'>@string.Format("{0}", Model.Post.LimitNumber - Model.Post.BookingNumber)</strong>人
+					</p>
+				}
 				</h3>
 				<p>
 					@Html.Raw(Model.Post.Content)

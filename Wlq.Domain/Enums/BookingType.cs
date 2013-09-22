@@ -1,12 +1,14 @@
-﻿
+﻿using System;
+
 namespace Wlq.Domain
 {
+	[Flags]
 	public enum BookingType
 	{
 		Online = 1,
 
 		Phone = 2,
 
-		Spot = 3
+		Spot = 4
 	}
 }

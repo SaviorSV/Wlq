@@ -86,7 +86,12 @@ function normal_booking(postId) {
 				button.attr("onclick", "normal_cancel_booking(" + postId + ")");
 
 				var bookingNumber = parseInt($("#booking_number_" + postId).html());
+				var bookingNumberLeft = parseInt($("#booking_number_left_" + postId).html());
+				
 				$("#booking_number_" + postId).html(++bookingNumber);
+				if (bookingNumberLeft > 0) {
+					$("#booking_number_left_" + postId).html(--bookingNumberLeft);
+				}
 			}
 			else if (r.Message != '') {
 				alert(r.Message)
@@ -118,7 +123,9 @@ function normal_cancel_booking(postId) {
 				button.attr("onclick", "normal_booking(" + postId + ")");
 
 				var bookingNumber = parseInt($("#booking_number_" + postId).html());
+				var bookingNumberLeft = parseInt($("#booking_number_left_" + postId).html());
 
+				$("#booking_number_left_" + postId).html(++bookingNumberLeft);
 				if (bookingNumber > 0) {
 					$("#booking_number_" + postId).html(--bookingNumber);
 				}

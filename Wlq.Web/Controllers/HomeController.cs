@@ -31,9 +31,9 @@ namespace Wlq.Web.Controllers
 				modelList.Add(new PostModel
 				{
 					Post = post,
-					Group = UserGroupService.GetGroup(post.GroupId, true),
-					IsBooked = CurrentUserId > 0 && post.PostType != (int)PostType.Venue
-						? PostService.IsBookedPost(post.Id, CurrentUserId) : false
+					Group = UserGroupService.GetGroup(post.GroupId, true)
+					//IsBooked = CurrentUserId > 0 && post.PostType != (int)PostType.Venue
+					//    ? PostService.IsBookedPost(post.Id, CurrentUserId) : false
 				});
 			}
 
@@ -56,9 +56,9 @@ namespace Wlq.Web.Controllers
 				modelList.Add(new PostModel
 				{
 					Post = post,
-					Group = UserGroupService.GetGroup(post.GroupId, true),
-					IsBooked = CurrentUserId > 0 && post.PostType != (int)PostType.Venue
-						? PostService.IsBookedPost(post.Id, CurrentUserId) : false
+					Group = UserGroupService.GetGroup(post.GroupId, true)
+					//IsBooked = CurrentUserId > 0 && post.PostType != (int)PostType.Venue
+					//    ? PostService.IsBookedPost(post.Id, CurrentUserId) : false
 				});
 			}
 
@@ -98,9 +98,9 @@ namespace Wlq.Web.Controllers
 				postModels.Add(new PostModel
 				{
 					Post = post,
-					Group = group,
-					IsBooked = CurrentUserId > 0 && post.PostType != (int)PostType.Venue
-						? PostService.IsBookedPost(post.Id, CurrentUserId) : false
+					Group = group
+					//IsBooked = CurrentUserId > 0 && post.PostType != (int)PostType.Venue
+					//    ? PostService.IsBookedPost(post.Id, CurrentUserId) : false
 				});
 			}
 

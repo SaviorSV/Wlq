@@ -1,12 +1,14 @@
-﻿
+﻿using System;
+
 namespace Wlq.Domain
 {
+	[Flags]
 	public enum InvolvedType
 	{
-		Volunteer = 1,
+		Observer = 1,
 
 		Participant = 2,
 
-		Other = 3
+		Volunteer = 4,
 	}
 }
