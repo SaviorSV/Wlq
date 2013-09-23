@@ -17,5 +17,6 @@ namespace Wlq.Persistence
 		public DbSet<UserGroupInfo> UserGroups { get; set; }
 		public DbSet<UserPostInfo> UserPosts { get; set; }
 		public DbSet<MessageInfo> Messages { get; set; }
+		public DbSet<UserMessageInfo> UserMessages { get; set; }
 	}
 }
