@@ -96,21 +96,21 @@
 					if (!Model.IsBooked)
 					{
 					<a id='@string.Format("btn_booking_{0}", Model.Post.Id)' href="javascript:;" onclick="normal_booking(@Model.Post.Id)" class="btn">预 约</a>
+					}
+					else
+					{
+					<a id='@string.Format("btn_booking_{0}", Model.Post.Id)' href="javascript:;" onclick="normal_cancel_booking(@Model.Post.Id)" class="btn-disable">取消预约</a>
+					}
+				}
+				if (!Model.IsConcerned)
+				{
+					<a id='@string.Format("btn_post_{0}", Model.Post.Id)' href="javascript:;" onclick="concern_post(@Model.Post.Id)" class="btn">关 注</a>
 				}
 				else
 				{
-					<a id='@string.Format("btn_booking_{0}", Model.Post.Id)' href="javascript:;" onclick="normal_cancel_booking(@Model.Post.Id)" class="btn-disable">取消预约</a>
+					<a id='@string.Format("btn_post_{0}", Model.Post.Id)' href="javascript:;" onclick="unconcern_post(@Model.Post.Id)" class="btn-disable">取消关注</a>
 				}
 			}
-			if (!Model.IsConcerned)
-			{
-					<a id='@string.Format("btn_post_{0}", Model.Post.Id)' href="javascript:;" onclick="concern_post(@Model.Post.Id)" class="btn">关 注</a>
-			}
-			else
-			{
-					<a id='@string.Format("btn_post_{0}", Model.Post.Id)' href="javascript:;" onclick="unconcern_post(@Model.Post.Id)" class="btn-disable">取消关注</a>
-			}
-		}
 				</div>
 			</div>
 		</div>
@@ -118,10 +118,8 @@
 	<div class="box640-bottom"><img src="/content/images/common/box640-b.jpg" alt="boxbottom" /></div>
 </div>
 
-
 @section scripts
 {
-
     <script src="@Url.Content("~/Content/js/venue-booking.js")" type="text/javascript"></script>
 	<script type="text/javascript">
 		var postId = @Model.Post.Id;

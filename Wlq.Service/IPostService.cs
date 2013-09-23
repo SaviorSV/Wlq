@@ -47,17 +47,26 @@ namespace Wlq.Service
 		IEnumerable<PostInfo> GetLastHealthPosts(bool fromCache, int pageIndex, int pageSize, out int totalNumber);
 
 		IEnumerable<PostInfo> GetPostsByGroupsUserConcerned(long userId, int pageIndex, int pageSize, out int totalNumber);
-		IEnumerable<PostInfo> GetPostsByUser(long userId, int pageIndex, int pageSize, out int totalNumber);
+		IEnumerable<PostInfo> GetPostsByUserConcerned(long userId, int pageIndex, int pageSize, out int totalNumber);
 		IEnumerable<PostInfo> GetPostsByUserBooking(long userId, int pageIndex, int pageSize, out int totalNumber);
 
 		#endregion
 
-		#region booking
+		#region Booking
 
 		List<BookingSchedule> GetBookingSchedules(long userId, long postId, long venueId, int days);
 		bool Booking(BookingInfo booking, out string message);
 		bool CancelBooking(long userId, long postId, long venueConfigId, DateTime bookingDate);
 		bool IsBookedPost(long postId, long userId);
+
+		#endregion
+
+		#region Message
+
+		void SendMessageToPostBookers(long postId, string title, string content, long senderId);
+		int GetUnreadMessagesCount(long userId);
+		IEnumerable<MessageInfo> GetUserMessages(long userId, int pageIndex, int pageSize, out int totalNumber);
+		void ReadMessage(long userId, long messageId);
 
 		#endregion
 	}

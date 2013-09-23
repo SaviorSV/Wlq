@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
+using Hanger.Common;
 using Wlq.Domain;
 
 namespace Wlq.Persistence
@@ -38,6 +40,38 @@ namespace Wlq.Persistence
 			_dbSet.Add(entity);
 
 			return isSave ? _context.SaveChanges() : 0;
+		}
+
+		public void BatchInsert(IList<TEntity> entities)
+		{
+			try
+			{
+				_context.Configuration.AutoDetectChangesEnabled = false;
+
+				var count = 0;
+
+				foreach (var entityToInsert in entities)
+				{
+					++count;
+					AddToContext(entityToInsert, count, 100);
+				}
+
+				_context.SaveChanges();
+			}
+			catch (Exception ex)
+			{
+				LocalLoggingService.Exception(ex);
+			}
+		}
+
+		private void AddToContext(TEntity entity, int count, int commitCount)
+		{
+			_dbSet.Add(entity);
+
+			if (count % commitCount == 0)
+			{
+				_context.SaveChanges();
+			}
 		}
 
 		public int Update(TEntity entity, bool isSave)

@@ -143,7 +143,7 @@ namespace Wlq.Web.Controllers
 				case 3:
 					var myPosts = tag == 0
 						? PostService.GetPostsByGroupsUserConcerned(CurrentUserId, pageIndex, _PostListSize, out totalNumber)
-						: PostService.GetPostsByUser(CurrentUserId, pageIndex, _PostListSize, out totalNumber);
+						: PostService.GetPostsByUserConcerned(CurrentUserId, pageIndex, _PostListSize, out totalNumber);
 
 					var myPostsModel = new List<PostModel>();
 

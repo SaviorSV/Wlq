@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\BookingInfo.cs" />
+    <Compile Include="Entities\UserMessageInfo.cs" />
+    <Compile Include="Entities\MessageInfo.cs" />
     <Compile Include="Entities\VenueConfigInfo.cs" />
     <Compile Include="Entities\GroupManagerInfo.cs" />
     <Compile Include="Entities\Entity.cs" />

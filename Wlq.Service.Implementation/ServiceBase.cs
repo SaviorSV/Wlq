@@ -17,7 +17,7 @@ namespace Wlq.Service.Implementation
 			this._databaseContext = databaseContext;
 		}
 
-		protected DatabaseRepository<TEntity> RepositoryProvider<TEntity>()
+		protected DatabaseRepository<TEntity> GetRepository<TEntity>()
 			where TEntity : class, IEntity
 		{
 			var type = typeof(TEntity);
