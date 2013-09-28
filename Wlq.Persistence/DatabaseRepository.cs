@@ -42,7 +42,7 @@ namespace Wlq.Persistence
 			return isSave ? _context.SaveChanges() : 0;
 		}
 
-		public void BatchInsert(IList<TEntity> entities)
+		public bool BatchInsert(IList<TEntity> entities)
 		{
 			try
 			{
@@ -61,12 +61,16 @@ namespace Wlq.Persistence
 			catch (Exception ex)
 			{
 				LocalLoggingService.Exception(ex);
+
+				return false;
 			}
+
+			return true;
 		}
 
 		private void AddToContext(TEntity entity, int count, int commitCount)
 		{
-			_dbSet.Add(entity);
+			this.Add(entity, false);
 
 			if (count % commitCount == 0)
 			{

@@ -35,7 +35,7 @@ $(function () {
 	});
 
 	$("#user_login_form").keypress(function (e) {
-		kCode = e.keyCode || e.charCode //for cross browser
+		var kCode = e.keyCode || e.charCode;
 
 		if (kCode == 13) {
 			$("#btn_login").click();

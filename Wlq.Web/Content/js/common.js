@@ -79,3 +79,7 @@ function get_day_of_week(daysOfWeek) {
 		default: return '';
 	}
 }
+
+$("#popup #close").bind("click", function () {
+	$("#popup").hide();
+});

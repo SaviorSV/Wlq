@@ -95,6 +95,7 @@
     <Compile Include="Models\LeftMenuModel.cs" />
     <Compile Include="Models\PostModel.cs" />
     <Compile Include="Models\GroupDetailModel.cs" />
+    <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -267,6 +268,8 @@
     <Content Include="Views\User\MyGroups.cshtml" />
     <Content Include="Views\Shared\_GroupItem.cshtml" />
     <Content Include="Views\Admin\VenueGroup.cshtml" />
+    <Content Include="Views\User\MyMessages.cshtml" />
+    <Content Include="Views\User\SwipeLogin.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

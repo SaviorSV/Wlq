@@ -540,12 +540,20 @@ namespace Wlq.Service.Implementation
 
 		#region message
 
-		public void SendMessageToPostBookers(long postId, string title, string content, long senderId)
+		public bool SendMessageToPostBookers(long postId, string title, string content, long senderId)
 		{
+			var post = base.GetRepository<PostInfo>().GetById(postId);
+
+			if (post == null)
+			{
+				return false;
+			}
+
 			var message = new MessageInfo
 			{
 				Title = title,
 				Content = content,
+				PostId = postId,
 				SenderId = senderId
 			};
 
@@ -571,8 +579,10 @@ namespace Wlq.Service.Implementation
 
 			if (userMassages.Count > 0)
 			{
-				base.GetRepository<UserMessageInfo>().BatchInsert(userMassages);
+				return base.GetRepository<UserMessageInfo>().BatchInsert(userMassages);
 			}
+
+			return true;
 		}
 
 		public int GetUnreadMessagesCount(long userId)
@@ -593,7 +603,7 @@ namespace Wlq.Service.Implementation
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
-		public void ReadMessage(long userId, long messageId)
+		public bool ReadMessage(long userId, long messageId)
 		{
 			var userMessageRepository = base.GetRepository<UserMessageInfo>();
 			var userMessage = userMessageRepository.Entities
@@ -602,8 +612,24 @@ namespace Wlq.Service.Implementation
 			if (userMessage != null)
 			{
 				userMessage.IsRead = true;
-				userMessageRepository.Update(userMessage, true);
+				return userMessageRepository.Update(userMessage, true) > 0;
 			}
+
+			return false;
+		}
+
+		public bool DeleteMessage(long userId, long messageId)
+		{
+			var userMessageRepository = base.GetRepository<UserMessageInfo>();
+			var userMessage = userMessageRepository.Entities
+				.FirstOrDefault(um => um.UserId == userId && um.MessageId == messageId);
+
+			if (userMessage != null)
+			{
+				return userMessageRepository.Delete(userMessage, true) > 0;
+			}
+
+			return false;
 		}
 
 		#endregion

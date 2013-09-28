@@ -149,6 +149,8 @@ body{ background:url(../images/admin/bg.png) repeat-y left top; }
 .popup .content { margin:15px;}
 .popup hr { border: 1px solid #eee;}
 .popup input { height:20px;}
+.popup p { margin:5px 0 5px 5px;}
+.popup textarea { width:560px; height:148px; }
 
 .gray-font{color:Gray;}
 .group_logo { max-width:78px; max-height:75px; }

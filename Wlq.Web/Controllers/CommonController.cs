@@ -158,6 +158,19 @@ namespace Wlq.Web.Controllers
 			return Content(new { Success = success }.ObjectToJson(), "text/json");
 		}
 
+		[HttpPost]
+		public ActionResult DeleteMessage(long messageId)
+		{
+			var success = false;
+
+			if (CurrentUserId > 0)
+			{
+				success = PostService.DeleteMessage(CurrentUserId, messageId);
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
 		#endregion
 	}
 }

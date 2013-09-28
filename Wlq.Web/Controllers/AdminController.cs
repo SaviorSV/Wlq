@@ -8,6 +8,7 @@ using Wlq.Domain;
 using Wlq.Service;
 using Wlq.Web.Fliters;
 using Wlq.Web.Models;
+using System.Web;
 
 namespace Wlq.Web.Controllers
 {
@@ -605,6 +606,21 @@ namespace Wlq.Web.Controllers
 			if (AdminUser != null)
 			{
 				success = UserGroupService.ResetPassword(userId, "111111");
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
+		[HttpPost]
+		public ActionResult SendMessage(long postId, string content)
+		{
+			var success = false;
+
+			content = HttpUtility.UrlDecode(content);
+
+			if (AdminUser != null && !string.IsNullOrWhiteSpace(content))
+			{
+				success = PostService.SendMessageToPostBookers(postId, string.Empty, content, AdminUser.Id);
 			}
 
 			return Content(new { Success = success }.ObjectToJson(), "text/json");

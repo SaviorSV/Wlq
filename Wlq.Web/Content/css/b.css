@@ -194,7 +194,7 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 
 .usermsg-list{}
 .usermsg-list li{ min-height:29px; _height:29px; border-bottom:1px solid #d7d7d7;padding:20px 0 20px 80px; line-height:20px; position:relative}
-.usermsg-list li p{ font-size:14px; color:#333333; width:440px;}
+.usermsg-list li p { font-size:14px; color:#333333; width:440px;word-wrap: break-word; word-break: normal;}
 .usermsg-list li p a{ color:#00a0e9;}
 .usermsg-list li.flagline-1{ background:url(../images/common/flag-1.jpg) no-repeat left center ; }
 .usermsg-list li.flagline-2{ background:url(../images/common/flag-2.jpg) no-repeat left center ; }

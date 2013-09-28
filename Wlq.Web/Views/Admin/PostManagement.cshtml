@@ -35,6 +35,23 @@ else
 </div>
 <div class="formfooter"></div>
 
+<div id="popup" class="popup">
+	<div class="title">
+		发送消息
+		<span><a id="close" class="close" href="javascript:;">x</a></span>
+	</div>
+	<div class="content">
+		<p>消息内容：</p>
+		<p>
+			<input id="postId_hidden" type="hidden" />
+			<textarea id="message_content"></textarea>
+		</p>
+		<div class="txt-c">
+			<a id="send_message" href="javascript:;" class="btn-3">发送</a>
+		</div>
+	</div>
+</div>
+
 @section scripts
 {
 	<script type="text/javascript">
@@ -83,7 +100,7 @@ else
 						result += "<thead><tr><th>标题</th><th>发布类型</th><th>已预约</th><th>发布人</th><th>最后更新时间</th><th>操作</th></tr></thead><tbody>";
 
 						for (var i in list) {
-							result += "<tr><td><a href='/Home/Post/" + list[i].Id + "' target='_blank'>" + list[i].Title + "</a></td><td>" + list[i].PostType + "</td><td>" + list[i].BookingNumber + "</td><td>" + list[i].Publisher + "</td><td>" + list[i].PublishTime + "</td><td><a href='/Admin/Post/" + list[i].Id + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_post(" + list[i].Id + ");'>删除</a></td></tr>";
+							result += "<tr><td><a href='/Home/Post/" + list[i].Id + "' target='_blank'>" + list[i].Title + "</a></td><td>" + list[i].PostType + "</td><td>" + list[i].BookingNumber + "</td><td>" + list[i].Publisher + "</td><td>" + list[i].PublishTime + "</td><td><a href='javascript:;' onclick='send_message(" + list[i].Id + ")'>发送消息</a>&nbsp;&nbsp;<a href='/Admin/Post/" + list[i].Id + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_post(" + list[i].Id + ");'>删除</a></td></tr>";
 						}
 
 						result += "</tbody></table>";
@@ -139,5 +156,45 @@ else
 				}
 			});
 		}
+
+		function send_message(postId) {
+			$("#postId_hidden").val(postId);
+			$("#message_content").val('')
+			$("#popup").show();
+		}
+
+		$("#send_message").bind("click", function () {
+			var postId = $("#postId_hidden").val();
+			var content = escape($("#message_content").val());
+
+			if (content == '') {
+				alert('请输入要发送的内容');
+				return;
+			}
+			else if (content.length > 200) {
+				alert('内容过长，请限制在200字之内');
+				return;
+			}
+
+			$.ajax({
+				type: "POST",
+				dataType: 'json',
+				url: "/Admin/SendMessage",
+				data: {
+					'postId': postId,
+					'content': content
+				},
+				success: function (r, status) {
+					if (r.Success) {
+						alert("发送成功");
+					}
+					else {
+						alert("发送失败");
+					}
+				}
+			});
+
+			$("#popup").hide();
+		});
 	</script>
 }

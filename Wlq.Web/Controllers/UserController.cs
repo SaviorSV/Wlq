@@ -128,6 +128,26 @@ namespace Wlq.Web.Controllers
 			return RedirectToAction("Login", "Admin");
 		}
 
+		public ActionResult SwipeLogin()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public ActionResult SwipeLogin(string userCode)
+		{
+			var success = UserGroupService.LoginByCode(userCode);
+
+			if (success)
+			{
+				return RedirectToAction("Index", "Home");
+			}
+			else
+			{
+				return AlertAndRedirect("登录失败", "/User/SwipeLogin");
+			}
+		}
+
 		[LoginAuthentication(RoleLevel.Normal, "Home", "Index")]
 		public ActionResult MyHome(int tag = 0, int pageIndex = 1)
 		{
@@ -184,8 +204,21 @@ namespace Wlq.Web.Controllers
 
 					return View("MyGroups", myGroupsModel);
 				case 4:
-					//todo: my messages
-					return View();
+					var messages = PostService.GetUserMessages(CurrentUserId, pageIndex, _PostListSize, out totalNumber);
+					var myMessagesModel = new List<MessageModel>();
+
+					foreach (var message in messages)
+					{
+						myMessagesModel.Add(new MessageModel 
+						{ 
+							Message = message,
+							Post = PostService.GetPost(message.PostId, true)
+						});
+					}
+
+					ViewBag.TotalPage = totalNumber > 0 ? Math.Ceiling((decimal)totalNumber / _PostListSize) : 1;
+
+					return View("MyMessages", myMessagesModel);
 				default:
 					break;
 			}

@@ -110,6 +110,14 @@
     <Compile Include="Migrations\201309231215147_UpdateEntities4.Designer.cs">
       <DependentUpon>201309231215147_UpdateEntities4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201309281122330_updateMessageInfo.cs" />
+    <Compile Include="Migrations\201309281122330_updateMessageInfo.Designer.cs">
+      <DependentUpon>201309281122330_updateMessageInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201309281220366_RemoveColumnFromMessageInfo.cs" />
+    <Compile Include="Migrations\201309281220366_RemoveColumnFromMessageInfo.Designer.cs">
+      <DependentUpon>201309281220366_RemoveColumnFromMessageInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -164,6 +172,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201309231215147_UpdateEntities4.resx">
       <DependentUpon>201309231215147_UpdateEntities4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201309281122330_updateMessageInfo.resx">
+      <DependentUpon>201309281122330_updateMessageInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201309281220366_RemoveColumnFromMessageInfo.resx">
+      <DependentUpon>201309281220366_RemoveColumnFromMessageInfo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,0 +1,39 @@
+﻿@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4 class="r-subtitle">刷卡登陆</h4>
+@using (Html.BeginForm("SwipeLogin", "User", FormMethod.Post, new { id = "swipe_login_form" }))
+{
+<ul class="useredit-list1">
+	<li>
+		<label class="btn-2">读 卡</label>
+		<input name="userCode" id="userCode" type="password" />
+		<a id="btn_swipe_login" href="javascript:;" class="btn-1" style="width:70px;">登 录</a>
+	</li>
+</ul>
+}@section scripts
+{
+	<script type="text/javascript">
+		$(function () {
+			$(document).ready(function () {
+				$("#userCode").focus();
+			});
+		});
+
+		$("#swipe_login_form").keypress(function (e) {
+			var kCode = e.keyCode || e.charCode;
+
+			if (kCode == 13) {
+				$("#btn_swipe_login").click();
+				return false;
+			}
+		});
+
+		$("#btn_swipe_login").bind("click", function () {
+			if ($("#userCode").val() != '') {
+				$("#swipe_login_form").submit();
+			}
+		});
+	</script>
+}

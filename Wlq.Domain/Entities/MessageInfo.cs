@@ -7,6 +7,7 @@ namespace Wlq.Domain
 		public string Title { get; set; }
 		public string Content { get; set; }
 		public long SenderId { get; set; }
+		public long PostId { get; set; }
 		public DateTime SendTime { get; set; }
 
 		public MessageInfo()
