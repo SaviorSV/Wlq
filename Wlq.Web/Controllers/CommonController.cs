@@ -68,7 +68,7 @@ namespace Wlq.Web.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult Booking(long postId, string bookingDate, long venueConfigId = 0)
+		public ActionResult Booking(long postId, string bookingDate, long venueId = 0, long venueConfigId = 0)
 		{
 			var success = false;
 			var message = string.Empty;
@@ -82,6 +82,7 @@ namespace Wlq.Web.Controllers
 					PostId = postId,
 					Name = CurrentUser.Name,
 					Mobile = CurrentUser.Mobile,
+					VenueId = venueId,
 					VenueConfigId = venueConfigId,
 					BookingDate = date
 				};
@@ -93,7 +94,7 @@ namespace Wlq.Web.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult CancelBooking(long postId, string bookingDate, long venueConfigId = 0)
+		public ActionResult CancelBooking(long postId, string bookingDate, long venueId = 0, long venueConfigId = 0)
 		{
 			var success = false;
 			var date = DateTime.Now;

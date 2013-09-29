@@ -21,23 +21,6 @@ namespace Wlq.Service.Implementation
 
 		#region venue
 
-		public string GetVenueTypeName(VenueType type)
-		{
-			switch (type)
-			{
-				case VenueType.Sports:
-					return "体育场馆";
-				case VenueType.Cultural:
-					return "文化场馆";
-				case VenueType.Education:
-					return "教育场馆";
-				default:
-					break;
-			}
-
-			return "其他";
-		}
-
 		public IEnumerable<VenueGroupInfo> GetVenueGroupsByGroup(long groupId)
 		{
 			return base.GetRepository<VenueGroupInfo>().Entities
@@ -194,25 +177,6 @@ namespace Wlq.Service.Implementation
 		#endregion
 
 		#region post
-
-		public string GetPostTypeName(PostType type)
-		{
-			switch (type)
-			{
-				case PostType.All:
-					return "全部";
-				case PostType.Activity:
-					return "活动";
-				case PostType.Course:
-					return "课程";
-				case PostType.Venue:
-					return "场地";
-				case PostType.Health:
-					return "健康";
-				default:
-					return "其他";
-			}
-		}
 
 		public IEnumerable<PostInfo> GetPostsByType(bool fromCache, PostType type, bool withinTime, int pageIndex, int pageSize, out int totalNumber)
 		{
@@ -405,20 +369,20 @@ namespace Wlq.Service.Implementation
 
 			if (booking.VenueConfigId > 0)
 			{
+				var venueConfig = base.GetRepository<VenueConfigInfo>().GetById(booking.VenueConfigId);
+
+				if (venueConfig == null)
+				{
+					message = "预订失败(该场配置不存在)";
+					return false;
+				}
+
 				var booked = bookingRepository.Entities
 					.FirstOrDefault(b => b.UserId == booking.UserId && b.PostId == booking.PostId && b.VenueConfigId == booking.VenueConfigId && b.BookingDate == booking.BookingDate.Date);
 
 				if (booked != null)
 				{
 					message = "预订失败(已预订过该场地)";
-					return false;
-				}
-
-				var venueConfig = base.GetRepository<VenueConfigInfo>().GetById(booking.VenueConfigId);
-
-				if (venueConfig == null)
-				{
-					message = "预订失败(该场配置不存在)";
 					return false;
 				}
 

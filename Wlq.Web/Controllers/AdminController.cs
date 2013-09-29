@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 using Hanger.Common;
 using Wlq.Domain;
-using Wlq.Service;
+using Wlq.Service.Utility;
 using Wlq.Web.Fliters;
 using Wlq.Web.Models;
-using System.Web;
 
 namespace Wlq.Web.Controllers
 {
@@ -395,6 +395,7 @@ namespace Wlq.Web.Controllers
 			return AlertAndRedirect("保存成功", "/Admin/PostManagement");
 		}
 
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult SigninBooking(long id)
 		{
 			var post = PostService.GetPost(id, true);
@@ -404,7 +405,7 @@ namespace Wlq.Web.Controllers
 				return AlertAndRedirect("发布信息不存在", "/Admin/PostManagement");
 			}
 
-			ViewBag.PostTypeName = PostService.GetPostTypeName((PostType)post.PostType);
+			ViewBag.PostTypeName = EnumHelper.GetDescription<PostType>((PostType)post.PostType);
 
 			if (post.PostType == (int)PostType.Venue && post.VenueGroupId > 0)
 			{
@@ -412,6 +413,19 @@ namespace Wlq.Web.Controllers
 			}
 
 			return View(post);
+		}
+
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
+		public ActionResult PostBookers(long id, int pageIndex = 1)
+		{
+			var pageSize = 20;
+			var totalNumber = 0;
+
+			ViewBag.PostId = id;
+			ViewBag.PageIndex = pageIndex;
+			ViewBag.TotalPage = totalNumber > 0 ? Math.Ceiling((decimal)totalNumber / pageSize) : 1;
+
+			return View();
 		}
 
 		#endregion
@@ -487,7 +501,7 @@ namespace Wlq.Web.Controllers
 				{ 
 					Id = v.Id, 
 					Name = v.Name,
-					VenueType = PostService.GetVenueTypeName((VenueType)v.VenueType)
+					VenueType = EnumHelper.GetDescription<VenueType>((VenueType)v.VenueType)
 				});
 
 			return Content(venueGroups.ObjectToJson(), "text/json");
@@ -505,6 +519,7 @@ namespace Wlq.Web.Controllers
 				.Select(c => new
 				{
 					Id = c.VenueConfigId,
+					DayOfWeek = DateTime.Today.DayOfWeek.ToString(),
 					BeginTime = string.Format("{0}:{1}", (c.BeginTime / 100).ToString().PadLeft(2, '0'), (c.BeginTime % 100).ToString().PadLeft(2, '0')),
 					EndTime = string.Format("{0}:{1}", (c.EndTime / 100).ToString().PadLeft(2, '0'), (c.EndTime % 100).ToString().PadLeft(2, '0'))
 				});
@@ -526,7 +541,7 @@ namespace Wlq.Web.Controllers
 				{ 
 					Id = p.Id, 
 					Title = p.Title,
-					PostType = PostService.GetPostTypeName((PostType)p.PostType),
+					PostType = EnumHelper.GetDescription<PostType>((PostType)p.PostType),
 					BookingNumber = p.BookingNumber,
 					Publisher = p.Publisher,
 					PublishTime = p.PublishTime.ToString("yyyy-MM-dd HH:mm:ss") 

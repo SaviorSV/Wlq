@@ -20,6 +20,8 @@ namespace Wlq.Domain
 		public long VenueGroupId { get; set; }
 		public int LimitNumber { get; set; }
 		public int BookingNumber { get; set; }
+		public int BookingTypes { get; set; }
+		public int InvolvedTypes { get; set; }
 		public string Publisher { get; set; }
 		public DateTime PublishTime { get; set; }
 

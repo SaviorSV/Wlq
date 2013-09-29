@@ -9,7 +9,6 @@ namespace Wlq.Service
 	{
 		#region Venue
 
-		string GetVenueTypeName(VenueType type);
 		IEnumerable<VenueInfo> GetVenuesByGroup(long groupId);
 		IEnumerable<VenueInfo> GetVenuesByVenueGroup(long venueGroupId);
 		VenueInfo GetVenue(long venueId);
@@ -29,8 +28,6 @@ namespace Wlq.Service
 		#endregion
 
 		#region Post
-
-		string GetPostTypeName(PostType type);
 
 		PostInfo GetPost(long postId, bool fromCache);
 		bool AddPost(PostInfo post);

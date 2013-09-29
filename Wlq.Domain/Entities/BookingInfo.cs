@@ -8,7 +8,9 @@ namespace Wlq.Domain
 		public long PostId { get; set; }
 		public string Name { get; set; }
 		public string Mobile { get; set; }
+		public long VenueId { get; set; }
 		public long VenueConfigId { get; set; }
+		public int BookingType { get; set; }
 		public int InvolvedType { get; set; }
 		public DateTime BookingDate { get; set; }
 		public bool IsPresent { get; set; }

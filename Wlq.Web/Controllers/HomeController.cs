@@ -5,8 +5,8 @@ using System.Web.Mvc;
 
 using Hanger.Common;
 using Wlq.Domain;
-using Wlq.Web.Models;
 using Wlq.Web.Fliters;
+using Wlq.Web.Models;
 
 namespace Wlq.Web.Controllers
 {
@@ -175,6 +175,8 @@ namespace Wlq.Web.Controllers
 
 			ViewBag.CurrentUserId = CurrentUserId;
 			ViewBag.IsFollowing = UserGroupService.IsUserInGroup(CurrentUserId, group.Id);
+			ViewBag.VenueId = model.Venues != null && model.Venues.Count() > 0
+				? model.Venues.First().Id : 0;
 			ViewBag.Schedules = venueSchedules != null
 				? venueSchedules.ObjectToJson() : "[]";
 

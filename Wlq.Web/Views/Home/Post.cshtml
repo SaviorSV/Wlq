@@ -142,17 +142,17 @@
 						'venueId': venueId
 					}, 
 					function (data) {
-						GetBookingTable(data);
+						GetBookingTable(venueId, data);
 					}
 				);
 
 				return false;
 			});
 
-			GetBookingTable(@Html.Raw(ViewBag.Schedules));
+			GetBookingTable(@ViewBag.VenueId, @Html.Raw(ViewBag.Schedules));
 		});
 
-		function GetBookingTable(schedules) {
+		function GetBookingTable(vanueId, schedules) {
 			if (schedules.length) {
 				$('#booking_table').booking(schedules, postId);
 
@@ -171,9 +171,10 @@
 						$.post(
 							url,
 							{
-								'BookingDate': $(_this).attr('Date'), 
-								'VenueConfigId': $(_this).attr('VenueConfigId'),
-								'postId': postId
+								'postId': postId,
+								'venueId': vanueId,
+								'venueConfigId': $(_this).attr('VenueConfigId'),
+								'bookingDate': $(_this).attr('Date')
 							}, 
 							function (data) {
 								if (!data['Success'])
