@@ -1,0 +1,120 @@
+﻿@{
+	Layout = "~/Views/Admin/_Layout.cshtml";
+}
+
+@using Wlq.Domain;
+
+@model PostInfo
+
+<h4 class="form-tt">刷卡签到</h4>
+<div id="formbody" class="formbody">
+	<ul class="singin-list">
+		<li>标题： @Model.Title</li>
+		<li>类型： @ViewBag.PostTypeName</li>
+		<li id="venue_panel">
+			场地：
+			<select id="venue_selector">
+		@if (ViewBag.Venues != null)
+		{
+			foreach (var venue in ViewBag.Venues as IEnumerable<VenueInfo>)
+			{
+				<option value="@venue.Id">@venue.Name</option>
+			}
+		}
+		else
+		{
+				<option value="0">无</option>
+		}
+			</select>
+			<select id="venueconfig_selector">
+				<option value="0">无</option>
+			</select>
+		</li>
+		<li>
+			<label class="btn-4">读 卡</label>
+			<input name="userCode" id="userCode" type="password" />
+			<a id="btn_signin_booking" href="javascript:;" class="btn-5" style="width:70px;">签 到</a>
+		</li>
+	</ul>
+</div>
+<div class="formfooter"></div>
+
+@section scripts
+{
+	<script type="text/javascript">
+		var postId = @Model.Id;
+		var postType = @Model.PostType;
+
+		$(function () {
+			$(document).ready(function () {
+				selected_left_menu(3);
+
+				$("#userCode").focus();
+
+				if (postType == 3) {
+					bind_venue_configs();
+				}
+				else {
+					$("#venue_panel").hide();
+				}
+			});
+		});
+
+		function bind_venue_configs() {
+			var venueId = $("#venue_selector").val();
+			var venueconfigSelector = $("#venueconfig_selector").empty();
+
+			if (venueId > 0) {
+				$.get("/Admin/GetVenueConfigs/" + venueId, function (data) {
+					var result = '';
+					if (data.length > 0) {
+						for (var i in data) {
+							venueconfigSelector.append("<option value='" + data[i].Id + "'>" + data[i].BeginTime + "-" + data[i].EndTime + "</option>")
+						}
+					}
+					else {
+						venueconfigSelector.append("<option value='0'>无</option>")
+					}
+				});
+			}
+		}
+
+		$("#formbody").keypress(function (e) {
+			var kCode = e.keyCode || e.charCode;
+
+			if (kCode == 13) {
+				$("#btn_signin_booking").click();
+				return false;
+			}
+		});
+
+		$("#btn_signin_booking").bind("click", function () {
+			var userCode = $("#userCode").val();
+
+			if (userCode != '') {
+				var venueConfigId = $("#venueconfig_selector").val();
+
+				$.ajax({
+					type: "POST",
+					dataType: 'json',
+					url: "/Admin/SigninForBooking",
+					data: {
+						'userCode': userCode,
+						'postId': postId,
+						'venueConfigId': venueConfigId
+					},
+					success: function (r, status) {
+						if (r.Success) {
+							alert("签到成功");
+						}
+						else {
+							alert("签到失败");
+						}
+					}
+				});
+
+				$("#userCode").val('');
+			}
+		});
+	</script>
+}
