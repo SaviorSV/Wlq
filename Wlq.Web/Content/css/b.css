@@ -134,6 +134,7 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .btn-disable{ background:url(../images/common/btn_disable.png); width:188px; height:48px; line-height:48px; font-size:16px; color:#FFF; display:inline-block; text-decoration:none; font-weight:bold;}
 .btn-1{ background:url(../images/common/btn-bg.png) repeat-x; height:40px; display:inline-block; line-height:40px; color:#FFF; text-align:center; text-decoration:none}
 .btn-2{ background:url(../images/common/btn2-bg.png); height:38px; width:78px; display:inline-block; border:1px solid #ded8d8; line-height:38px; text-align:center; text-decoration:none; color:#686868}
+.btn-3{ background:url(../images/common/btn-bg.png) repeat-x; width:120px; height:30px; display:inline-block; line-height:30px; color:#FFF; text-align:center; text-decoration:none; }
 .tip-1{ background:url(../images/common/tip-1-24.png); _background:url(../images/common/tip-1-8.png); width:334px; height:256px; position:absolute}
 
 .tip-close-1{ position:absolute; width:30px; height:30px; right:15px; top:15px; display:inline-block;}
@@ -293,3 +294,12 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .booking_tab .tab_menu .current { background:#fff; color:#2C4613; border-color:#ddd; border-top-color:#5f7946; height:29px; _margin-bottom:-1px; }
 .booking_tab .tab_wrapper{ border:solid #ddd; border-width:0 1px 1px; }
 .booking_tab .tab_content div { width:558px; padding:5px 0 5px 20px; }
+
+.popup { display:none; position:absolute; top:270px; left:40px; width:602px; height:295px; background:url(../images/admin/indexlist-bg.png) 0 bottom}
+.popup .title { background:url(../images/admin/indexlist-tt.png); height:43px; line-height:42px; padding:0 0 0 34px; color:#333333; margin-bottom:10px;}
+.popup .title span { float:right; margin-right:15px; }
+.popup .title a { color:#000; text-decoration:none;}
+.popup .content { margin:15px; height: 180px; overflow-y:scroll;}
+.popup .bottom { text-align:center; position:absolute; bottom:20px; left:200px;}
+.popup .bottom font { font-size:small;}
+.popup p { margin:5px 0 5px 5px;}

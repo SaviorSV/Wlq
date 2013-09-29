@@ -63,10 +63,23 @@ function GetToday() {
 	return today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate();
 }
 
+function booking_confirm(postId) {
+	$("#popup").show();
+	$("#chk_remark_confirm").attr("checked", false);
+	$("#btn_remark_confirm").attr("onclick", "normal_booking(" + postId + ")");
+}
+
 function normal_booking(postId) {
+	if (!$("#chk_remark_confirm").attr("checked")) {
+		alert('请勾选同意安全管理须知');
+		return;
+	}
+
 	if (!confirm('确认预订？')) {
 		return;
 	}
+
+	$("#popup").hide();
 
 	$.ajax({
 		type: "POST",
@@ -120,7 +133,7 @@ function normal_cancel_booking(postId) {
 				button.removeClass('btn-disable');
 				button.addClass('btn');
 				button.html('预 约');
-				button.attr("onclick", "normal_booking(" + postId + ")");
+				button.attr("onclick", "booking_confirm(" + postId + ")");
 
 				var bookingNumber = parseInt($("#booking_number_" + postId).html());
 				var bookingNumberLeft = parseInt($("#booking_number_left_" + postId).html());

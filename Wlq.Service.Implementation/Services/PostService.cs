@@ -438,7 +438,7 @@ namespace Wlq.Service.Implementation
 			return bookings.Count();
 		}
 
-		public List<BookingSchedule> GetBookingSchedules(long userId, long postId, long venueId, int days)
+		public IList<BookingSchedule> GetBookingSchedules(long userId, long postId, long venueId, int days)
 		{
 			var post = base.GetRepository<PostInfo>().GetById(postId);
 
@@ -482,6 +482,14 @@ namespace Wlq.Service.Implementation
 			}
 
 			return schedules;
+		}
+
+		public IEnumerable<BookingInfo> GetBookingList(long postId, int pageIndex, int pageSize, out int totalNumber)
+		{
+			return base.GetRepository<BookingInfo>().Entities
+				.Where(b => b.PostId == postId)
+				.OrderByDescending(b => b.BookingDate)
+				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
 		private bool IsBookedVenue(long postId, long userId, long venueConfigId, DateTime bookingDate)

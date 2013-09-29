@@ -159,7 +159,7 @@ namespace Wlq.Service.Implementation
 		{
 			var key = string.Format("Wlq.Domain.GroupInfo.{0}", groupId);
 
-			return CacheManager.Get<GroupInfo>(true, key, new TimeSpan(0, 15, 0),
+			return CacheManager.Get<GroupInfo>(fromCache, key, new TimeSpan(0, 15, 0),
 				() =>
 				{
 					return base.GetRepository<GroupInfo>().GetById(groupId);

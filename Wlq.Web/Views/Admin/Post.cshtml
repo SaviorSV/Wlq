@@ -41,7 +41,6 @@
 			</select>
 			<label id="venuegroup_selector_title">场馆：</label>
 			<select id="venuegroup_selector" name="VenueGroupId" class="select-1"></select>
-			
 		</li>
 		<li>
 			<label>发布标题：</label>
@@ -75,7 +74,7 @@
 		</li>
 		<li>
 			<label>安全须知：</label>
-			@Html.TextBoxFor(x => x.Remark, new { @class = "input-1" })
+			<input id="post_remark" name="Remark" value="@Model.Remark" />
 		</li>
 		<li>
 			<label>图片上传：</label>
@@ -112,7 +111,7 @@
 
 			ShowVenueGroupSelector(@Model.PostType);
 
-			new TINY.editor.edit('editor', {
+			new TINY.editor.edit('editor_content', {
 				id: 'post_content',
 				width: 700,
 				height: 200,
@@ -126,7 +125,27 @@
 				fonts: ['Verdana', 'Arial', 'Georgia', 'Trebuchet MS'],
 				xhtml: true,
 				cssfile: '/Content/tinyeditor/style.css',
-				bodyid: 'editor',
+				bodyid: 'editor_content',
+				footerclass: 'tefooter',
+				toggle: { text: 'source', activetext: 'wysiwyg', cssclass: 'toggle' },
+				resize: { cssclass: 'resize' }
+			});
+
+			new TINY.editor.edit('editor_remark', {
+				id: 'post_remark',
+				width: 700,
+				height: 200,
+				cssclass: 'te',
+				controlclass: 'tecontrol',
+				rowclass: 'teheader',
+				dividerclass: 'tedivider',
+				controls: ['bold', 'italic', 'underline', 'strikethrough', 'leftalign',
+					'centeralign', 'rightalign', 'blockjustify', '|', 'font', 'size', 'style', '|'],
+				footer: true,
+				fonts: ['Verdana', 'Arial', 'Georgia', 'Trebuchet MS'],
+				xhtml: true,
+				cssfile: '/Content/tinyeditor/style.css',
+				bodyid: 'editor_remark',
 				footerclass: 'tefooter',
 				toggle: { text: 'source', activetext: 'wysiwyg', cssclass: 'toggle' },
 				resize: { cssclass: 'resize' }
@@ -134,7 +153,8 @@
 		});
 		
 		$("#save_post").bind("click", function () {
-			editor.post();
+			editor_content.post();
+			editor_remark.post();
 
 			$("#admin_save_post_form").submit();
 		});

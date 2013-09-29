@@ -95,7 +95,7 @@
 				{
 					if (!Model.IsBooked)
 					{
-					<a id='@string.Format("btn_booking_{0}", Model.Post.Id)' href="javascript:;" onclick="normal_booking(@Model.Post.Id)" class="btn">预 约</a>
+					<a id='@string.Format("btn_booking_{0}", Model.Post.Id)' href="javascript:;" onclick="booking_confirm(@Model.Post.Id)" class="btn">预 约</a>
 					}
 					else
 					{
@@ -118,6 +118,20 @@
 	<div class="box640-bottom"><img src="/content/images/common/box640-b.jpg" alt="boxbottom" /></div>
 </div>
 
+<div id="popup" class="popup">
+	<div class="title">
+		安全管理须知
+		<span><a id="close" class="close" href="javascript:;">x</a></span>
+	</div>
+	<div class="content">
+		@Html.Raw(Model.Post.Remark)
+	</div>
+	<div class="bottom">
+		<input id="chk_remark_confirm" type="checkbox" /><font>我同意</font>
+		<a id="btn_remark_confirm" href="javascript:;" class="btn-3">确 定</a>
+	</div>
+</div>
+
 @section scripts
 {
     <script src="@Url.Content("~/Content/js/venue-booking.js")" type="text/javascript"></script>
@@ -131,7 +145,7 @@
 				var index = $tabs.index($(this));
 
 				$tabs.removeClass("current");
-				$($tabs.get(index)).addClass("current")
+				$($tabs.get(index)).addClass("current");
 
 				var venueId = $($tabs.get(index)).val();
 
@@ -157,42 +171,63 @@
 				$('#booking_table').booking(schedules, postId);
 
 				$('#booking_table .on, #booking_table .already').bind('click', function () {
-					var _this = this;
-					var method = $(_this).attr('IsBooked');
-					var period_start = parseInt($(_this).parent().children('th').text().substring(0, 2))
-					var period = period_start + ":00 - " + (period_start + parseInt($(_this).attr('rowspan'))) + ":00";
-					var info = "场地信息：" + $(_this).attr('Date') + " " + period + "\n\n";
-					info += (method == 'false') ? "确认预订？" : "确认取消预订？";
-					var url = (method == 'false') ? '/Common/Booking' : '/Common/CancelBooking';
-
-					if (!confirm(info))
-						return;
+					var method = $(this).attr('IsBooked');
+					if (method == 'false') {
+						$("#popup").show();
+						$("#chk_remark_confirm").attr("checked", false);
+						$("#btn_remark_confirm").attr("onclick", "venue_booking(" + vanueId + ", '" + $(this).attr('id') + "')");
+					}
 					else {
-						$.post(
-							url,
-							{
-								'postId': postId,
-								'venueId': vanueId,
-								'venueConfigId': $(_this).attr('VenueConfigId'),
-								'bookingDate': $(_this).attr('Date')
-							}, 
-							function (data) {
-								if (!data['Success'])
-									alert(data['Message']);
-								else if (method == 'false'){
-									$(_this).removeClass().addClass('already');
-									$(_this).text('取消预订');
-									$(_this).attr('IsBooked', 'true');
-								}
-								else if (method == 'true'){
-									$(_this).removeClass().addClass('on');
-									$(_this).text('预订');
-									$(_this).attr('IsBooked', 'false');
-								}
-							}
-						);
+						venue_booking(vanueId, $(this).attr('id'));
 					}
 				});
+			}
+		}
+
+		function venue_booking(vanueId, vcId) {
+			var method = $('#'+ vcId).attr('IsBooked');
+
+			if (method == 'false') {
+				if (!$("#chk_remark_confirm").attr("checked")) {
+					alert('请勾选同意安全管理须知');
+					return;
+				}
+			}
+
+			var period_start = parseInt($('#'+ vcId).parent().children('th').text().substring(0, 2))
+			var period = period_start + ":00 - " + (period_start + parseInt($('#'+ vcId).attr('rowspan'))) + ":00";
+			var info = "场地信息：" + $('#'+ vcId).attr('Date') + " " + period + "\n\n";
+			info += (method == 'false') ? "确认预订？" : "确认取消预订？";
+			var url = (method == 'false') ? '/Common/Booking' : '/Common/CancelBooking';
+
+			if (!confirm(info))
+				return;
+			else {
+				$("#popup").hide();
+
+				$.post(
+					url,
+					{
+						'postId': postId,
+						'venueId': vanueId,
+						'venueConfigId': $('#'+ vcId).attr('VenueConfigId'),
+						'bookingDate': $('#'+ vcId).attr('Date')
+					}, 
+					function (data) {
+						if (!data['Success'])
+							alert(data['Message']);
+						else if (method == 'false'){
+							$('#'+ vcId).removeClass().addClass('already');
+							$('#'+ vcId).text('取消预订');
+							$('#'+ vcId).attr('IsBooked', 'true');
+						}
+						else if (method == 'true'){
+							$('#'+ vcId).removeClass().addClass('on');
+							$('#'+ vcId).text('预订');
+							$('#'+ vcId).attr('IsBooked', 'false');
+						}
+					}
+				);
 			}
 		}
 	</script>

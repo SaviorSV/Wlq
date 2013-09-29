@@ -6,6 +6,9 @@ namespace Wlq.Domain
 	[Flags]
 	public enum InvolvedType
 	{
+		[Description("-")]
+		None = 0,
+
 		[Description("观摩类")]
 		Observer = 1,
 

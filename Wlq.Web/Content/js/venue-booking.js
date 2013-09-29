@@ -71,6 +71,8 @@
 						td.attr(key, attrs[key]);
 					}
 
+					td.attr('id', 'vc_' + attrs['VenueConfigId']);
+
 					if (attrs['LimitNumber'] > attrs['BookingNumber'] && !attrs['IsBooked']) {
 						td.addClass('on');
 						td.html('预订<br /><span>(剩余:' + (attrs['LimitNumber'] - attrs['BookingNumber']) + ')</span>');

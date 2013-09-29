@@ -2,7 +2,10 @@
 	Layout = "~/Views/Admin/_Layout.cshtml";
 }
 
-@model IEnumerable<Wlq.Domain.BookingInfo>
+@using Wlq.Domain;
+@using Wlq.Service.Utility;
+
+@model IEnumerable<BookingInfo>
 
 <h4 class="form-tt">预约列表</h4>
 <div class="formbody">
@@ -19,7 +22,17 @@
 				</tr>
 			</thead>
 			<tbody>
-				
+			@foreach (var booking in Model)
+			{
+				<tr>
+					<td>@booking.Name</td>
+					<td>@booking.Mobile</td>
+					<td>@{EnumHelper.GetDescription<BookingType>((BookingType)booking.BookingType);}</td>
+					<td>@{EnumHelper.GetDescription<InvolvedType>((InvolvedType)booking.InvolvedType);}</td>
+					<td>@string.Format("{0:yyyy-MM-dd}", booking.BookingDate)</td>
+					<td>@string.Format("{0}", booking.IsPresent ? "是" : "否")</td>
+				</tr>
+			}
 			</tbody>
 		</table>
 	</div>

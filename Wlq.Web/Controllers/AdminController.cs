@@ -369,6 +369,7 @@ namespace Wlq.Web.Controllers
 			post.Fee = postModel.Fee;
 			post.Location = postModel.Location;
 			post.RelatedPlace = postModel.RelatedPlace;
+			post.Remark = postModel.Remark;
 			post.IsHealthTopic = group.IsHealth;
 			post.VenueGroupId = postModel.PostType == (int)PostType.Venue ? postModel.VenueGroupId : 0;
 			post.Publisher = AdminUser.Name;
@@ -420,12 +421,13 @@ namespace Wlq.Web.Controllers
 		{
 			var pageSize = 20;
 			var totalNumber = 0;
+			var bookingList = PostService.GetBookingList(id, pageIndex, pageSize, out totalNumber);
 
 			ViewBag.PostId = id;
 			ViewBag.PageIndex = pageIndex;
 			ViewBag.TotalPage = totalNumber > 0 ? Math.Ceiling((decimal)totalNumber / pageSize) : 1;
 
-			return View();
+			return View(bookingList);
 		}
 
 		#endregion
