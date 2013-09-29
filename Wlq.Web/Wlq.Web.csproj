@@ -270,6 +270,7 @@
     <Content Include="Views\Admin\VenueGroup.cshtml" />
     <Content Include="Views\User\MyMessages.cshtml" />
     <Content Include="Views\User\SwipeLogin.cshtml" />
+    <Content Include="Views\Admin\SigninBooking.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

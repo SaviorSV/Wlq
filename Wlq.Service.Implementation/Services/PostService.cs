@@ -528,12 +528,46 @@ namespace Wlq.Service.Implementation
 			return booking != null;
 		}
 
-		public bool IsBookedPost(long postId, long userId)
+		public bool IsBookedPost(long userId, long postId)
 		{
 			var booking = base.GetRepository<BookingInfo>().Entities
 				.FirstOrDefault(b => b.PostId == postId && b.UserId == userId);
 
 			return booking != null;
+		}
+
+		public bool SigninForBooking(string userCode, long postId, long venueConfigId, DateTime bookingDate)
+		{
+			var user = base.GetRepository<UserInfo>().Entities
+				.FirstOrDefault(u => u.Code == userCode);
+
+			if (user == null)
+			{
+				return false;
+			}
+
+			var post = base.GetRepository<PostInfo>().GetById(postId);
+
+			if (post == null)
+			{
+				return false;
+			}
+
+			var bookingRepository = base.GetRepository<BookingInfo>();
+			var booking = post.PostType == (int)PostType.Venue
+				? bookingRepository.Entities
+					.FirstOrDefault(b => b.PostId == postId && b.UserId == user.Id && b.VenueConfigId == venueConfigId && b.BookingDate == bookingDate.Date)
+				: bookingRepository.Entities
+					.FirstOrDefault(b => b.PostId == postId && b.UserId == user.Id);
+
+			if (booking == null)
+			{
+				return false;
+			}
+
+			booking.IsPresent = true;
+
+			return bookingRepository.Update(booking, true) > 0;
 		}
 
 		#endregion
@@ -600,6 +634,7 @@ namespace Wlq.Service.Implementation
 
 			return base.GetRepository<MessageInfo>().Entities
 				.Where(m => messageIds.Contains(m.Id))
+				.OrderByDescending(m => m.SendTime)
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 

@@ -105,6 +105,8 @@ body{ background:url(../images/admin/bg.png) repeat-y left top; }
 .tips-1{ margin-left:97px; color:#979797; font-size:14px;}
 .btn-2{ background:url(../images/admin/btn-2.png); width:96px; height:32px; display:inline-block; border:0px;}
 .btn-3{ height:27px; line-height:27px; background:#d9474b; font-size:12px; color:#FFF; text-decoration:none; display:inline-block; padding:0 14px;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius:5px;}
+.btn-4{ background:url(../images/common/btn2-bg.png); height:38px; width:78px; display:inline-block; border:1px solid #ded8d8; line-height:38px; text-align:center; text-decoration:none; color:#686868}
+.btn-5{ background:url(../images/common/btn-bg.png) repeat-x; height:30px; display:inline-block; line-height:30px; color:#FFF; text-align:center; text-decoration:none}
 .timeselect{ font-size:14px; float:left}
 .timeselect p{ padding:5px 0 }
 
@@ -156,3 +158,9 @@ body{ background:url(../images/admin/bg.png) repeat-y left top; }
 .group_logo { max-width:78px; max-height:75px; }
 .post_img { max-width:150px; max-height:150px; }
 .configs { font-size:10pt; margin:20px 0 30px 40px; }
+
+.singin-list{ padding:0 0 0 50px;}
+.singin-list li{ margin-bottom:20px; clear:both; overflow:hidden}
+.singin-list li label.btn-4{ float:left;margin-right:0px;}
+.singin-list li span{ float:left; height:40px; line-height:40px;}
+.singin-list li input{ height:28px; line-height:28px; width:200px; border:0px; font-size:14px; color:#b4b4b4; float:left; border:1px solid #ded8d8; border-left:0px; text-indent:10px;}

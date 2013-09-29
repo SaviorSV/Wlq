@@ -394,6 +394,26 @@ namespace Wlq.Web.Controllers
 
 			return AlertAndRedirect("保存成功", "/Admin/PostManagement");
 		}
+
+		public ActionResult SigninBooking(long id)
+		{
+			var post = PostService.GetPost(id, true);
+
+			if (post == null)
+			{
+				return AlertAndRedirect("发布信息不存在", "/Admin/PostManagement");
+			}
+
+			ViewBag.PostTypeName = PostService.GetPostTypeName((PostType)post.PostType);
+
+			if (post.PostType == (int)PostType.Venue && post.VenueGroupId > 0)
+			{
+				ViewBag.Venues = PostService.GetVenuesByVenueGroup(post.VenueGroupId);
+			}
+
+			return View(post);
+		}
+
 		#endregion
 
 		#region User
@@ -471,6 +491,25 @@ namespace Wlq.Web.Controllers
 				});
 
 			return Content(venueGroups.ObjectToJson(), "text/json");
+		}
+
+		public ActionResult GetVenueConfigs(long id)
+		{
+			if (AdminUser == null)
+			{
+				return Content("[]", "text/json");
+			}
+
+			var venueConfigs = PostService.GetVenueConfigs(id);
+			var configs = venueConfigs[DateTime.Today.DayOfWeek]
+				.Select(c => new
+				{
+					Id = c.VenueConfigId,
+					BeginTime = string.Format("{0}:{1}", (c.BeginTime / 100).ToString().PadLeft(2, '0'), (c.BeginTime % 100).ToString().PadLeft(2, '0')),
+					EndTime = string.Format("{0}:{1}", (c.EndTime / 100).ToString().PadLeft(2, '0'), (c.EndTime % 100).ToString().PadLeft(2, '0'))
+				});
+
+			return Content(configs.ObjectToJson(), "text/json");
 		}
 
 		public ActionResult GetPostsByGroup(long id, int pageIndex)
@@ -625,6 +664,20 @@ namespace Wlq.Web.Controllers
 
 			return Content(new { Success = success }.ObjectToJson(), "text/json");
 		}
+
+		[HttpPost]
+		public ActionResult SigninForBooking(string userCode, long postId, long venueConfigId)
+		{
+			var success = false;
+
+			if (AdminUser != null)
+			{
+				success = PostService.SigninForBooking(userCode, postId, venueConfigId, DateTime.Today.Date);
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
 
 		#endregion
 	}

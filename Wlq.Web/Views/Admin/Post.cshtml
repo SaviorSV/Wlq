@@ -158,7 +158,6 @@
 
 				if (groupId > 0) {
 					$.get("/Admin/GetVenueGroupsByGroup/" + groupId, function (data) {
-						var result = '';
 						if (data.length > 0) {
 							for (var i in data) {
 								venuegroupSelector.append("<option value='" + data[i].Id + "'>" + data[i].Name + "</option>")
