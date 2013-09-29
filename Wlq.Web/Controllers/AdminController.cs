@@ -84,11 +84,6 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult Group(long groupId, long parentGroupId)
 		{
-			if (groupId > 0 && CurrentUser.Role != (int)RoleLevel.SuperAdmin && !UserGroupService.IsManagerInGroup(CurrentUserId, groupId))
-			{
-				return RedirectToAction("GroupManagement", "Admin");
-			}
-
 			var parentGroup = UserGroupService.GetGroup(parentGroupId, false);
 
 			ViewBag.ParentGroupName = parentGroup == null ? "无" : parentGroup.Name;
@@ -111,11 +106,7 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult SaveGroup(GroupInfo groupModel)
 		{
-			if (groupModel.Id > 0 && CurrentUser.Role != (int)RoleLevel.SuperAdmin && !UserGroupService.IsManagerInGroup(CurrentUserId, groupModel.Id))
-			{
-				return RedirectToAction("GroupManagement", "Admin");
-			}
-			else if (groupModel.Id == 0 && groupModel.ParentGroupId == 0 && CurrentUser.Role != (int)RoleLevel.SuperAdmin)
+			if (groupModel.Id == 0 && groupModel.ParentGroupId == 0 && CurrentUser.Role != (int)RoleLevel.SuperAdmin)
 			{
 				return RedirectToAction("GroupManagement", "Admin");
 			}
@@ -668,7 +659,7 @@ namespace Wlq.Web.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult SendMessage(long postId, string content)
+		public ActionResult SendMessageToPostBookers(long postId, string content)
 		{
 			var success = false;
 
@@ -677,6 +668,21 @@ namespace Wlq.Web.Controllers
 			if (AdminUser != null && !string.IsNullOrWhiteSpace(content))
 			{
 				success = PostService.SendMessageToPostBookers(postId, string.Empty, content, AdminUser.Id);
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
+		[HttpPost]
+		public ActionResult SendMessageToGroupMembers(long groupId, string content)
+		{
+			var success = false;
+
+			content = HttpUtility.UrlDecode(content);
+
+			if (AdminUser != null && !string.IsNullOrWhiteSpace(content))
+			{
+				success = PostService.SendMessageToGroupMembers(groupId, string.Empty, content, AdminUser.Id);
 			}
 
 			return Content(new { Success = success }.ObjectToJson(), "text/json");

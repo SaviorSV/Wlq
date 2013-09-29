@@ -591,6 +591,51 @@ namespace Wlq.Service.Implementation
 			return true;
 		}
 
+		public bool SendMessageToGroupMembers(long groupId, string title, string content, long senderId)
+		{
+			var group = base.GetRepository<GroupInfo>().GetById(groupId);
+
+			if (group == null)
+			{
+				return false;
+			}
+
+			var message = new MessageInfo
+			{
+				Title = title,
+				Content = content,
+				PostId = 0,
+				SenderId = senderId
+			};
+
+			base.GetRepository<MessageInfo>().Add(message, true);
+
+			var userIds = base.GetRepository<UserGroupInfo>().Entities
+				.Where(ug => ug.GroupId == group.Id)
+				.Select(b => b.UserId)
+				.Distinct();
+
+			var userMassages = new List<UserMessageInfo>();
+
+			foreach (var userId in userIds)
+			{
+				var userMassage = new UserMessageInfo
+				{
+					UserId = userId,
+					MessageId = message.Id
+				};
+
+				userMassages.Add(userMassage);
+			}
+
+			if (userMassages.Count > 0)
+			{
+				return base.GetRepository<UserMessageInfo>().BatchInsert(userMassages);
+			}
+
+			return true;
+		}
+
 		public int GetUnreadMessagesCount(long userId)
 		{
 			return base.GetRepository<UserMessageInfo>().Entities

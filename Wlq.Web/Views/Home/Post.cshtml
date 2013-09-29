@@ -55,6 +55,12 @@
 				<p>
 					@Html.Raw(Model.Post.Content)
 					<br /><br />
+				@if (!string.IsNullOrWhiteSpace(Model.Post.Image))
+				{
+					<div class="detailimgbox">
+						<img src='@string.Format("/upload/group/{0}/{1}{2}", Model.Post.GroupId, Model.Post.Id, Model.Post.Image)' alt="post" />
+					</div>
+				}
 					<span>起止日期：@string.Format("{0:yyyy-MM-dd}", Model.Post.BeginDate) 至 @string.Format("{0:yyyy-MM-dd}", Model.Post.EndDate)</span><br />
 					<span>地　　点：@Model.Post.Location</span><br />
 					<span>联系电话：@Model.Post.Phone</span><br />
@@ -63,12 +69,6 @@
 					<span>限定人数：@Model.Post.LimitNumber</span>
 				}
 				</p>
-			@if (!string.IsNullOrWhiteSpace(Model.Post.Image))
-			{
-				<div class="detailimgbox">
-					<img src='@string.Format("/upload/group/{0}/{1}{2}", Model.Post.GroupId, Model.Post.Id, Model.Post.Image)' alt="post" />
-				</div>
-			}
 			
 			@if (Model.Venues != null && Model.Venues.Count() > 0)
 			{
@@ -173,6 +173,9 @@
 				$('#booking_table .on, #booking_table .already').bind('click', function () {
 					var method = $(this).attr('IsBooked');
 					if (method == 'false') {
+						var offsetTop = $(this).offset().top - 500;
+						
+						$("#popup").css("top", offsetTop + "px");
 						$("#popup").show();
 						$("#chk_remark_confirm").attr("checked", false);
 						$("#btn_remark_confirm").attr("onclick", "venue_booking(" + vanueId + ", '" + $(this).attr('id') + "')");

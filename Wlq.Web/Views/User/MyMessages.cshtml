@@ -10,13 +10,15 @@
 
 <div class="js-detail">
 	<ul class="usermsg-list">
-@foreach (var item in Model)
-{
-	if (item.Post != null)
+	@foreach (var item in Model)
 	{
-		<li id="msg-@item.Message.Id" class="flagline-@item.Post.PostType">
+		var postType = item.Post == null ? 0 : item.Post.PostType;
+		<li id="msg-@item.Message.Id" class="flagline-@postType">
 			<p>
-				【<a href="/Home/Post/@item.Post.Id">@item.Post.Title</a>】
+			@if (item.Post != null)
+			{
+				<font>【</font><a href="/Home/Post/@item.Post.Id">@item.Post.Title</a><font>】</font>
+			}
 				@item.Message.Content
 			</p>
 			<div class="pannel">@string.Format("{0:yyyy-MM-dd HH:mm:ss}", item.Message.SendTime)
@@ -24,7 +26,6 @@
 			</div>
 		</li>
 	}
-}
     </ul>
 	<br />
 	<div class="page">

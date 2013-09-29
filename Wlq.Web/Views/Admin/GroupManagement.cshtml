@@ -29,6 +29,23 @@ else
 </div>
 <div class="formfooter"></div>
 
+<div id="popup" class="popup">
+	<div class="title">
+		发送消息
+		<span><a id="close" class="close" href="javascript:;">x</a></span>
+	</div>
+	<div class="content">
+		<p>消息内容：</p>
+		<p>
+			<input id="groupId_hidden" type="hidden" />
+			<textarea id="message_content"></textarea>
+		</p>
+		<div class="txt-c">
+			<a id="send_message" href="javascript:;" class="btn-3">发送</a>
+		</div>
+	</div>
+</div>
+
 @section scripts
 {
 	<script type="text/javascript">
@@ -65,7 +82,8 @@ else
 						result += "<thead><tr><th>名称</th><th>操作</th></tr></thead><tbody>";
 
 						for (var i in data) {
-							result += "<tr><td>" + data[i].Name + "</td><td><a href='/Admin/Group?groupId=" + data[i].Id + "&parentGroupId=" + groupId + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_group(" + data[i].Id + ");'>删除</a></td></tr>";
+							result += "<tr><td>" + data[i].Name + "</td>";
+							result += "<td><a href='javascript:;' onclick='send_message(" + data[i].Id + ")'>发送消息</a>&nbsp;&nbsp;<a href='/Admin/Group?groupId=" + data[i].Id + "&parentGroupId=" + groupId + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_group(" + data[i].Id + ");'>删除</a></td></tr>";
 						}
 
 						result += "</tbody></table>";
@@ -101,6 +119,46 @@ else
 				}
 			});
 		}
+
+		function send_message(groupId) {
+			$("#groupId_hidden").val(groupId);
+			$("#message_content").val('')
+			$("#popup").show();
+		}
+
+		$("#send_message").bind("click", function () {
+			var groupId = $("#groupId_hidden").val();
+			var content = escape($("#message_content").val());
+
+			if (content == '') {
+				alert('请输入要发送的内容');
+				return;
+			}
+			else if (content.length > 200) {
+				alert('内容过长，请限制在200字之内');
+				return;
+			}
+
+			$.ajax({
+				type: "POST",
+				dataType: 'json',
+				url: "/Admin/SendMessageToGroupMembers",
+				data: {
+					'groupId': groupId,
+					'content': content
+				},
+				success: function (r, status) {
+					if (r.Success) {
+						alert("发送成功");
+					}
+					else {
+						alert("发送失败");
+					}
+				}
+			});
+
+			$("#popup").hide();
+		});
 
 	</script>
 }

@@ -63,6 +63,7 @@ namespace Wlq.Service
 		#region Message
 
 		bool SendMessageToPostBookers(long postId, string title, string content, long senderId);
+		bool SendMessageToGroupMembers(long groupId, string title, string content, long senderId);
 		int GetUnreadMessagesCount(long userId);
 		IEnumerable<MessageInfo> GetUserMessages(long userId, int pageIndex, int pageSize, out int totalNumber);
 		bool ReadMessage(long userId, long messageId);

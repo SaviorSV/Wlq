@@ -209,10 +209,10 @@ namespace Wlq.Web.Controllers
 
 					foreach (var message in messages)
 					{
-						myMessagesModel.Add(new MessageModel 
-						{ 
+						myMessagesModel.Add(new MessageModel
+						{
 							Message = message,
-							Post = PostService.GetPost(message.PostId, true)
+							Post = message.PostId > 0 ? PostService.GetPost(message.PostId, true) : null
 						});
 					}
 
