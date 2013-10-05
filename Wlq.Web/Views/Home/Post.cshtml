@@ -66,7 +66,13 @@
 					<span>联系电话：@Model.Post.Phone</span><br />
 				@if (Model.Post.PostType != (int)PostType.Venue) 
 				{
-					<span>限定人数：@Model.Post.LimitNumber</span>
+					<span>限定人数：@Model.Post.LimitNumber</span><br />
+					<span>
+						参与形式：
+						<input type="radio" name="involvedType" value="1" />观摩类
+						<input type="radio" name="involvedType" value="2" />参与互动类
+						<input type="radio" name="involvedType" value="4" />支援服务类
+					</span>
 				}
 				</p>
 			
@@ -162,6 +168,8 @@
 
 				return false;
 			});
+
+			$('input:radio[name=involvedType]').filter('[value=1]').prop('checked', true);
 
 			GetBookingTable(@ViewBag.VenueId, @Html.Raw(ViewBag.Schedules));
 		});

@@ -68,7 +68,7 @@ namespace Wlq.Web.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult Booking(long postId, string bookingDate, long venueId = 0, long venueConfigId = 0)
+		public ActionResult Booking(long postId, string bookingDate, int bookingType = 1, int involvedType = 1, long venueId = 0, long venueConfigId = 0)
 		{
 			var success = false;
 			var message = string.Empty;
@@ -84,7 +84,9 @@ namespace Wlq.Web.Controllers
 					Mobile = CurrentUser.Mobile,
 					VenueId = venueId,
 					VenueConfigId = venueConfigId,
-					BookingDate = date
+					BookingDate = date,
+					BookingType = bookingType,
+					InvolvedType = involvedType
 				};
 
 				success = PostService.Booking(booking, out message);
