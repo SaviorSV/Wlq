@@ -1,4 +1,4 @@
-﻿@using Hanger.Common;
+﻿@using Hanger.Utility;
 @using Wlq.Domain;
 
 @model Wlq.Web.Models.GroupModel
@@ -43,7 +43,7 @@ else
 else
 {
 	<p title="@Model.Group.Introduction">
-		@Model.Group.Introduction.CutString(120, "...")
+		@StringHelper.Cut(Model.Group.Introduction, 120, "...")
 	</p>
 }
 </li>

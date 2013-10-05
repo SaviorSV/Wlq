@@ -6,6 +6,7 @@ using System.Web.Security;
 
 using Hanger.Caching;
 using Hanger.Common;
+using Hanger.Utility;
 using Microsoft.Practices.Unity;
 using Wlq.Domain;
 using Wlq.Persistence;
@@ -52,14 +53,14 @@ namespace Wlq.Service.Implementation
 
 		public ChangePasswordResult ChangePassword(UserInfo user, string oldPassword, string newPassword)
 		{
-			var oldHash = oldPassword.ToMd5();
+			var oldHash = StringHelper.GetMd5(oldPassword);
 
 			if (oldHash != user.Password)
 			{
 				return ChangePasswordResult.OldPasswordWrong;
 			}
 
-			user.Password = newPassword.ToMd5();
+			user.Password = StringHelper.GetMd5(newPassword);
 
 			return this.UpdateUser(user)
 				? ChangePasswordResult.Success 
@@ -76,14 +77,14 @@ namespace Wlq.Service.Implementation
 				return false;
 			}
 
-			user.Password = newPassword.ToMd5();
+			user.Password = StringHelper.GetMd5(newPassword);
 
 			return userRepository.Update(user, true) > 0;
 		}
 
 		public bool Login(string loginName, string password, bool isAdmin)
 		{
-			var hashedPassword = password.ToMd5();
+			var hashedPassword = StringHelper.GetMd5(password);
 
 			var user = base.GetRepository<UserInfo>().Entities
 				.FirstOrDefault(u => u.LoginName == loginName && u.Password == hashedPassword && (!isAdmin || u.Role > (int)RoleLevel.Normal));

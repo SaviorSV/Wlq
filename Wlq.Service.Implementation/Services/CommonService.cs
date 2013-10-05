@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 
 using Hanger.Common;
-using Wlq.Service.Utility;
+using Hanger.Utility;
 
 namespace Wlq.Service.Implementation
 {

@@ -5,8 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 
 using Hanger.Common;
+using Hanger.Utility;
 using Wlq.Domain;
-using Wlq.Service.Utility;
 using Wlq.Web.Fliters;
 using Wlq.Web.Models;
 
@@ -561,7 +561,7 @@ namespace Wlq.Web.Controllers
 					{
 						LoginName = loginName,
 						Name = name,
-						Password = password.ToMd5(),
+						Password = StringHelper.GetMd5(password),
 						Role = (int)RoleLevel.Manager
 					};
 

@@ -6,6 +6,7 @@ using System.Text;
 using NUnit.Framework;
 using Wlq.Domain;
 using Hanger.Common;
+using Hanger.Utility;
 
 namespace Wlq.Test.ServiceTests
 {
@@ -17,7 +18,7 @@ namespace Wlq.Test.ServiceTests
 			var user = new UserInfo();
 
 			user.LoginName = "admin";
-			user.Password = "111111".ToMd5();
+			user.Password = StringHelper.GetMd5("111111");
 			user.Role = (int)RoleLevel.SuperAdmin;
 
 			var result = UserGroupService.AddUser(user);

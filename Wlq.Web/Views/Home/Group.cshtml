@@ -2,7 +2,7 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using Hanger.Common;
+@using Hanger.Utility;
 @using Wlq.Domain;
 @using Wlq.Web.Models;
 
@@ -49,7 +49,7 @@
 		else
 		{
 			<p title="@Model.Group.Introduction">
-				@Model.Group.Introduction.CutString(120, "...")
+				@StringHelper.Cut(Model.Group.Introduction, 120, "...")
 			</p>
 		}
 		</div>
