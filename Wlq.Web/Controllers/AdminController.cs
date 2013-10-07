@@ -523,7 +523,7 @@ namespace Wlq.Web.Controllers
 			return Content(configs.ObjectToJson(), "text/json");
 		}
 
-		public ActionResult GetPostsByGroup(long id, int pageIndex)
+		public ActionResult GetPostsByGroup(long id, int pageIndex, string keyword)
 		{
 			if (AdminUser == null)
 			{
@@ -532,15 +532,16 @@ namespace Wlq.Web.Controllers
 
 			var totalNumber = 0;
 			var pageSize = 10;
-			var posts = PostService.GetPostsByGroup(false, id, false, pageIndex, pageSize, out totalNumber)
-				.Select(p => new 
-				{ 
-					Id = p.Id, 
+			var posts = PostService.GetPostsByGroupTree(id, keyword, pageIndex, pageSize, out totalNumber)
+				.Select(p => new
+				{
+					Id = p.Id,
+					GroupName = UserGroupService.GetGroup(p.GroupId, true).Name,
 					Title = p.Title,
 					PostType = EnumHelper.GetDescription<PostType>((PostType)p.PostType),
 					BookingNumber = p.BookingNumber,
 					Publisher = p.Publisher,
-					PublishTime = p.PublishTime.ToString("yyyy-MM-dd HH:mm:ss") 
+					PublishTime = p.PublishTime.ToString("yyyy-MM-dd HH:mm:ss")
 				});
 
 			var json = string.Format("{{\"TotalPage\":{0},\"List\":{1}}}"

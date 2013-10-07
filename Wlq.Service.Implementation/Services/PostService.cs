@@ -214,6 +214,25 @@ namespace Wlq.Service.Implementation
 			return postList.List;
 		}
 
+		public IEnumerable<PostInfo> GetPostsByGroupTree(long groupId, string keyword, int pageIndex, int pageSize, out int totalNumber)
+		{
+			var groupIds = base.GetRepository<GroupInfo>().Entities
+				.Where(g => g.ParentGroupId == groupId)
+				.Select(g => g.Id);
+
+			var posts = base.GetRepository<PostInfo>().Entities
+				.Where(p => p.GroupId == groupId || groupIds.Contains(p.GroupId));
+
+			if (!string.IsNullOrWhiteSpace(keyword))
+			{
+				posts = posts.Where(p => p.Title.Contains(keyword));
+			}
+
+			return posts
+				.OrderByDescending(p => p.PublishTime)
+				.Paging(pageIndex, pageSize, out totalNumber);
+		}
+
 		public IEnumerable<PostInfo> GetLastPosts(bool fromCache, int pageIndex, int pageSize, out int totalNumber)
 		{
 			var key = "PostService.GetLastPosts";
@@ -458,7 +477,7 @@ namespace Wlq.Service.Implementation
 			var schedules = new List<BookingSchedule>();
 			var today = DateTime.Now.Date;
 
-			for (int i = 1; i <= days; i++)
+			for (int i = 0; i < days; i++)
 			{
 				var date = today.AddDays(i);
 

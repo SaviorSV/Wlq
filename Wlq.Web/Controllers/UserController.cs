@@ -84,6 +84,11 @@ namespace Wlq.Web.Controllers
 			return AlertAndRedirect(message, "/User/ChangePassword");
 		}
 
+		public ActionResult Login()
+		{
+			return View();
+		}
+
 		[HttpPost]
 		public ActionResult Login(string loginName, string password)
 		{

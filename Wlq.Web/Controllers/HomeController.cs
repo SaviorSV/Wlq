@@ -65,16 +65,19 @@ namespace Wlq.Web.Controllers
 			return View(modelList);
 		}
 
+		[LoginAuthentication(RoleLevel.Normal, "User", "Login")]
 		public ActionResult TZJC()
 		{
 			return View();
 		}
 
+		[LoginAuthentication(RoleLevel.Normal, "User", "Login")]
 		public ActionResult JKDA()
 		{
 			return View();
 		}
 
+		[LoginAuthentication(RoleLevel.Normal, "User", "Login")]
 		public ActionResult JKBD()
 		{
 			return View();
@@ -142,7 +145,7 @@ namespace Wlq.Web.Controllers
 			return View(modelList);
 		}
 
-		[LoginAuthentication(RoleLevel.Normal, "Home", "Index")]
+		[LoginAuthentication(RoleLevel.Normal, "User", "Login")]
 		public ActionResult Post(long id)
 		{
 			var post = PostService.GetPost(id, true);

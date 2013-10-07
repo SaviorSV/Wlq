@@ -21,8 +21,8 @@ else
 			<option value="@group.Id">@group.Name</option>
 		}
 		</select>
-
-		@*<a id="find_post" href="javascript:;" class="btn-3">查询发布信息</a>*@
+		关键字：<input id="txt_keyword" type="text" />
+		<a id="find_post" href="javascript:;" class="btn-3">查 询</a>
 		<a id="add_post" href="@Url.Action("Post", "Admin", new { Id = 0 })" class="btn-3">+新的发布</a>
 	</div>
 	<div id="post_list" class="quanxian-tt"></div>
@@ -67,6 +67,7 @@ else
 		$("#department_selector").bind("change", function () {
 			pageIndex = 1;
 			groupId = $("#department_selector").val();
+			$("#txt_keyword").val('');
 			bind_post_list();
 		});
 
@@ -88,20 +89,27 @@ else
 			bind_post_list();
 		});
 
+		$("#find_post").bind("click", function () {
+			pageIndex = 1;
+			groupId = $("#department_selector").val();
+			bind_post_list();
+		});
+
 		function bind_post_list() {
 			if (groupId > 0) {
-				$.get("/Admin/GetPostsByGroup/" + groupId + "?pageIndex=" + pageIndex, function (data) {
+				$.get("/Admin/GetPostsByGroup/" + groupId + "?pageIndex=" + pageIndex + "&keyword=" + $("#txt_keyword").val(), function (data) {
 					var result = '';
 					var list = data.List;
 					var totalPage = data.TotalPage;
 
 					if (list.length > 0) {
 						result += "<table class='list-tbl'>";
-						result += "<thead><tr><th>标题</th><th>发布类型</th><th>已预约</th><th>发布人</th><th>最后更新时间</th><th>操作</th></tr></thead><tbody>";
+						result += "<thead><tr><th>标题</th><th>发布类型</th><th>已预约</th><th>发布组织</th><th>发布人</th><th>最后更新时间</th><th>操作</th></tr></thead><tbody>";
 
 						for (var i in list) {
 							result += "<tr><td><a href='/Home/Post/" + list[i].Id + "' target='_blank'>" + list[i].Title + "</a></td><td>" + list[i].PostType + "</td>";
 							result += "<td><a href='/Admin/PostBookers/" + list[i].Id + "'>查看</a></td>";
+							result += "<td>" + list[i].GroupName + "</td>";
 							result += "<td>" + list[i].Publisher + "</td>";
 							result += "<td>" + list[i].PublishTime + "</td>";
 							result += "<td><a href='javascript:;' onclick='send_message(" + list[i].Id + ")'>发送消息</a>&nbsp;&nbsp;<a href='/Admin/SigninBooking/" + list[i].Id + "'>签到</a>&nbsp;&nbsp;<a href='/Admin/Post/" + list[i].Id + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_post(" + list[i].Id + ");'>删除</a></td></tr>";

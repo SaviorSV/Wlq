@@ -40,6 +40,7 @@ namespace Wlq.Service
 
 		IEnumerable<PostInfo> GetPostsByType(bool fromCache, PostType type, bool withinTime, int pageIndex, int pageSize, out int totalNumber);
 		IEnumerable<PostInfo> GetPostsByGroup(bool fromCache, long groupId, bool withinTime, int pageIndex, int pageSize, out int totalNumber);
+		IEnumerable<PostInfo> GetPostsByGroupTree(long groupId, string keyword, int pageIndex, int pageSize, out int totalNumber);
 		IEnumerable<PostInfo> GetLastPosts(bool fromCache, int pageIndex, int pageSize, out int totalNumber);
 		IEnumerable<PostInfo> GetLastHealthPosts(bool fromCache, int pageIndex, int pageSize, out int totalNumber);
 
