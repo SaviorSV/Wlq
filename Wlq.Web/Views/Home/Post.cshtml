@@ -197,7 +197,7 @@
 				return false;
 			});
 
-			$('input:radio[name=involvedType]').filter('[value=1]').prop('checked', true);
+			$('input:radio[name=involvedType]').first().prop('checked', true);
 			$('input:radio[name=bookingType]').first().prop('checked', true);
 
 			ShowBookingTypeArea();

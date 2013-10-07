@@ -64,6 +64,9 @@ function GetToday() {
 }
 
 function booking_confirm(postId) {
+	var offsetTop = $("#btn_booking_" + postId).offset().top - 560;
+
+	$("#popup").css("top", offsetTop + "px");
 	$("#popup").show();
 	$("#chk_remark_confirm").attr("checked", false);
 	$("#btn_remark_confirm").attr("onclick", "normal_booking(" + postId + ")");

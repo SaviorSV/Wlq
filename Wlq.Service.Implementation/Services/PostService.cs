@@ -216,12 +216,16 @@ namespace Wlq.Service.Implementation
 
 		public IEnumerable<PostInfo> GetPostsByGroupTree(long groupId, string keyword, int pageIndex, int pageSize, out int totalNumber)
 		{
-			var groupIds = base.GetRepository<GroupInfo>().Entities
-				.Where(g => g.ParentGroupId == groupId)
-				.Select(g => g.Id);
+			var posts = base.GetRepository<PostInfo>().Entities;
 
-			var posts = base.GetRepository<PostInfo>().Entities
-				.Where(p => p.GroupId == groupId || groupIds.Contains(p.GroupId));
+			if (groupId > 0)
+			{
+				var groupIds = base.GetRepository<GroupInfo>().Entities
+					.Where(g => g.ParentGroupId == groupId)
+					.Select(g => g.Id);
+
+				posts = posts.Where(p => p.GroupId == groupId || groupIds.Contains(p.GroupId));
+			}
 
 			if (!string.IsNullOrWhiteSpace(keyword))
 			{
