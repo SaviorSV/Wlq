@@ -11,9 +11,6 @@ namespace Wlq.Domain
 		public int PostType { get; set; }
 		public DateTime BeginDate { get; set; }
 		public DateTime EndDate { get; set; }
-		public string Location { get; set; }
-		public string RelatedPlace { get; set; }
-		public string Phone { get; set; }
 		public decimal Fee { get; set; }
 		public string Remark { get; set; }
 		public bool IsHealthTopic { get; set; }
@@ -22,6 +19,11 @@ namespace Wlq.Domain
 		public int BookingNumber { get; set; }
 		public int BookingTypes { get; set; }
 		public int InvolvedTypes { get; set; }
+		public string PhoneBookingNumber { get; set; }
+		public string PhoneBookingTime { get; set; }
+		public string SpotBookingNumber { get; set; }
+		public string SpotBookingAddress { get; set; }
+		public string SpotBookingTime { get; set; }
 		public string Publisher { get; set; }
 		public DateTime PublishTime { get; set; }
 
@@ -32,9 +34,6 @@ namespace Wlq.Domain
 			Image = string.Empty;
 			BeginDate = DateTime.Now.Date;
 			EndDate = DateTime.Now.Date.AddMonths(1);
-			Location = string.Empty;
-			RelatedPlace = string.Empty;
-			Phone = string.Empty;
 			Remark = string.Empty;
 			Publisher = string.Empty;
 			PublishTime = DateTime.Now;

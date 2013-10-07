@@ -15,7 +15,7 @@ namespace Wlq.Domain
 		[Description("电话预约")]
 		Phone = 2,
 
-		[Description("现场预约")]
+		[Description("现场确认")]
 		Spot = 4
 	}
 }

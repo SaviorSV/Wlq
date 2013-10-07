@@ -79,6 +79,7 @@ function normal_booking(postId) {
 
 	if (!involvedType) {
 		alert('请选择参与形式');
+		return;
 	}
 
 	var involvedTypeName = '观摩类';
@@ -90,7 +91,23 @@ function normal_booking(postId) {
 		default: break;
 	}
 
-	if (!confirm('参与形式：' + involvedTypeName + '， 确认预订？')) {
+	var bookingType = $('input:radio[name=bookingType][checked]').val();
+
+	if (!bookingType) {
+		alert('请选择预约方式');
+		return;
+	}
+
+	var bookingTypeName = '观摩类';
+
+	switch (bookingType) {
+		case '1': bookingTypeName = '网上预约'; break;
+		case '2': bookingTypeName = '电话预约'; break;
+		case '4': bookingTypeName = '现场确认'; break;
+		default: break;
+	}
+
+	if (!confirm('参与形式：' + involvedTypeName + '， 预约方式：' + bookingTypeName + '， 确认预订？')) {
 		return;
 	}
 
@@ -103,7 +120,8 @@ function normal_booking(postId) {
 		data: {
 			'postId': postId,
 			'bookingDate': GetToday(),
-			'involvedType': involvedType
+			'involvedType': involvedType,
+			'bookingType': bookingType
 		},
 		success: function (r, status) {
 			if (r.Success) {

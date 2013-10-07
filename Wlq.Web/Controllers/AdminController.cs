@@ -355,17 +355,20 @@ namespace Wlq.Web.Controllers
 			post.Content = postModel.Content;
 			post.BeginDate = postModel.BeginDate;
 			post.EndDate = postModel.EndDate;
-			post.Phone = postModel.Phone;
 			post.LimitNumber = postModel.LimitNumber;
 			post.Fee = postModel.Fee;
-			post.Location = postModel.Location;
-			post.RelatedPlace = postModel.RelatedPlace;
 			post.Remark = postModel.Remark;
 			post.IsHealthTopic = group.IsHealth;
 			post.VenueGroupId = postModel.PostType == (int)PostType.Venue ? postModel.VenueGroupId : 0;
 			post.Publisher = AdminUser.Name;
 			post.PublishTime = DateTime.Now;
 			post.Image = postModel.Image;
+			post.BookingTypes = postModel.BookingTypes;
+			post.PhoneBookingNumber = postModel.PhoneBookingNumber;
+			post.PhoneBookingTime = postModel.PhoneBookingTime;
+			post.SpotBookingNumber = postModel.SpotBookingNumber;
+			post.SpotBookingTime = postModel.SpotBookingTime;
+			post.SpotBookingAddress = postModel.SpotBookingAddress;
 
 			if (post.Id == 0)
 			{

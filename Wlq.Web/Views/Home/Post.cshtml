@@ -62,17 +62,45 @@
 					</div>
 				}
 					<span>起止日期：@string.Format("{0:yyyy-MM-dd}", Model.Post.BeginDate) 至 @string.Format("{0:yyyy-MM-dd}", Model.Post.EndDate)</span><br />
-					<span>地　　点：@Model.Post.Location</span><br />
-					<span>联系电话：@Model.Post.Phone</span><br />
 				@if (Model.Post.PostType != (int)PostType.Venue) 
 				{
 					<span>限定人数：@Model.Post.LimitNumber</span><br />
 					<span>
 						参与形式：
-						<input type="radio" name="involvedType" value="1" />观摩类
-						<input type="radio" name="involvedType" value="2" />参与互动类
-						<input type="radio" name="involvedType" value="4" />支援服务类
-					</span>
+						<input type="radio" name="involvedType" value="1" /> 观摩类
+						<input type="radio" name="involvedType" value="2" /> 参与互动类
+						<input type="radio" name="involvedType" value="4" /> 支援服务类
+					</span><br />
+				}
+					<span>
+						预约方式：
+					@if (((BookingType)Model.Post.BookingTypes & BookingType.Online) == BookingType.Online)
+					{
+						<input type="radio" name="bookingType" value="1" checked="checked" /> <font>网上预约</font>
+					}
+					@if (((BookingType)Model.Post.BookingTypes & BookingType.Phone) == BookingType.Phone)
+					{
+						<input type="radio" name="bookingType" value="2" /> <font>电话预约</font>
+					}
+					@if (((BookingType)Model.Post.BookingTypes & BookingType.Spot) == BookingType.Spot)
+					{
+						<input type="radio" name="bookingType" value="4" /> <font>现场确认</font>
+					}
+					</span><br />
+				@if (((BookingType)Model.Post.BookingTypes & BookingType.Phone) == BookingType.Phone)
+				{
+					<div id="div_phone_booking" style="display:none;">
+						<span>联系电话：@Model.Post.PhoneBookingNumber</span><br />
+						<span>工作时间：@Model.Post.PhoneBookingTime</span><br />
+					</div>
+				}
+				@if (((BookingType)Model.Post.BookingTypes & BookingType.Spot) == BookingType.Spot)
+				{
+					<div id="div_spot_booking" style="display:none;">
+						<span>联系电话：@Model.Post.SpotBookingNumber</span><br />
+						<span>截止时间：@Model.Post.SpotBookingTime</span><br />
+						<span>详细地址：@Model.Post.SpotBookingAddress</span><br />
+					</div>
 				}
 				</p>
 			
@@ -170,9 +198,29 @@
 			});
 
 			$('input:radio[name=involvedType]').filter('[value=1]').prop('checked', true);
+			$('input:radio[name=bookingType]').first().prop('checked', true);
+
+			ShowBookingTypeArea();
 
 			GetBookingTable(@ViewBag.VenueId, @Html.Raw(ViewBag.Schedules));
 		});
+
+		$('input:radio[name=bookingType]').bind("click", function() {
+			ShowBookingTypeArea();
+		});
+
+		function ShowBookingTypeArea() {
+			var bookingType = $('input:radio[name=bookingType][checked]').val();
+
+			if(bookingType == 2) {
+				$("#div_phone_booking").show();
+				$("#div_spot_booking").hide();
+			}
+			else if(bookingType == 4) {
+				$("#div_spot_booking").show();
+				$("#div_phone_booking").hide();
+			}
+		}
 
 		function GetBookingTable(vanueId, schedules) {
 			if (schedules.length) {
@@ -205,14 +253,15 @@
 				}
 			}
 
+			var bookingType = $('input:radio[name=bookingType][checked]').val();
 			var period_start = parseInt($('#'+ vcId).parent().children('th').text().substring(0, 2))
 			var period = period_start + ":00 - " + (period_start + parseInt($('#'+ vcId).attr('rowspan'))) + ":00";
-			var info = "场地信息：" + $('#'+ vcId).attr('Date') + " " + period + "\n\n";
-			info += (method == 'false') ? "确认预订？" : "确认取消预订？";
+			var info = "场地信息：" + $('#'+ vcId).attr('Date') + " " + period + "\n\n" + ((method == 'false') ? "确认预订？" : "确认取消预订？");
 			var url = (method == 'false') ? '/Common/Booking' : '/Common/CancelBooking';
 
-			if (!confirm(info))
+			if (!confirm(info)) {
 				return;
+			}
 			else {
 				$("#popup").hide();
 
@@ -222,7 +271,8 @@
 						'postId': postId,
 						'venueId': vanueId,
 						'venueConfigId': $('#'+ vcId).attr('VenueConfigId'),
-						'bookingDate': $('#'+ vcId).attr('Date')
+						'bookingDate': $('#'+ vcId).attr('Date'),
+						'bookingType': bookingType
 					}, 
 					function (data) {
 						if (!data['Success'])

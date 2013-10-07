@@ -47,30 +47,43 @@
 			@Html.TextBoxFor(x => x.Title, new { @class = "input-1" })
 		</li>
 		<li>
-			<label>活动简介：</label>
-			<input id="post_content" name="Content" value="@Model.Content" />
-		</li>
-		<li>
 			<label>开始时间：</label>
 			<input name="BeginDate" class="input-2" type="text" value="@Model.BeginDate.ToString("yyyy-MM-dd")" />
 			<label>结束时间：</label>
 			<input name="EndDate" class="input-2" type="text" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
+			<input type="checkbox" />长期发布
 		</li>
 		<li>
-			<label>联系电话：</label>
-			@Html.TextBoxFor(x => x.Phone, new { @class = "input-2" })
 			<label>限制人数：</label>
-			@Html.TextBoxFor(x => x.LimitNumber, new { @class = "input-3" })
-			<label>费用：</label>
-			@Html.TextBoxFor(x => x.Fee, new { @class = "input-3" })
+			@Html.TextBoxFor(x => x.LimitNumber, new { @class = "input-2" })
+			<label>费　　用：</label>
+			@Html.TextBoxFor(x => x.Fee, new { @class = "input-2" })
+		</li>
+		<li id="bookingTypes">
+			<label>预约方式：</label>
+			<input id="chk_online_booking" type="checkbox" value="1" @Html.IsChecked(((BookingType)Model.BookingTypes & BookingType.Online) == BookingType.Online) /> 网上预约
+			<input id="chk_phone_booking" type="checkbox" value="2" @Html.IsChecked(((BookingType)Model.BookingTypes & BookingType.Phone) == BookingType.Phone) /> 电话预约
+			<input id="chk_spot_booking" type="checkbox" value="4" @Html.IsChecked(((BookingType)Model.BookingTypes & BookingType.Spot) == BookingType.Spot) /> 现场确认
+		</li>
+		<li class="li_phone_booking" style="display:none;">
+			<label>联系电话(电话预约)：</label>
+			@Html.TextBoxFor(x => x.PhoneBookingNumber, new { @class = "input-2" })
+			<label>工作时间(电话预约)：</label>
+			@Html.TextBoxFor(x => x.PhoneBookingTime, new { @class = "input-2" })
+		</li>
+		<li class="li_spot_booking" style="display:none;">
+			<label>联系电话(现场确认)：</label>
+			@Html.TextBoxFor(x => x.SpotBookingNumber, new { @class = "input-2" })
+			<label>截止时间(现场确认)：</label>
+			@Html.TextBoxFor(x => x.SpotBookingTime, new { @class = "input-2" })
+		</li>
+		<li class="li_spot_booking" style="display:none;">
+			<label>详细地址(现场确认)：</label>
+			@Html.TextBoxFor(x => x.SpotBookingTime, new { @class = "input-1" })
 		</li>
 		<li>
-			<label>单位地点：</label>
-			@Html.TextBoxFor(x => x.Location, new { @class = "input-1" })
-		</li>
-		<li>
-			<label>相关场所：</label>
-			@Html.TextBoxFor(x => x.RelatedPlace, new { @class = "input-1" })
+			<label>活动简介：</label>
+			<input id="post_content" name="Content" value="@Model.Content" />
 		</li>
 		<li>
 			<label>安全须知：</label>
@@ -91,6 +104,7 @@
 	</ul>
 	<input name="Id" type="hidden" value="@Model.Id" />
 	<input id="post_hidden" name="Image" type="hidden" value="@Model.Image" />
+	<input id="bookingType_hidden" name="BookingTypes" type="hidden" value="@Model.BookingTypes" />
 	<a id="save_post" href="javascript:;" class="btn-3">保　存</a>
 	<a href="@Url.Action("PostManagement", "Admin")" class="btn-3">返　回</a>
 }
@@ -110,6 +124,14 @@
 			selected_left_menu(3);
 
 			ShowVenueGroupSelector(@Model.PostType);
+
+			if($("#chk_phone_booking").attr('checked') == 'checked') {
+				$(".li_phone_booking").show();
+			}
+
+			if($("#chk_spot_booking").attr('checked') == 'checked') {
+				$(".li_spot_booking").show();
+			}
 
 			new TINY.editor.edit('editor_content', {
 				id: 'post_content',
@@ -156,6 +178,21 @@
 			editor_content.post();
 			editor_remark.post();
 
+			var bookingTypes = 0;
+
+			$("#bookingTypes input[type=checkbox]").each(function () {
+				if ($(this).attr('checked')) {
+					bookingTypes |= $(this).val();
+				}
+			});
+
+			if(bookingTypes == 0) {
+				alert("请选择预约方式");
+				return;
+			}
+
+			$("#bookingType_hidden").val(bookingTypes);
+
 			$("#admin_save_post_form").submit();
 		});
 
@@ -169,6 +206,24 @@
 			var postType = $("#post_type_selector").val();
 
 			ShowVenueGroupSelector(postType);
+		});
+
+		$("#chk_phone_booking").bind("click", function() {
+			if($("#chk_phone_booking").attr('checked') == 'checked') {
+				$(".li_phone_booking").show();
+			}
+			else {
+				$(".li_phone_booking").hide();
+			}
+		});
+
+		$("#chk_spot_booking").bind("click", function() {
+			if($("#chk_spot_booking").attr('checked') == 'checked') {
+				$(".li_spot_booking").show();
+			}
+			else {
+				$(".li_spot_booking").hide();
+			}
 		});
 
 		function ShowVenueGroupSelector(postType) {
