@@ -27,8 +27,8 @@
 				<tr>
 					<td>@booking.Name</td>
 					<td>@booking.Mobile</td>
-					<td>@Html.Raw(EnumHelper.GetDescription<BookingType>((BookingType)booking.BookingType))</td>
-					<td>@Html.Raw(EnumHelper.GetDescription<InvolvedType>((InvolvedType)booking.InvolvedType))</td>
+					<td>@EnumHelper.GetDescription((BookingType)booking.BookingType)</td>
+					<td>@EnumHelper.GetDescription((InvolvedType)booking.InvolvedType)</td>
 					<td>@string.Format("{0:yyyy-MM-dd}", booking.BookingDate)</td>
 					<td>@string.Format("{0}", booking.IsPresent ? "是" : "否")</td>
 				</tr>

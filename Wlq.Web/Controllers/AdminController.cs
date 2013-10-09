@@ -400,7 +400,7 @@ namespace Wlq.Web.Controllers
 				return AlertAndRedirect("发布信息不存在", "/Admin/PostManagement");
 			}
 
-			ViewBag.PostTypeName = EnumHelper.GetDescription<PostType>((PostType)post.PostType);
+			ViewBag.PostTypeName = EnumHelper.GetDescription((PostType)post.PostType);
 
 			if (post.PostType == (int)PostType.Venue && post.VenueGroupId > 0)
 			{
@@ -497,7 +497,7 @@ namespace Wlq.Web.Controllers
 				{ 
 					Id = v.Id, 
 					Name = v.Name,
-					VenueType = EnumHelper.GetDescription<VenueType>((VenueType)v.VenueType)
+					VenueType = EnumHelper.GetDescription((VenueType)v.VenueType)
 				});
 
 			return Content(venueGroups.ObjectToJson(), "text/json");
@@ -538,7 +538,7 @@ namespace Wlq.Web.Controllers
 					Id = p.Id,
 					GroupName = UserGroupService.GetGroup(p.GroupId, true).Name,
 					Title = p.Title,
-					PostType = EnumHelper.GetDescription<PostType>((PostType)p.PostType),
+					PostType = EnumHelper.GetDescription((PostType)p.PostType),
 					BookingNumber = p.BookingNumber,
 					Publisher = p.Publisher,
 					PublishTime = p.PublishTime.ToString("yyyy-MM-dd HH:mm:ss")
