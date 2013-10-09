@@ -134,6 +134,10 @@
     <Compile Include="Migrations\201310091311520_UpdatePostInfo5.Designer.cs">
       <DependentUpon>201310091311520_UpdatePostInfo5.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201310091334306_UpdateVenueInfo.cs" />
+    <Compile Include="Migrations\201310091334306_UpdateVenueInfo.Designer.cs">
+      <DependentUpon>201310091334306_UpdateVenueInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -206,6 +210,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201310091311520_UpdatePostInfo5.resx">
       <DependentUpon>201310091311520_UpdatePostInfo5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201310091334306_UpdateVenueInfo.resx">
+      <DependentUpon>201310091334306_UpdateVenueInfo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

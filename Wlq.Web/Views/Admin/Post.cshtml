@@ -116,7 +116,7 @@
 	<input id="post_hidden" name="Image" type="hidden" value="@Model.Image" />
 	<input id="bookingType_hidden" name="BookingTypes" type="hidden" value="@Model.BookingTypes" />
 	<a id="save_post" href="javascript:;" class="btn-3">保　存</a>
-	<a href="@Url.Action("PostManagement", "Admin")" class="btn-3">返　回</a>
+	<a href="javascript:window.history.go(-1);" class="btn-3">返　回</a>
 }
 </div>
 <div class="formfooter"></div>

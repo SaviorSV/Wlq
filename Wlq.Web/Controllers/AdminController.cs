@@ -263,6 +263,7 @@ namespace Wlq.Web.Controllers
 			}
 
 			venue.Name = venueModel.Name;
+			venue.Phone = venueModel.Phone;
 			venue.Address = venueModel.Address;
 			venue.GroupId = venueModel.GroupId;
 			venue.VenueGroupId = venueModel.VenueGroupId;
@@ -305,6 +306,14 @@ namespace Wlq.Web.Controllers
 
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult PostManagement()
+		{
+			var groups = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
+
+			return View(groups);
+		}
+
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
+		public ActionResult UnAuditedPost()
 		{
 			var groups = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
 
@@ -558,6 +567,34 @@ namespace Wlq.Web.Controllers
 			return Content(json, "text/json");
 		}
 
+		public ActionResult GetUnAuditedPostsByGroup(long id, int pageIndex, string keyword)
+		{
+			if (AdminUser == null)
+			{
+				return Content("{\"TotalPage\":0,\"List\":[]}", "text/json");
+			}
+
+			var totalNumber = 0;
+			var pageSize = 10;
+			var posts = PostService.GetPostsByGroupTreeUnAudited(id, keyword, pageIndex, pageSize, out totalNumber)
+				.Select(p => new
+				{
+					Id = p.Id,
+					GroupName = UserGroupService.GetGroup(p.GroupId, true).Name,
+					Title = p.Title,
+					PostType = EnumHelper.GetDescription((PostType)p.PostType),
+					BookingNumber = p.BookingNumber,
+					Publisher = p.Publisher,
+					PublishTime = p.PublishTime.ToString("yyyy-MM-dd HH:mm:ss")
+				});
+
+			var json = string.Format("{{\"TotalPage\":{0},\"List\":{1}}}"
+				, totalNumber > 0 ? Math.Ceiling((decimal)totalNumber / pageSize) : 1
+				, posts.ObjectToJson());
+
+			return Content(json, "text/json");
+		}
+
 		[HttpPost]
 		public ActionResult BindManager(string loginName, string name, string password, long groupId)
 		{
@@ -651,6 +688,26 @@ namespace Wlq.Web.Controllers
 			if (AdminUser != null)
 			{
 				success = PostService.DeletePost(postId);
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
+		[HttpPost]
+		public ActionResult PassPost(long postId)
+		{
+			var success = false;
+
+			if (AdminUser != null)
+			{
+				var post = PostService.GetPost(postId, false);
+
+				if (post != null)
+				{
+					post.IsAudited = true;
+
+					success = PostService.UpdatePost(post);
+				}
 			}
 
 			return Content(new { Success = success }.ObjectToJson(), "text/json");

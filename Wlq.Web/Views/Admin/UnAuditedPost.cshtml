@@ -1,0 +1,166 @@
+﻿@{
+	Layout = "~/Views/Admin/_Layout.cshtml";
+}
+
+
+@model IEnumerable<Wlq.Domain.GroupInfo>
+
+<h4 class="form-tt">发布审核</h4>
+<div class="formbody">
+@if (Model == null || Model.Count() == 0)
+{
+	 <span>没有组织信息，无法发布审核</span>
+}
+else
+{
+	 <div class="quanxian-tt">
+		<span>所属部门或组织：</span>
+		<select id="department_selector" class="select-2">
+			<option value="0">全部</option>
+		@foreach (var group in Model)
+		{
+			<option value="@group.Id">@group.Name</option>
+		}
+		</select>
+		关键字：<input id="txt_keyword" type="text" />
+		<a id="find_post" href="javascript:;" class="btn-3">查 询</a>
+	</div>
+	<div id="post_list" class="quanxian-tt"></div>
+}
+	<div id="pager" class="page">
+		第 <span id="currentPage"></span> / <span id="totalPage"></span> 页 &nbsp;&nbsp;
+		<a class="pre" id="previous" href="javascript:;">上一页</a>
+		<a class="next" id="next" href="javascript:;">下一页</a>
+	</div>
+</div>
+<div class="formfooter"></div>
+
+@section scripts
+{
+	<script type="text/javascript">
+		$(document).ready(function () {
+			selected_left_menu(4);
+
+			bind_post_list();
+		});
+
+		var pageIndex = 1;
+		var groupId = $("#department_selector").val();
+
+		$("#department_selector").bind("change", function () {
+			pageIndex = 1;
+			groupId = $("#department_selector").val();
+			$("#txt_keyword").val('');
+			bind_post_list();
+		});
+
+		$("#previous").bind("click", function () {
+			if (pageIndex > 1) {
+				pageIndex--;
+				bind_post_list();
+			}
+		});
+
+		$("#next").bind("click", function () {
+			pageIndex++
+			bind_post_list();
+		});
+
+		$("#find_post").bind("click", function () {
+			pageIndex = 1;
+			groupId = $("#department_selector").val();
+			bind_post_list();
+		});
+
+		function bind_post_list() {
+			$.get("/Admin/GetUnAuditedPostsByGroup/" + groupId + "?pageIndex=" + pageIndex + "&keyword=" + $("#txt_keyword").val(), function (data) {
+				var result = '';
+				var list = data.List;
+				var totalPage = data.TotalPage;
+
+				if (list.length > 0) {
+					result += "<table class='list-tbl'>";
+					result += "<thead><tr><th>标题</th><th>发布类型</th><th>发布组织</th><th>发布人</th><th>最后更新时间</th><th>操作</th></tr></thead><tbody>";
+
+					for (var i in list) {
+						result += "<tr><td><a href='/Home/Post/" + list[i].Id + "' target='_blank'>" + list[i].Title + "</a></td><td>" + list[i].PostType + "</td>";
+						result += "<td>" + list[i].GroupName + "</td>";
+						result += "<td>" + list[i].Publisher + "</td>";
+						result += "<td>" + list[i].PublishTime + "</td>";
+						result += "<td><a href='/Admin/Post/" + list[i].Id + "'>查看</a>&nbsp;&nbsp;<a href='javascript:;' onclick='pass_post(" + list[i].Id + ");'>通过</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_post(" + list[i].Id + ");'>删除</a></td></tr>";
+					}
+
+					result += "</tbody></table>";
+
+					$("#currentPage").html(pageIndex);
+					$("#totalPage").html(totalPage);
+					$("#pager").show();
+
+					if (pageIndex >= totalPage) {
+						$("#next").hide();
+					}
+					else {
+						$("#next").show();
+					}
+
+					if (pageIndex <= 1) {
+						$("#previous").hide();
+					}
+					else {
+						$("#previous").show();
+					}
+				}
+				else {
+					result = "<span>没有发布信息</span>";
+
+					$("#pager").hide();
+				}
+
+				$("#post_list").html(result);
+			});
+		}
+
+		function remove_post(postId) {
+			if (!confirm("确定删除该条信息?"))
+				return false;
+
+			$.ajax({
+				type: "POST",
+				dataType: 'json',
+				url: "/Admin/RemovePost",
+				data: {
+					'postId': postId
+				},
+				success: function (r, status) {
+					if (r.Success) {
+						alert("删除成功");
+						bind_post_list();
+					}
+					else {
+						alert("删除失败");
+					}
+				}
+			});
+		}
+
+		function pass_post(postId) {
+			$.ajax({
+				type: "POST",
+				dataType: 'json',
+				url: "/Admin/PassPost",
+				data: {
+					'postId': postId
+				},
+				success: function (r, status) {
+					if (r.Success) {
+						alert("操作成功");
+						bind_post_list();
+					}
+					else {
+						alert("操作失败");
+					}
+				}
+			});
+		}
+	</script>
+}

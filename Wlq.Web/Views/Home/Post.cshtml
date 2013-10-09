@@ -95,17 +95,19 @@
 			{
 				<div class="booking_tab">
 					<ul id="tab_menu" class="tab_menu">
-						<li class="current" value="@Model.Venues.First().Id">@Model.Venues.First().Name</li>
+						<li id="li-venue-@Model.Venues.First().Id" class="current" phone="@Model.Venues.First().Phone" address="@Model.Venues.First().Address" value="@Model.Venues.First().Id">@Model.Venues.First().Name</li>
 					@foreach (var venue in Model.Venues.Skip(1))
 					{
-						<li value="@venue.Id">@venue.Name</li>
+						<li id="li-venue-@venue.Id" phone="@venue.Phone" address="@venue.Address" value="@venue.Id">@venue.Name</li>
 					}
 					</ul>
 	
 					<div class="tab_wrapper">
-						<div id="tab_content" class="tab_content">
-							<div id="booking_table"></div>
+						<div class="tab_content">
+							联系电话:<span id="venue_phone"></span><br />
+							场地地址:<span id="venue_address"></span><br />
 						</div>
+						<div id="booking_table" class="tab_content"></div>
 					</div>
 				</div>
 			}   
@@ -165,11 +167,12 @@
 
 			$tabs.click(function () {
 				var index = $tabs.index($(this));
+				var currentTab = $($tabs.get(index));
 
 				$tabs.removeClass("current");
-				$($tabs.get(index)).addClass("current");
+				currentTab.addClass("current");
 
-				var venueId = $($tabs.get(index)).val();
+				var venueId = currentTab.val();
 
 				$.post(
 					'/Common/GetBookingSchedules',
@@ -191,6 +194,13 @@
 		});
 
 		function GetBookingTable(vanueId, schedules) {
+			var tab = $("#li-venue-" + vanueId);
+			
+			if(tab) {
+				$("#venue_phone").text(tab.attr("phone"));
+				$("#venue_address").text(tab.attr("address"));
+			}
+
 			if (schedules.length) {
 				$('#booking_table').booking(schedules, postId);
 

@@ -294,7 +294,7 @@ body{ background:#e1daca url(../images/common/bg.png) repeat-x top; }
 .booking_tab .tab_menu li { width: 80px; padding:0 15px; float:left; height:28px; line-height:28px; cursor:pointer; border:solid #f0f0f0; border-width:2px 1px 0; position:relative; }
 .booking_tab .tab_menu .current { background:#fff; color:#2C4613; border-color:#ddd; border-top-color:#5f7946; height:29px; _margin-bottom:-1px; }
 .booking_tab .tab_wrapper{ border:solid #ddd; border-width:0 1px 1px; }
-.booking_tab .tab_content div { width:558px; padding:5px 0 5px 20px; }
+.booking_tab .tab_content { width:558px; padding:5px 0 5px 20px; }
 
 .popup { display:none; position:absolute; top:270px; left:40px; width:602px; height:295px; background:url(../images/admin/indexlist-bg.png) 0 bottom}
 .popup .title { background:url(../images/admin/indexlist-tt.png); height:43px; line-height:42px; padding:0 0 0 34px; color:#333333; margin-bottom:10px;}

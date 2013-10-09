@@ -187,7 +187,7 @@ namespace Wlq.Service.Implementation
 			() =>
 			{
 				return base.GetRepository<PostInfo>().Entities
-					.Where(p => (type == PostType.All || p.PostType == (int)type) && (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
+					.Where(p => p.IsAudited && (type == PostType.All || p.PostType == (int)type) && (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
 					.OrderByDescending(p => p.PublishTime);
 			});
 		
@@ -205,7 +205,7 @@ namespace Wlq.Service.Implementation
 			() =>
 			{
 				return base.GetRepository<PostInfo>().Entities
-					.Where(p => p.GroupId == groupId && (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
+					.Where(p => p.IsAudited && p.GroupId == groupId && (!withinTime || (DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)))
 					.OrderByDescending(p => p.PublishTime);
 			});
 
@@ -216,7 +216,32 @@ namespace Wlq.Service.Implementation
 
 		public IEnumerable<PostInfo> GetPostsByGroupTree(long groupId, string keyword, int pageIndex, int pageSize, out int totalNumber)
 		{
-			var posts = base.GetRepository<PostInfo>().Entities;
+			var posts = base.GetRepository<PostInfo>().Entities
+				.Where(p => p.IsAudited);
+
+			if (groupId > 0)
+			{
+				var groupIds = base.GetRepository<GroupInfo>().Entities
+					.Where(g => g.ParentGroupId == groupId)
+					.Select(g => g.Id);
+
+				posts = posts.Where(p => p.GroupId == groupId || groupIds.Contains(p.GroupId));
+			}
+
+			if (!string.IsNullOrWhiteSpace(keyword))
+			{
+				posts = posts.Where(p => p.Title.Contains(keyword));
+			}
+
+			return posts
+				.OrderByDescending(p => p.PublishTime)
+				.Paging(pageIndex, pageSize, out totalNumber);
+		}
+
+		public IEnumerable<PostInfo> GetPostsByGroupTreeUnAudited(long groupId, string keyword, int pageIndex, int pageSize, out int totalNumber)
+		{
+			var posts = base.GetRepository<PostInfo>().Entities
+				.Where(p => p.IsAudited == false);
 
 			if (groupId > 0)
 			{
@@ -245,7 +270,7 @@ namespace Wlq.Service.Implementation
 			() =>
 			{
 				return base.GetRepository<PostInfo>().Entities
-					.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)
+					.Where(p => p.IsAudited && DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate)
 					.OrderByDescending(p => p.PublishTime);
 			});
 
@@ -262,7 +287,7 @@ namespace Wlq.Service.Implementation
 			() =>
 			{
 				return base.GetRepository<PostInfo>().Entities
-					.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && p.IsHealthTopic)
+					.Where(p => p.IsAudited && DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && p.IsHealthTopic)
 					.OrderByDescending(p => p.PublishTime);
 			});
 
@@ -278,7 +303,7 @@ namespace Wlq.Service.Implementation
 				.Select(ug => ug.GroupId);
 
 			return base.GetRepository<PostInfo>().Entities
-				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && groupIds.Contains(p.GroupId))
+				.Where(p => p.IsAudited && DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && groupIds.Contains(p.GroupId))
 				.OrderByDescending(p => p.PublishTime)
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
@@ -290,7 +315,7 @@ namespace Wlq.Service.Implementation
 				.Select(up => up.PostId);
 
 			return base.GetRepository<PostInfo>().Entities
-				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && postIds.Contains(p.Id))
+				.Where(p => p.IsAudited && DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && postIds.Contains(p.Id))
 				.OrderByDescending(p => p.PublishTime)
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
@@ -303,7 +328,7 @@ namespace Wlq.Service.Implementation
 				.Distinct();
 
 			return base.GetRepository<PostInfo>().Entities
-				.Where(p => DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && bookingPostIds.Contains(p.Id))
+				.Where(p => p.IsAudited && DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate && bookingPostIds.Contains(p.Id))
 				.OrderByDescending(p => p.PublishTime)
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
