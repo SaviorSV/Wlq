@@ -486,19 +486,6 @@ namespace Wlq.Web.Controllers
 			return Content(groups.ObjectToJson(), "text/json");
 		}
 
-		public ActionResult GetVenuesByGroup(long id)
-		{
-			if (AdminUser == null)
-			{
-				return Content("[]", "text/json");
-			}
-
-			var venues = PostService.GetVenuesByGroup(id)
-				.Select(v => new { Id = v.Id, Name = v.Name });
-
-			return Content(venues.ObjectToJson(), "text/json");
-		}
-
 		public ActionResult GetVenueGroupsByGroup(long id)
 		{
 			if (AdminUser == null)
@@ -668,6 +655,19 @@ namespace Wlq.Web.Controllers
 		}
 
 		[HttpPost]
+		public ActionResult SuspendVenue(long venueId, bool suspend)
+		{
+			var success = false;
+
+			if (AdminUser != null)
+			{
+				success = PostService.SuspendVenue(venueId, suspend);
+			}
+
+			return Content(new { Success = success }.ObjectToJson(), "text/json");
+		}
+
+		[HttpPost]
 		public ActionResult RemoveVenueGroup(long venueGroupId)
 		{
 			var success = false;
@@ -700,14 +700,7 @@ namespace Wlq.Web.Controllers
 
 			if (AdminUser != null)
 			{
-				var post = PostService.GetPost(postId, false);
-
-				if (post != null)
-				{
-					post.IsAudited = true;
-
-					success = PostService.UpdatePost(post);
-				}
+				success = PostService.AuditPost(postId);
 			}
 
 			return Content(new { Success = success }.ObjectToJson(), "text/json");

@@ -71,7 +71,19 @@
 		@foreach (var venue in Model.Venues)
 		{
 			<tr id="@string.Format("venue_{0}", venue.Id)">
-				<td>@venue.Name</td><td><a href='@string.Format("/Admin/Venue/{0}?venueGroupId={1}", venue.Id, Model.VenueGroup.Id)'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_venue(@venue.Id);'>删除</a></td>
+				<td>@venue.Name</td>
+				<td>
+					<a href='@string.Format("/Admin/Venue/{0}?venueGroupId={1}", venue.Id, Model.VenueGroup.Id)'>编辑</a>&nbsp;&nbsp;
+				@if (venue.IsSuspend) 
+				{ 
+					<a id='venue-suspend-@venue.Id' href='javascript:;' onclick='suspend_venue(@venue.Id, false);'>启用</a>
+				}
+				else
+				{	
+					<a id='venue-suspend-@venue.Id' href='javascript:;' onclick='suspend_venue(@venue.Id, true);'>停用</a>
+				}
+					&nbsp;&nbsp;<a href='javascript:;' onclick='remove_venue(@venue.Id);'>删除</a>
+				</td>
 			</tr>
 		}
 		</tbody>
@@ -114,6 +126,31 @@
 					}
 					else {
 						alert("删除失败");
+					}
+				}
+			});
+		}
+
+		function suspend_venue(venueId, suspend) {
+			if (!confirm("确定" + (suspend ? "停用" : "启用") + "该场地?"))
+				return false;
+
+			$.ajax({
+				type: "POST",
+				dataType: 'json',
+				url: "/Admin/SuspendVenue",
+				data: {
+					'venueId': venueId,
+					'suspend': suspend
+				},
+				success: function (r, status) {
+					if (r.Success) {
+						alert("操作成功");
+						$('#venue-suspend-' + venueId).text(!suspend ? "停用" : "启用");
+						$('#venue-suspend-' + venueId).attr('onclick', 'suspend_venue(' + venueId + ', ' + !suspend + ');');
+					}
+					else {
+						alert("操作失败");
 					}
 				}
 			});

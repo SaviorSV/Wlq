@@ -167,7 +167,7 @@ namespace Wlq.Web.Controllers
 				Post = post,
 				Group = group,
 				Venues = post.PostType == (int)PostType.Venue && post.VenueGroupId > 0
-					? PostService.GetVenuesByVenueGroup(post.VenueGroupId) : null,
+					? PostService.GetVenuesByVenueGroupNotSuspended(post.VenueGroupId) : null,
 				IsBooked = post.PostType != (int)PostType.Venue
 					? PostService.IsBookedPost(CurrentUserId, post.Id) : false,
 				IsConcerned = PostService.IsUserConcernPost(post.Id, CurrentUserId)

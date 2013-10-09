@@ -9,12 +9,13 @@ namespace Wlq.Service
 	{
 		#region Venue
 
-		IEnumerable<VenueInfo> GetVenuesByGroup(long groupId);
 		IEnumerable<VenueInfo> GetVenuesByVenueGroup(long venueGroupId);
+		IEnumerable<VenueInfo> GetVenuesByVenueGroupNotSuspended(long venueGroupId);
 		VenueInfo GetVenue(long venueId);
 		bool AddVenue(VenueInfo venue);
 		bool UpdateVenue(VenueInfo venue);
 		bool DeleteVenue(long venueId);
+		bool SuspendVenue(long venueId, bool suspend);
 
 		IEnumerable<VenueGroupInfo> GetVenueGroupsByGroup(long groupId);
 		VenueGroupInfo GetVenueGroup(long venueGroupId);
@@ -34,6 +35,7 @@ namespace Wlq.Service
 		bool UpdatePost(PostInfo post);
 		bool DeletePost(long postId);
 
+		bool AuditPost(long postId);
 		bool ConcernPost(long postId, long userId);
 		bool UnConcernPost(long postId, long userId);
 		bool IsUserConcernPost(long postId, long userId);

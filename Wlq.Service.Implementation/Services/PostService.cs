@@ -54,16 +54,31 @@ namespace Wlq.Service.Implementation
 			return base.GetRepository<VenueGroupInfo>().DeleteById(venueGroupId, true) > 0; 
 		}
 
+		public bool SuspendVenue(long venueId, bool suspend)
+		{
+			var repository = base.GetRepository<VenueInfo>();
+			var venue = repository.GetById(venueId);
+
+			if (venue != null)
+			{
+				venue.IsSuspend = suspend;
+
+				return repository.Update(venue, true) > 0;
+			}
+
+			return false;
+		}
+
 		public IEnumerable<VenueInfo> GetVenuesByVenueGroup(long venueGroupId)
 		{
 			return base.GetRepository<VenueInfo>().Entities
 				.Where(v => v.VenueGroupId == venueGroupId);
 		}
 
-		public IEnumerable<VenueInfo> GetVenuesByGroup(long groupId)
+		public IEnumerable<VenueInfo> GetVenuesByVenueGroupNotSuspended(long venueGroupId)
 		{
 			return base.GetRepository<VenueInfo>().Entities
-				.Where(v => v.GroupId == groupId);
+				.Where(v => v.VenueGroupId == venueGroupId && v.IsSuspend == false);
 		}
 
 		public VenueInfo GetVenue(long venueId)
@@ -351,6 +366,21 @@ namespace Wlq.Service.Implementation
 		public bool DeletePost(long postId)
 		{
 			return base.GetRepository<PostInfo>().DeleteById(postId, true) > 0;
+		}
+
+		public bool AuditPost(long postId)
+		{
+			var repository = base.GetRepository<PostInfo>();
+			var post = repository.GetById(postId);
+
+			if (post != null)
+			{
+				post.IsAudited = true;
+
+				return repository.Update(post, true) > 0;
+			}
+
+			return false;
 		}
 
 		public bool ConcernPost(long postId, long userId)
