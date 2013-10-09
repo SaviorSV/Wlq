@@ -41,6 +41,14 @@
 				<option value="3" @Html.IsSelected(Model.VenueGroup.VenueType == (int)VenueType.Education)>教育场馆</option>
 			</select>
 		</li>
+		<li>
+			<label>场馆电话：</label>
+			<input class="input-2" name="Phone" type="text" value="@Model.VenueGroup.Phone" />
+		</li>
+		<li>
+			<label>场馆地址：</label>
+			<input class="input-1" name="Address" type="text" value="@Model.VenueGroup.Address" />
+		</li>
 	</ul>
 	
 	<input name="Id" type="hidden" value="@Model.VenueGroup.Id" />
@@ -75,7 +83,7 @@
 {
 	<script type="text/javascript">
 		$(document).ready(function () {
-			selected_left_menu(4);
+			selected_left_menu(5);
 		});
 
 		$("#save_venuegroup").bind("click", function () {

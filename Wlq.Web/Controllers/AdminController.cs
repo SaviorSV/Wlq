@@ -199,6 +199,8 @@ namespace Wlq.Web.Controllers
 			venueGroup.Name = venueGroupModel.Name;
 			venueGroup.VenueType = venueGroupModel.VenueType;
 			venueGroup.GroupId = venueGroupModel.GroupId;
+			venueGroup.Phone = venueGroupModel.Phone;
+			venueGroup.Address = venueGroupModel.Address;
 
 			if (venueGroup.Id == 0)
 			{
@@ -369,6 +371,9 @@ namespace Wlq.Web.Controllers
 			post.SpotBookingNumber = postModel.SpotBookingNumber;
 			post.SpotBookingTime = postModel.SpotBookingTime;
 			post.SpotBookingAddress = postModel.SpotBookingAddress;
+			post.IsLongterm = postModel.IsLongterm;
+			post.Phone = postModel.Phone;
+			post.Address = postModel.Address;
 
 			if (post.Id == 0)
 			{
@@ -497,6 +502,8 @@ namespace Wlq.Web.Controllers
 				{ 
 					Id = v.Id, 
 					Name = v.Name,
+					Phone = v.Phone,
+					Address = v.Address,
 					VenueType = EnumHelper.GetDescription((VenueType)v.VenueType)
 				});
 

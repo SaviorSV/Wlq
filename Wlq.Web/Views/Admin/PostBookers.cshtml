@@ -15,7 +15,6 @@
 				<tr>
 					<th>姓名</th>
 					<th>联系方式</th>
-					<th>预约方式</th>
 					<th>参与方式</th>
 					<th>预约日期</th>
 					<th>是否签到</th>
@@ -27,7 +26,6 @@
 				<tr>
 					<td>@booking.Name</td>
 					<td>@booking.Mobile</td>
-					<td>@EnumHelper.GetDescription((BookingType)booking.BookingType)</td>
 					<td>@EnumHelper.GetDescription((InvolvedType)booking.InvolvedType)</td>
 					<td>@string.Format("{0:yyyy-MM-dd}", booking.BookingDate)</td>
 					<td>@string.Format("{0}", booking.IsPresent ? "是" : "否")</td>

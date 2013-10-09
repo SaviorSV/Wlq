@@ -111,7 +111,7 @@ body{ background:url(../images/admin/bg.png) repeat-y left top; }
 .timeselect p{ padding:5px 0 }
 
 .quanxian-tt{ font-size:14px; border-bottom:1px solid #e5e5e5; padding-bottom:8px;}
-.list-tbl{ width:100%; text-align:center}
+.list-tbl{ width:85%; text-align:center}
 .list-tbl tr th{ text-align:center; height:59px; line-height:59px; border-bottom:1px solid #e5e5e5}
 .list-tbl tr td{ line-height:20px; padding:10px 0}
 .list-tbl tr.eq td{ background:#f5f5f5}

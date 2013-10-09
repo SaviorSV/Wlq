@@ -24,6 +24,10 @@ namespace Wlq.Domain
 		public string SpotBookingNumber { get; set; }
 		public string SpotBookingAddress { get; set; }
 		public string SpotBookingTime { get; set; }
+		public bool IsLongterm { get; set; }
+		public bool IsAudited { get; set; }
+		public string Phone { get; set; }
+		public string Address { get; set; }
 		public string Publisher { get; set; }
 		public DateTime PublishTime { get; set; }
 
@@ -37,6 +41,8 @@ namespace Wlq.Domain
 			Remark = string.Empty;
 			Publisher = string.Empty;
 			PublishTime = DateTime.Now;
+			Phone = string.Empty;
+			Address = string.Empty;
 		}
 	}
 }

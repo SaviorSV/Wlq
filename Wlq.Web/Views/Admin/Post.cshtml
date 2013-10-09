@@ -44,14 +44,14 @@
 		</li>
 		<li>
 			<label>发布标题：</label>
-			@Html.TextBoxFor(x => x.Title, new { @class = "input-1" })
+			@Html.TextBoxFor(x => x.Title, new { @class = "input-1" }) &nbsp;&nbsp;
+			@Html.CheckBoxFor(x => x.IsLongterm)长期发布
 		</li>
-		<li>
+		<li id="li_beginend">
 			<label>开始时间：</label>
 			<input name="BeginDate" class="input-2" type="text" value="@Model.BeginDate.ToString("yyyy-MM-dd")" />
 			<label>结束时间：</label>
 			<input name="EndDate" class="input-2" type="text" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
-			<input type="checkbox" />长期发布
 		</li>
 		<li>
 			<label>限制人数：</label>
@@ -59,10 +59,20 @@
 			<label>费　　用：</label>
 			@Html.TextBoxFor(x => x.Fee, new { @class = "input-2" })
 		</li>
+		<li>
+			<label>联系电话：</label>
+			@Html.TextBoxFor(x => x.Phone, new { @class = "input-2" })
+		</li>
+		<li>
+			<label>活动地址：</label>
+			@Html.TextBoxFor(x => x.Address, new { @class = "input-1" })
+		</li>
 		<li id="bookingTypes">
 			<label>预约方式：</label>
-			<input id="chk_online_booking" type="checkbox" value="1" @Html.IsChecked(((BookingType)Model.BookingTypes & BookingType.Online) == BookingType.Online) /> 网上预约
-			<input id="chk_phone_booking" type="checkbox" value="2" @Html.IsChecked(((BookingType)Model.BookingTypes & BookingType.Phone) == BookingType.Phone) /> 电话预约
+			<select id="bookingtype_selector">
+				<option value="1"  @Html.IsSelected(((BookingType)Model.BookingTypes & BookingType.Online) == BookingType.Online)>网上预约</option>
+				<option value="2"  @Html.IsSelected(((BookingType)Model.BookingTypes & BookingType.Phone) == BookingType.Phone)>电话预约</option>
+			</select>
 			<input id="chk_spot_booking" type="checkbox" value="4" @Html.IsChecked(((BookingType)Model.BookingTypes & BookingType.Spot) == BookingType.Spot) /> 现场确认
 		</li>
 		<li class="li_phone_booking" style="display:none;">
@@ -72,13 +82,13 @@
 			@Html.TextBoxFor(x => x.PhoneBookingTime, new { @class = "input-2" })
 		</li>
 		<li class="li_spot_booking" style="display:none;">
-			<label>联系电话(现场确认)：</label>
+			<label>确认电话(现场确认)：</label>
 			@Html.TextBoxFor(x => x.SpotBookingNumber, new { @class = "input-2" })
 			<label>截止时间(现场确认)：</label>
 			@Html.TextBoxFor(x => x.SpotBookingTime, new { @class = "input-2" })
 		</li>
 		<li class="li_spot_booking" style="display:none;">
-			<label>详细地址(现场确认)：</label>
+			<label>确认地址(现场确认)：</label>
 			@Html.TextBoxFor(x => x.SpotBookingTime, new { @class = "input-1" })
 		</li>
 		<li>
@@ -123,14 +133,18 @@
 		$(document).ready(function () {
 			selected_left_menu(3);
 
-			ShowVenueGroupSelector(@Model.PostType);
+			show_venue_group_selector(@Model.PostType);
 
-			if($("#chk_phone_booking").attr('checked') == 'checked') {
+			if($("#bookingtype_selector").val() == '2') {
 				$(".li_phone_booking").show();
 			}
 
 			if($("#chk_spot_booking").attr('checked') == 'checked') {
 				$(".li_spot_booking").show();
+			}
+
+			if($("#IsLongterm").attr('checked') == 'checked') {
+				$("#li_beginend").hide();
 			}
 
 			new TINY.editor.edit('editor_content', {
@@ -178,13 +192,11 @@
 			editor_content.post();
 			editor_remark.post();
 
-			var bookingTypes = 0;
+			var bookingTypes = $("#bookingtype_selector").val();
 
-			$("#bookingTypes input[type=checkbox]").each(function () {
-				if ($(this).attr('checked')) {
-					bookingTypes |= $(this).val();
-				}
-			});
+			if ($("#chk_spot_booking").attr('checked')) {
+				bookingTypes |= $("#chk_spot_booking").val();
+			}
 
 			if(bookingTypes == 0) {
 				alert("请选择预约方式");
@@ -199,17 +211,17 @@
 		$("#post_type_selector").bind("change", function () {
 			var postType = $("#post_type_selector").val();
 
-			ShowVenueGroupSelector(postType);
+			show_venue_group_selector(postType);
 		});
 
 		$("#group_selector").bind("change", function () {
 			var postType = $("#post_type_selector").val();
 
-			ShowVenueGroupSelector(postType);
+			show_venue_group_selector(postType);
 		});
 
-		$("#chk_phone_booking").bind("click", function() {
-			if($("#chk_phone_booking").attr('checked') == 'checked') {
+		$("#bookingtype_selector").bind("change", function() {
+			if($("#bookingtype_selector").val() == '2') {
 				$(".li_phone_booking").show();
 			}
 			else {
@@ -226,7 +238,16 @@
 			}
 		});
 
-		function ShowVenueGroupSelector(postType) {
+		$("#IsLongterm").bind("click", function() {
+			if($("#IsLongterm").attr('checked') == 'checked') {
+				$("#li_beginend").hide();
+			}
+			else {
+				$("#li_beginend").show();
+			}
+		});
+
+		function show_venue_group_selector(postType) {
 			if (postType == 3) {
 				var groupId = $("#group_selector").val();
 				var venuegroupSelector = $("#venuegroup_selector").empty();
@@ -235,8 +256,10 @@
 					$.get("/Admin/GetVenueGroupsByGroup/" + groupId, function (data) {
 						if (data.length > 0) {
 							for (var i in data) {
-								venuegroupSelector.append("<option value='" + data[i].Id + "'>" + data[i].Name + "</option>")
+								venuegroupSelector.append("<option value='" + data[i].Id + "' phone='" + data[i].Phone + "' address='" + data[i].Address + "'>" + data[i].Name + "</option>")
 							}
+
+							bind_venuegroup_detail();
 						}
 						else {
 							venuegroupSelector.append("<option value='0'>无</option>")
@@ -251,6 +274,17 @@
 				$("#venuegroup_selector_title").hide();
 				$("#venuegroup_selector").hide();
 			}
+		}
+
+		$('#venuegroup_selector').bind("change", function() {
+			bind_venuegroup_detail()
+		});
+
+		function bind_venuegroup_detail() {
+			var selected = $('#venuegroup_selector').find(":selected");
+
+			$("#Phone").val(selected.attr('phone'));
+			$("#Address").val(selected.attr('address'));
 		}
 
 	</script>
