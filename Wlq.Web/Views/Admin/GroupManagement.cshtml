@@ -62,13 +62,23 @@ else
 		$("#edit_group").bind("click", function () {
 			var groupId = $("#department_selector").val();
 
-			window.location = "/Admin/Group?groupId=" + groupId + "&parentGroupId=0";
+			if (groupId > 0) {
+				window.location = "/Admin/Group?groupId=" + groupId + "&parentGroupId=0";
+			}
+			else {
+				alert('请选择部门');
+			}
 		});
 
 		$("#add_group").bind("click", function () {
 			var groupId = $("#department_selector").val();
 
-			window.location = "/Admin/Group?groupId=0&parentGroupId=" + groupId;
+			if (groupId > 0) {
+				window.location = "/Admin/Group?groupId=0&parentGroupId=" + groupId;
+			}
+			else {
+				alert('请选择部门');
+			}
 		});
 
 		function bind_group_list() {

@@ -62,7 +62,7 @@ namespace Wlq.Service.Implementation
 
 			user.Password = StringHelper.GetMd5(newPassword);
 
-			return this.UpdateUser(user)
+			return base.GetRepository<UserInfo>().Update(user, true) > 0
 				? ChangePasswordResult.Success 
 				: ChangePasswordResult.Error;
 		}
@@ -89,7 +89,7 @@ namespace Wlq.Service.Implementation
 			var user = base.GetRepository<UserInfo>().Entities
 				.FirstOrDefault(u => u.LoginName == loginName && u.Password == hashedPassword && (!isAdmin || u.Role > (int)RoleLevel.Normal));
 
-			return Login(user);
+			return this.Login(user);
 		}
 
 		public bool LoginByCode(string code)
@@ -97,10 +97,10 @@ namespace Wlq.Service.Implementation
 			var user = base.GetRepository<UserInfo>().Entities
 				.FirstOrDefault(u => u.Code == code);
 
-			return Login(user);
+			return this.Login(user);
 		}
 
-		private static bool Login(UserInfo user)
+		private bool Login(UserInfo user)
 		{
 			if (user == null)
 				return false;
@@ -135,7 +135,8 @@ namespace Wlq.Service.Implementation
 		{
 			if (role == RoleLevel.SuperAdmin)
 			{
-				return this.GetGroupsByParent(0);
+				return base.GetRepository<GroupInfo>().Entities
+					.Where(g => g.ParentGroupId == 0);
 			}
 			else
 			{
@@ -275,12 +276,12 @@ namespace Wlq.Service.Implementation
 			if (this.HasRelation<TEntity>(userId, groupId))
 				return true;
 
-			var user = this.GetUser(userId);
+			var user = base.GetRepository<UserInfo>().GetById(userId);
 
 			if (user == null)
 				return false;
 
-			var group = this.GetGroup(groupId, true);
+			var group = base.GetRepository<GroupInfo>().GetById(groupId);
 
 			if (group == null)
 				return false;

@@ -44,7 +44,8 @@ namespace Wlq.Service.Implementation
 
 		public bool DeleteVenueGroup(long venueGroupId)
 		{
-			var venues = this.GetVenuesByVenueGroup(venueGroupId);
+			var venues = base.GetRepository<VenueInfo>().Entities
+				.Where(v => v.VenueGroupId == venueGroupId);
 
 			foreach (var venue in venues)
 			{
@@ -350,7 +351,13 @@ namespace Wlq.Service.Implementation
 
 		public PostInfo GetPost(long postId, bool fromCache)
 		{
-			return base.GetRepository<PostInfo>().GetById(postId); ;
+			var key = string.Format("Wlq.Domain.PostInfo.{0}", postId);
+
+			return CacheManager.Get<PostInfo>(fromCache, key, new TimeSpan(0, 2, 0),
+				() =>
+				{
+					return base.GetRepository<PostInfo>().GetById(postId); ;
+				});
 		}
 
 		public bool AddPost(PostInfo post)
