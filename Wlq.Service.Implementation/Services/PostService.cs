@@ -230,7 +230,7 @@ namespace Wlq.Service.Implementation
 			return postList.List;
 		}
 
-		public IEnumerable<PostInfo> GetPostsByGroupTree(long groupId, string keyword, int pageIndex, int pageSize, out int totalNumber)
+		public IEnumerable<PostInfo> GetPostsByGroupTree(long groupId, UserInfo manager, string keyword, int pageIndex, int pageSize, out int totalNumber)
 		{
 			var posts = base.GetRepository<PostInfo>().Entities
 				.Where(p => p.IsAudited);
@@ -243,6 +243,14 @@ namespace Wlq.Service.Implementation
 
 				posts = posts.Where(p => p.GroupId == groupId || groupIds.Contains(p.GroupId));
 			}
+			else if(manager.Role != (int)RoleLevel.SuperAdmin)
+			{
+				var groupIds = base.GetRepository<GroupManagerInfo>().Entities
+					.Where(r => r.UserId == manager.Id)
+					.Select(r => r.GroupId);
+
+				posts = posts.Where(p => groupIds.Contains(p.GroupId));
+			}
 
 			if (!string.IsNullOrWhiteSpace(keyword))
 			{
@@ -254,7 +262,7 @@ namespace Wlq.Service.Implementation
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
-		public IEnumerable<PostInfo> GetPostsByGroupTreeUnAudited(long groupId, string keyword, int pageIndex, int pageSize, out int totalNumber)
+		public IEnumerable<PostInfo> GetPostsByGroupTreeUnAudited(long groupId, UserInfo manager, string keyword, int pageIndex, int pageSize, out int totalNumber)
 		{
 			var posts = base.GetRepository<PostInfo>().Entities
 				.Where(p => p.IsAudited == false);
@@ -266,6 +274,14 @@ namespace Wlq.Service.Implementation
 					.Select(g => g.Id);
 
 				posts = posts.Where(p => p.GroupId == groupId || groupIds.Contains(p.GroupId));
+			}
+			else if (manager.Role != (int)RoleLevel.SuperAdmin)
+			{
+				var groupIds = base.GetRepository<GroupManagerInfo>().Entities
+					.Where(r => r.UserId == manager.Id)
+					.Select(r => r.GroupId);
+
+				posts = posts.Where(p => groupIds.Contains(p.GroupId));
 			}
 
 			if (!string.IsNullOrWhiteSpace(keyword))

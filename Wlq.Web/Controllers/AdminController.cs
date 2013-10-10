@@ -480,6 +480,7 @@ namespace Wlq.Web.Controllers
 				return Content("[]", "text/json");
 			}
 
+			//todo: add 'all' option, keywords, pagination
 			var groups = UserGroupService.GetGroupsByParent(id)
 				.Select(g => new { Id = g.Id, Name = g.Name });
 
@@ -535,7 +536,7 @@ namespace Wlq.Web.Controllers
 
 			var totalNumber = 0;
 			var pageSize = 10;
-			var posts = PostService.GetPostsByGroupTree(id, keyword, pageIndex, pageSize, out totalNumber)
+			var posts = PostService.GetPostsByGroupTree(id, AdminUser, keyword, pageIndex, pageSize, out totalNumber)
 				.Select(p => new
 				{
 					Id = p.Id,
@@ -563,7 +564,7 @@ namespace Wlq.Web.Controllers
 
 			var totalNumber = 0;
 			var pageSize = 10;
-			var posts = PostService.GetPostsByGroupTreeUnAudited(id, keyword, pageIndex, pageSize, out totalNumber)
+			var posts = PostService.GetPostsByGroupTreeUnAudited(id, AdminUser, keyword, pageIndex, pageSize, out totalNumber)
 				.Select(p => new
 				{
 					Id = p.Id,
