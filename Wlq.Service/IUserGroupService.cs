@@ -27,8 +27,9 @@ namespace Wlq.Service
 
 		IEnumerable<GroupInfo> GetCircles(int pageIndex, int pageSize, out int totalNumber);
 		IEnumerable<GroupInfo> GetGroupsByUser(long userId);
-		IEnumerable<GroupInfo> GetGroupsByManager(long userId, RoleLevel role);
+		IEnumerable<GroupInfo> GetGroupsByManager(UserInfo manager);
 		IEnumerable<GroupInfo> GetGroupsByParent(long parentGroupId);
+		IEnumerable<GroupInfo> GetGroupTreeByParent(long parentGroupId, UserInfo manager, string keyword);
 		GroupInfo GetGroup(long groupId, bool fromCache);
 		bool AddGroup(GroupInfo group);
 		bool UpdateGroup(GroupInfo group);
@@ -39,6 +40,7 @@ namespace Wlq.Service
 		#region GroupManager
 
 		IEnumerable<UserInfo> GetManagersByGroup(long groupId);
+		IEnumerable<UserInfo> GetManagersByGroupTree(long groupId, UserInfo manager, string keyword);
 		bool AddManagerToGroup(long userId, long groupId);
 		bool RemoveManagerFromGroup(long userId, long groupId);
 		bool IsManagerInGroup(long userId, long groupId);

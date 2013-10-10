@@ -131,16 +131,16 @@ namespace Wlq.Service.Implementation
 			return this.GetGroupsByRelation<UserGroupInfo>(userId);
 		}
 
-		public IEnumerable<GroupInfo> GetGroupsByManager(long userId, RoleLevel role)
+		public IEnumerable<GroupInfo> GetGroupsByManager(UserInfo manager)
 		{
-			if (role == RoleLevel.SuperAdmin)
+			if (manager.Role == (int)RoleLevel.SuperAdmin)
 			{
 				return base.GetRepository<GroupInfo>().Entities
 					.Where(g => g.ParentGroupId == 0);
 			}
 			else
 			{
-				return this.GetGroupsByRelation<GroupManagerInfo>(userId);
+				return this.GetGroupsByRelation<GroupManagerInfo>(manager.Id);
 			}
 		}
 
@@ -148,6 +148,32 @@ namespace Wlq.Service.Implementation
 		{
 			return base.GetRepository<GroupInfo>().Entities
 				.Where(g => g.ParentGroupId == parentGroupId);
+		}
+
+		public IEnumerable<GroupInfo> GetGroupTreeByParent(long parentGroupId, UserInfo manager, string keyword)
+		{
+			var groups = base.GetRepository<GroupInfo>().Entities;
+
+			if (parentGroupId > 0)
+			{
+				groups = groups.Where(g => g.ParentGroupId == parentGroupId);
+			}
+			else if (manager.Role != (int)RoleLevel.SuperAdmin)
+			{
+				var parentGroupIds = base.GetRepository<GroupManagerInfo>().Entities
+					.Where(r => r.UserId == manager.Id)
+					.Select(r => r.GroupId);
+
+				groups = groups.Where(g => parentGroupIds.Contains(g.ParentGroupId));
+			}
+
+			if (!string.IsNullOrWhiteSpace(keyword))
+			{
+				groups = groups.Where(g => g.Name.Contains(keyword));
+			}
+
+			return groups
+				.OrderBy(g => g.GroupType);
 		}
 
 		public IEnumerable<GroupInfo> GetCircles(int pageIndex, int pageSize, out int totalNumber)
@@ -189,13 +215,28 @@ namespace Wlq.Service.Implementation
 
 		public bool DeleteGroup(long groupId)
 		{
-			var success = base.GetRepository<GroupInfo>().DeleteById(groupId, true) > 0;
+			var repository = base.GetRepository<GroupInfo>();
+			var success = repository.DeleteById(groupId, true) > 0;
 
 			if (success)
 			{
 				var key = string.Format("Wlq.Domain.GroupInfo.{0}", groupId);
 
 				CacheManager.RemoveKey(key);
+
+				var subGroups = repository.Entities
+					.Where(g => g.ParentGroupId == groupId);
+
+				foreach (var group in subGroups)
+				{
+					repository.Delete(group, false);
+
+					key = string.Format("Wlq.Domain.GroupInfo.{0}", group.Id);
+
+					CacheManager.RemoveKey(key);
+				}
+
+				_databaseContext.SaveChanges();
 			}
 
 			return success;
@@ -208,6 +249,39 @@ namespace Wlq.Service.Implementation
 		public IEnumerable<UserInfo> GetManagersByGroup(long groupId)
 		{
 			return this.GetUsersByRelation<GroupManagerInfo>(groupId);
+		}
+
+		public IEnumerable<UserInfo> GetManagersByGroupTree(long groupId, UserInfo manager, string keyword)
+		{
+			var groupManagerRepository = base.GetRepository<GroupManagerInfo>();
+			var groups = base.GetRepository<GroupInfo>().Entities;
+
+			if (groupId > 0)
+			{
+				groups = groups.Where(g => g.Id == groupId || g.ParentGroupId == groupId);
+			}
+			else if (manager.Role != (int)RoleLevel.SuperAdmin)
+			{
+				var manageGroupIds = groupManagerRepository.Entities
+					.Where(gm => gm.UserId == manager.Id)
+					.Select(gm => gm.GroupId);
+
+				groups = groups.Where(g => manageGroupIds.Contains(g.ParentGroupId));
+			}
+
+			var managerIds = groupManagerRepository.Entities
+				.Where(gm => groups.Select(g => g.Id).Contains(gm.GroupId))
+				.Select(m => m.UserId);
+
+			var managers = base.GetRepository<UserInfo>().Entities
+				.Where(u => managerIds.Contains(u.Id));
+
+			if (!string.IsNullOrWhiteSpace(keyword))
+			{
+				managers = managers.Where(u => u.LoginName.Contains(keyword));
+			}
+
+			return managers;
 		}
 
 		public bool AddManagerToGroup(long userId, long groupId)

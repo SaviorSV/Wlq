@@ -15,14 +15,25 @@ else
 	 <div class="quanxian-tt">
 		<span>部门：</span>
 		<select id="department_selector" class="select-2">
+		@if (ViewBag.IsSuperAdmin)
+		{
+			<option value="0">全部</option>
+		}
 		@foreach (var group in Model)
 		{
 			<option value="@group.Id">@group.Name</option>
 		}
 		</select>
-		@*<a id="find_group" href="javascript:;" class="btn-3">查询下级组织</a>*@
-		<a id="edit_group" href="javascript:;" class="btn-3">编辑部门信息</a>
+		关键字：<input id="txt_keyword" type="text" />
+		<a id="find_group" href="javascript:;" class="btn-3">查 询</a>
+	@if (ViewBag.IsSuperAdmin)
+	{
+		<a id="add_group" href="javascript:;" class="btn-3">+新增部门</a>
+	}
+	else
+	{
 		<a id="add_group" href="javascript:;" class="btn-3">+新增下级组织</a>
+	}
 	</div>
 	<div id="group_list" class="quanxian-tt"></div>
 }
@@ -56,55 +67,51 @@ else
 		});
 
 		$("#department_selector").bind("change", function () {
-			bind_group_list();
-		});
-
-		$("#edit_group").bind("click", function () {
 			var groupId = $("#department_selector").val();
 
-			if (groupId > 0) {
-				window.location = "/Admin/Group?groupId=" + groupId + "&parentGroupId=0";
+			if (groupId == 0) {
+				$("#add_group").text('+新增部门');
 			}
 			else {
-				alert('请选择部门');
+				$("#add_group").text('+新增下级组织');
 			}
+
+			bind_group_list();
 		});
 
 		$("#add_group").bind("click", function () {
 			var groupId = $("#department_selector").val();
 
-			if (groupId > 0) {
-				window.location = "/Admin/Group?groupId=0&parentGroupId=" + groupId;
-			}
-			else {
-				alert('请选择部门');
-			}
+			window.location = "/Admin/Group?groupId=0&parentGroupId=" + groupId;
+		});
+
+		$("#find_group").bind("click", function () {
+			bind_group_list();
 		});
 
 		function bind_group_list() {
 			var groupId = $("#department_selector").val();
 
-			if (groupId > 0) {
-				$.get("/Admin/GetGroupsByParent/" + groupId, function (data) {
-					var result = '';
-					if (data.length > 0) {
-						result += "<table class='list-tbl'>";
-						result += "<thead><tr><th>名称</th><th>操作</th></tr></thead><tbody>";
+			$.get("/Admin/GetGroupsByParent/" + groupId + "?keyword=" + $("#txt_keyword").val(), function (data) {
+				var result = '';
+				if (data.length > 0) {
+					result += "<table class='list-tbl'>";
+					result += "<thead><tr><th>名称</th><th>所属部门</th><th>操作</th></tr></thead><tbody>";
 
-						for (var i in data) {
-							result += "<tr><td>" + data[i].Name + "</td>";
-							result += "<td><a href='javascript:;' onclick='send_message(" + data[i].Id + ")'>发送消息</a>&nbsp;&nbsp;<a href='/Admin/Group?groupId=" + data[i].Id + "&parentGroupId=" + groupId + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_group(" + data[i].Id + ");'>删除</a></td></tr>";
-						}
-
-						result += "</tbody></table>";
-					}
-					else {
-						result = "<span>未创建任何组织</span>";
+					for (var i in data) {
+						result += "<tr><td>" + data[i].Name + "</td>";
+						result += "<td>" + data[i].ParentGroupName + "</td>";
+						result += "<td><a href='javascript:;' onclick='send_message(" + data[i].Id + ")'>发送消息</a>&nbsp;&nbsp;<a href='/Admin/Group?groupId=" + data[i].Id + "&parentGroupId=" + groupId + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_group(" + data[i].Id + ");'>删除</a></td></tr>";
 					}
 
-					$("#group_list").html(result);
-				});
-			}
+					result += "</tbody></table>";
+				}
+				else {
+					result = "<span>未创建任何组织</span>";
+				}
+
+				$("#group_list").html(result);
+			});
 		}
 
 		function remove_group(groupId) {

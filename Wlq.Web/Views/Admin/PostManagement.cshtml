@@ -104,7 +104,7 @@ else
 
 				if (list.length > 0) {
 					result += "<table class='list-tbl'>";
-					result += "<thead><tr><th>标题</th><th>发布类型</th><th>已预约</th><th>发布组织</th><th>发布人</th><th>最后更新时间</th><th>操作</th></tr></thead><tbody>";
+					result += "<thead><tr><th>标题</th><th>发布类型</th><th>已预约</th><th>发布组织</th><th>发布人</th><th>最后更新时间</th><th>状态</th><th>操作</th></tr></thead><tbody>";
 
 					for (var i in list) {
 						result += "<tr><td><a href='/Home/Post/" + list[i].Id + "' target='_blank'>" + list[i].Title + "</a></td><td>" + list[i].PostType + "</td>";
@@ -112,6 +112,7 @@ else
 						result += "<td>" + list[i].GroupName + "</td>";
 						result += "<td>" + list[i].Publisher + "</td>";
 						result += "<td>" + list[i].PublishTime + "</td>";
+						result += "<td>" + list[i].Status + "</td>";
 						result += "<td><a href='javascript:;' onclick='send_message(" + list[i].Id + ")'>发送消息</a>&nbsp;&nbsp;<a href='/Admin/SigninBooking/" + list[i].Id + "'>签到</a>&nbsp;&nbsp;<a href='/Admin/Post/" + list[i].Id + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_post(" + list[i].Id + ");'>删除</a></td></tr>";
 					}
 

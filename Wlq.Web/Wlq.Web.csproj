@@ -99,6 +99,32 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Calender\calendar.js" />
+    <Content Include="Content\Calender\config.js" />
+    <Content Include="Content\Calender\DatePicker.htm" />
+    <Content Include="Content\Calender\lang\en.js" />
+    <Content Include="Content\Calender\lang\zh-cn.js" />
+    <Content Include="Content\Calender\lang\zh-tw.js" />
+    <Content Include="Content\Calender\skin\datePicker.gif" />
+    <Content Include="Content\Calender\skin\default\datepicker.css" />
+    <Content Include="Content\Calender\skin\default\down.jpg" />
+    <Content Include="Content\Calender\skin\default\left.gif" />
+    <Content Include="Content\Calender\skin\default\navLeft.gif" />
+    <Content Include="Content\Calender\skin\default\navRight.gif" />
+    <Content Include="Content\Calender\skin\default\qs.jpg" />
+    <Content Include="Content\Calender\skin\default\right.gif" />
+    <Content Include="Content\Calender\skin\default\up.jpg" />
+    <Content Include="Content\Calender\skin\WdatePicker.css" />
+    <Content Include="Content\Calender\skin\whyGreen\bg.jpg" />
+    <Content Include="Content\Calender\skin\whyGreen\datepicker.css" />
+    <Content Include="Content\Calender\skin\whyGreen\down.jpg" />
+    <Content Include="Content\Calender\skin\whyGreen\left.gif" />
+    <Content Include="Content\Calender\skin\whyGreen\navLeft.gif" />
+    <Content Include="Content\Calender\skin\whyGreen\navRight.gif" />
+    <Content Include="Content\Calender\skin\whyGreen\qs.jpg" />
+    <Content Include="Content\Calender\skin\whyGreen\right.gif" />
+    <Content Include="Content\Calender\skin\whyGreen\up.jpg" />
+    <Content Include="Content\Calender\WdatePicker.js" />
     <Content Include="Content\css\b.css" />
     <Content Include="Content\css\b_admin.css" />
     <Content Include="Content\images\admin\arrw-l.png" />
@@ -239,6 +265,7 @@
     <Content Include="Views\Shared\_Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Calender\skin\default\Thumbs.db" />
     <None Include="Content\images\admin\leftmenuico.psd" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Admin\Login.cshtml" />

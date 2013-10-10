@@ -9,6 +9,7 @@ using Hanger.Utility;
 using Wlq.Domain;
 using Wlq.Web.Fliters;
 using Wlq.Web.Models;
+using System.Text;
 
 namespace Wlq.Web.Controllers
 {
@@ -59,7 +60,7 @@ namespace Wlq.Web.Controllers
 			var model = new AdminManagementModel();
 			var isSuperAdmin = AdminUser.Role == (int)RoleLevel.SuperAdmin;
 
-			model.Departments = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role)
+			model.Departments = UserGroupService.GetGroupsByManager(AdminUser)
 				.Where(g => g.ParentGroupId == 0);
 
 			if (!isSuperAdmin && model.Departments != null && model.Departments.Count() > 0)
@@ -75,8 +76,10 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult GroupManagement()
 		{
-			var groups = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role)
+			var groups = UserGroupService.GetGroupsByManager(AdminUser)
 				.Where(g => g.ParentGroupId == 0);
+
+			ViewBag.IsSuperAdmin = AdminUser.Role == (int)RoleLevel.SuperAdmin;
 
 			return View(groups);
 		}
@@ -157,7 +160,7 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult VenueManagement()
 		{
-			var groups = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
+			var groups = UserGroupService.GetGroupsByManager(AdminUser);
 
 			return View(groups);
 		}
@@ -178,7 +181,7 @@ namespace Wlq.Web.Controllers
 
 			model.VenueGroup = venueGroup;
 			model.Venues = id > 0 ? PostService.GetVenuesByVenueGroup(id) : null;
-			model.Groups = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
+			model.Groups = UserGroupService.GetGroupsByManager(AdminUser);
 
 			return View(model);
 		}
@@ -307,7 +310,7 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult PostManagement()
 		{
-			var groups = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
+			var groups = UserGroupService.GetGroupsByManager(AdminUser);
 
 			return View(groups);
 		}
@@ -315,7 +318,7 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult UnAuditedPost()
 		{
-			var groups = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
+			var groups = UserGroupService.GetGroupsByManager(AdminUser);
 
 			return View(groups);
 		}
@@ -323,7 +326,7 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult Post(long id)
 		{
-			ViewBag.GroupList = UserGroupService.GetGroupsByManager(AdminUser.Id, (RoleLevel)AdminUser.Role);
+			ViewBag.GroupList = UserGroupService.GetGroupsByManager(AdminUser);
 
 			var post = id > 0
 				? PostService.GetPost(id, false)
@@ -383,6 +386,7 @@ namespace Wlq.Web.Controllers
 			post.IsLongterm = postModel.IsLongterm;
 			post.Phone = postModel.Phone;
 			post.Address = postModel.Address;
+			post.IsAudited = false;
 
 			if (post.Id == 0)
 			{
@@ -460,29 +464,39 @@ namespace Wlq.Web.Controllers
 
 		#region Ajax
 
-		public ActionResult GetGroupManagers(long id)
+		public ActionResult GetGroupManagers(long id, string keyword)
 		{
 			if (AdminUser == null)
 			{
 				return Content("[]", "text/json");
 			}
 
-			var managers = UserGroupService.GetManagersByGroup(id)
-				.Select(m => new { Id = m.Id, LoginName = m.LoginName, Name = m.Name });
+			var managers = UserGroupService.GetManagersByGroupTree(id, AdminUser, keyword)
+				.Select(m => new
+				{
+					Id = m.Id,
+					LoginName = m.LoginName,
+					Name = m.Name,
+					Group = this.GetGroupByManager(m)
+				});
 
 			return Content(managers.ObjectToJson(), "text/json");
 		}
 
-		public ActionResult GetGroupsByParent(long id)
+		public ActionResult GetGroupsByParent(long id, string keyword)
 		{
 			if (AdminUser == null)
 			{
 				return Content("[]", "text/json");
 			}
 
-			//todo: add 'all' option, keywords, pagination
-			var groups = UserGroupService.GetGroupsByParent(id)
-				.Select(g => new { Id = g.Id, Name = g.Name });
+			var groups = UserGroupService.GetGroupTreeByParent(id, AdminUser, keyword)
+				.Select(g => new
+				{
+					Id = g.Id,
+					Name = g.Name,
+					ParentGroupName = g.ParentGroupId > 0 ? this.GetGroupName(g.ParentGroupId) : "-",
+				});
 
 			return Content(groups.ObjectToJson(), "text/json");
 		}
@@ -540,12 +554,13 @@ namespace Wlq.Web.Controllers
 				.Select(p => new
 				{
 					Id = p.Id,
-					GroupName = UserGroupService.GetGroup(p.GroupId, true).Name,
+					GroupName = this.GetGroupName(p.GroupId),
 					Title = p.Title,
 					PostType = EnumHelper.GetDescription((PostType)p.PostType),
 					BookingNumber = p.BookingNumber,
 					Publisher = p.Publisher,
-					PublishTime = p.PublishTime.ToString("yyyy-MM-dd HH:mm:ss")
+					PublishTime = p.PublishTime.ToString("yyyy-MM-dd HH:mm:ss"),
+					Status = p.IsAudited ? "已审核" : "未审核"
 				});
 
 			var json = string.Format("{{\"TotalPage\":{0},\"List\":{1}}}"
@@ -568,7 +583,7 @@ namespace Wlq.Web.Controllers
 				.Select(p => new
 				{
 					Id = p.Id,
-					GroupName = UserGroupService.GetGroup(p.GroupId, true).Name,
+					GroupName = this.GetGroupName(p.GroupId),
 					Title = p.Title,
 					PostType = EnumHelper.GetDescription((PostType)p.PostType),
 					BookingNumber = p.BookingNumber,
@@ -763,6 +778,45 @@ namespace Wlq.Web.Controllers
 			return Content(new { Success = success }.ObjectToJson(), "text/json");
 		}
 
+		private string GetGroupName(long groupId)
+		{
+			var group = UserGroupService.GetGroup(groupId, true);
+
+			if (group != null)
+			{
+				return group.Name;
+			}
+
+			return "-";
+		}
+
+		//todo: many to many
+		private dynamic GetGroupByManager(UserInfo manager)
+		{
+			var group = UserGroupService.GetGroupsByManager(manager).FirstOrDefault();
+
+			if (group != null)
+			{
+				return new { Name = group.Name, Level = GetGroupLevel((GroupType)group.GroupType) };
+			}
+
+			return new { Name = "-", Level = "-" };
+		}
+
+		private string GetGroupLevel(GroupType type)
+		{
+			switch (type)
+			{
+				case GroupType.Department:
+					return "部门管理员";
+				case GroupType.Circle:
+					return "二级组织管理员";
+				default:
+					break;
+			}
+
+			return "-";
+		}
 
 		#endregion
 	}

@@ -12,7 +12,8 @@ namespace Wlq.Service.Implementation
 {
 	public class PostService : ServiceBase, IPostService
 	{
-		private static readonly TimeSpan _PostListCachedTime = new TimeSpan(0, 10, 0);
+		//todo: add cache time
+		private static readonly TimeSpan _PostListCachedTime = new TimeSpan(0, 0, 1);
 
 		[InjectionConstructor]
 		public PostService(DatabaseContext databaseContext)
@@ -232,8 +233,7 @@ namespace Wlq.Service.Implementation
 
 		public IEnumerable<PostInfo> GetPostsByGroupTree(long groupId, UserInfo manager, string keyword, int pageIndex, int pageSize, out int totalNumber)
 		{
-			var posts = base.GetRepository<PostInfo>().Entities
-				.Where(p => p.IsAudited);
+			var posts = base.GetRepository<PostInfo>().Entities;
 
 			if (groupId > 0)
 			{
@@ -245,11 +245,15 @@ namespace Wlq.Service.Implementation
 			}
 			else if(manager.Role != (int)RoleLevel.SuperAdmin)
 			{
-				var groupIds = base.GetRepository<GroupManagerInfo>().Entities
+				var parentGroupIds = base.GetRepository<GroupManagerInfo>().Entities
 					.Where(r => r.UserId == manager.Id)
 					.Select(r => r.GroupId);
 
-				posts = posts.Where(p => groupIds.Contains(p.GroupId));
+				var groupIds = base.GetRepository<GroupInfo>().Entities
+					.Where(g => parentGroupIds.Contains(g.ParentGroupId))
+					.Select(g => g.Id);
+
+				posts = posts.Where(p => parentGroupIds.Contains(p.GroupId) || groupIds.Contains(p.GroupId));
 			}
 
 			if (!string.IsNullOrWhiteSpace(keyword))
@@ -273,13 +277,17 @@ namespace Wlq.Service.Implementation
 					.Where(g => g.ParentGroupId == groupId)
 					.Select(g => g.Id);
 
-				posts = posts.Where(p => p.GroupId == groupId || groupIds.Contains(p.GroupId));
+				posts = posts.Where(p => groupIds.Contains(p.GroupId));
 			}
 			else if (manager.Role != (int)RoleLevel.SuperAdmin)
 			{
-				var groupIds = base.GetRepository<GroupManagerInfo>().Entities
+				var parentGroupIds = base.GetRepository<GroupManagerInfo>().Entities
 					.Where(r => r.UserId == manager.Id)
 					.Select(r => r.GroupId);
+
+				var groupIds = base.GetRepository<GroupInfo>().Entities
+					.Where(g => parentGroupIds.Contains(g.ParentGroupId))
+					.Select(g => g.Id);
 
 				posts = posts.Where(p => groupIds.Contains(p.GroupId));
 			}
@@ -383,12 +391,30 @@ namespace Wlq.Service.Implementation
 
 		public bool UpdatePost(PostInfo post)
 		{
-			return base.GetRepository<PostInfo>().Update(post, true) > 0;
+			var success = base.GetRepository<PostInfo>().Update(post, true) > 0;
+
+			if (success)
+			{
+				var key = string.Format("Wlq.Domain.PostInfo.{0}", post.Id);
+
+				CacheManager.Update<PostInfo>(key, post, new TimeSpan(0, 3, 0));
+			}
+
+			return success;
 		}
 
 		public bool DeletePost(long postId)
 		{
-			return base.GetRepository<PostInfo>().DeleteById(postId, true) > 0;
+			var success = base.GetRepository<PostInfo>().DeleteById(postId, true) > 0;
+
+			if (success)
+			{
+				var key = string.Format("Wlq.Domain.PostInfo.{0}", postId);
+
+				CacheManager.RemoveKey(key);
+			}
+
+			return success;
 		}
 
 		public bool AuditPost(long postId)

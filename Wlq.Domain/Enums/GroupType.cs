@@ -11,7 +11,7 @@ namespace Wlq.Domain
 		[Description("部门")]
 		Department = 1,
 
-		[Description("生活圈")]
+		[Description("社会生活圈")]
 		Circle = 2
 	}
 }
