@@ -96,6 +96,7 @@
     <Compile Include="Models\PostModel.cs" />
     <Compile Include="Models\GroupDetailModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
+    <Compile Include="Models\AdminPostBookerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

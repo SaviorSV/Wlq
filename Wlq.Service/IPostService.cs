@@ -23,6 +23,7 @@ namespace Wlq.Service
 		bool UpdateVenueGroup(VenueGroupInfo venueGroup);
 		bool DeleteVenueGroup(long venueGroupId);
 
+		VenueConfigInfo GetVenueConfig(long venueConfigId);
 		void SaveVenueConfigs(VenueInfo venue, Dictionary<DayOfWeek, List<BookingPeriod>> configs);
 		BookingConfig GetVenueConfigs(long venueId);
 

@@ -5,7 +5,7 @@
 @using Hanger.Utility;
 @using Wlq.Domain;
 
-@model IEnumerable<BookingInfo>
+@model IEnumerable<Wlq.Web.Models.AdminPostBookerModel>
 
 <h4 class="form-tt">预约列表</h4>
 <div class="formbody">
@@ -21,14 +21,20 @@
 				</tr>
 			</thead>
 			<tbody>
-			@foreach (var booking in Model)
+			@foreach (var item in Model)
 			{
 				<tr>
-					<td>@booking.Name</td>
-					<td>@booking.Mobile</td>
-					<td>@EnumHelper.GetDescription((InvolvedType)booking.InvolvedType)</td>
-					<td>@string.Format("{0:yyyy-MM-dd}", booking.BookingDate)</td>
-					<td>@string.Format("{0}", booking.IsPresent ? "是" : "否")</td>
+					<td>@item.Booking.Name</td>
+					<td>@item.Booking.Mobile</td>
+					<td>@EnumHelper.GetDescription((InvolvedType)item.Booking.InvolvedType)</td>
+					<td>
+						@string.Format("{0:yyyy-MM-dd}", item.Booking.BookingDate)
+					@if (item.Booking.VenueConfigId > 0 && item.VenueConfig != null)
+					{
+						<span>@string.Format("({0}:00-{1}:00)", item.VenueConfig.BegenTime / 100, item.VenueConfig.EndTime / 100)</span> 
+					}
+					</td>
+					<td>@string.Format("{0}", item.Booking.IsPresent ? "是" : "否")</td>
 				</tr>
 			}
 			</tbody>

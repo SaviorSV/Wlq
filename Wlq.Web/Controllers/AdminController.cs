@@ -441,7 +441,18 @@ namespace Wlq.Web.Controllers
 			ViewBag.PageIndex = pageIndex;
 			ViewBag.TotalPage = totalNumber > 0 ? Math.Ceiling((decimal)totalNumber / pageSize) : 1;
 
-			return View(bookingList);
+			var model = new List<AdminPostBookerModel>();
+
+			foreach (var booking in bookingList)
+			{
+				model.Add(new AdminPostBookerModel
+				{
+					Booking = booking,
+					VenueConfig = booking.VenueConfigId > 0 ? PostService.GetVenueConfig(booking.VenueConfigId) : null
+				});
+			}
+
+			return View(model);
 		}
 
 		#endregion

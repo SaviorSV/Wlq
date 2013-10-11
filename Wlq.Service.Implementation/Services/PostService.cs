@@ -114,6 +114,11 @@ namespace Wlq.Service.Implementation
 			return _databaseContext.SaveChanges() > 0;
 		}
 
+		public VenueConfigInfo GetVenueConfig(long venueConfigId)
+		{
+			return base.GetRepository<VenueConfigInfo>().GetById(venueConfigId);
+		}
+
 		public void SaveVenueConfigs(VenueInfo venue, Dictionary<DayOfWeek, List<BookingPeriod>> configs)
 		{
 			var venueConfigRepository = base.GetRepository<VenueConfigInfo>();
