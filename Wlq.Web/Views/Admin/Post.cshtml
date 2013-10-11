@@ -2,7 +2,7 @@
 	Layout = "~/Views/Admin/_Layout.cshtml";
 }
 
-@using Hanger.Common;
+@using Hanger.Utility;
 @using Wlq.Domain;
 @using Wlq.Web.Extensions;
 
@@ -70,10 +70,10 @@
 		<li id="bookingTypes">
 			<label>预约方式：</label>
 			<select id="bookingtype_selector">
-				<option value="1"  @Html.IsSelected(((BookingType)Model.BookingTypes & BookingType.Online) == BookingType.Online)>网上预约</option>
-				<option value="2"  @Html.IsSelected(((BookingType)Model.BookingTypes & BookingType.Phone) == BookingType.Phone)>电话预约</option>
+				<option value="1" @Html.IsSelected(((BookingType)Model.BookingTypes & BookingType.Online) == BookingType.Online)>@EnumHelper.GetDescription(BookingType.Online)</option>
+				<option value="2" @Html.IsSelected(((BookingType)Model.BookingTypes & BookingType.Phone) == BookingType.Phone)>@EnumHelper.GetDescription(BookingType.Phone)</option>
 			</select>
-			<input id="chk_spot_booking" type="checkbox" value="4" @Html.IsChecked(((BookingType)Model.BookingTypes & BookingType.Spot) == BookingType.Spot) /> 现场确认
+			<input id="chk_spot_booking" type="checkbox" value="4" @Html.IsChecked(((BookingType)Model.BookingTypes & BookingType.Spot) == BookingType.Spot) /> @EnumHelper.GetDescription(BookingType.Spot)
 		</li>
 		<li class="li_phone_booking" style="display:none;">
 			<label>联系电话(电话预约)：</label>

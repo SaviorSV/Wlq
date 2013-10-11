@@ -85,16 +85,7 @@ function normal_booking(postId) {
 		return;
 	}
 
-	var involvedTypeName = '观摩类';
-
-	switch (involvedType) {
-		case '1': involvedTypeName = '观摩类'; break;
-		case '2': involvedTypeName = '参与互动类'; break;
-		case '4': involvedTypeName = '支援服务类'; break;
-		default: break;
-	}
-
-	if (!confirm('参与形式：' + involvedTypeName + '， 确认预订？')) {
+	if (!confirm('确认预订？')) {
 		return;
 	}
 

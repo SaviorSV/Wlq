@@ -6,9 +6,6 @@ namespace Wlq.Domain
 	[Flags]
 	public enum BookingType
 	{
-		[Description("-")]
-		None = 0,
-
 		[Description("网上预约")]
 		Online = 1,
 

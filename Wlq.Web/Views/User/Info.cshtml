@@ -2,6 +2,7 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@using Hanger.Utility;
 @using Wlq.Domain;
 @using Wlq.Web.Extensions;
 
@@ -58,8 +59,14 @@
 }
 <h4 class="r-subtitle">个人标签</h4>
 <ul id="user_tags" class="usertag-list clearfix">
-	<li><label>党员</label> <input type="checkbox" value="@string.Format("{0}", (int)UserTag.PartyMember)" @Html.IsChecked(((UserTag)Model.Tags & UserTag.PartyMember) == UserTag.PartyMember) /></li>
-	<li><label>志愿者</label> <input type="checkbox" value="@string.Format("{0}", (int)UserTag.Volunteer)" @Html.IsChecked(((UserTag)Model.Tags & UserTag.Volunteer) == UserTag.Volunteer) /></li>
+	<li>
+		<label>@EnumHelper.GetDescription(UserTag.PartyMember)</label>
+		<input type="checkbox" value="@string.Format("{0}", (int)UserTag.PartyMember)" @Html.IsChecked(((UserTag)Model.Tags & UserTag.PartyMember) == UserTag.PartyMember) />
+	</li>
+	<li>
+		<label>@EnumHelper.GetDescription(UserTag.Volunteer)</label>
+		<input type="checkbox" value="@string.Format("{0}", (int)UserTag.Volunteer)" @Html.IsChecked(((UserTag)Model.Tags & UserTag.Volunteer) == UserTag.Volunteer) />
+	</li>
 </ul>
 
 <div class="btnbox">	<a id="btn_update_user" href="javascript:;" class="btn-1" style="width:200px;">确 定</a></div>@section scripts
