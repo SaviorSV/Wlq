@@ -144,6 +144,23 @@ namespace Wlq.Service.Implementation
 			}
 		}
 
+		public IEnumerable<GroupInfo> GetGroupTreeByManager(UserInfo manager)
+		{
+			var groups = base.GetRepository<GroupInfo>().Entities;
+
+			if (manager.Role != (int)RoleLevel.SuperAdmin)
+			{
+				var parentGroupIds = base.GetRepository<GroupManagerInfo>().Entities
+					.Where(r => r.UserId == manager.Id)
+					.Select(r => r.GroupId);
+
+				groups = groups.Where(g => parentGroupIds.Contains(g.Id) || parentGroupIds.Contains(g.ParentGroupId));
+			}
+
+			return groups
+				.OrderBy(g => g.GroupType);
+		}
+
 		public IEnumerable<GroupInfo> GetGroupsByParent(long parentGroupId)
 		{
 			return base.GetRepository<GroupInfo>().Entities

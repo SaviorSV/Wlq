@@ -67,7 +67,13 @@
 			<label>活动地址：</label>
 			@Html.TextBoxFor(x => x.Address, new { @class = "input-1" })
 		</li>
-		<li id="bookingTypes">
+		<li id="li_InvolvedTypes">
+			<label>参与形式：</label>
+			<input type="checkbox" value="1" @Html.IsChecked(((InvolvedType)Model.InvolvedTypes & InvolvedType.Observer) == InvolvedType.Observer) /> @EnumHelper.GetDescription(InvolvedType.Observer)
+			<input type="checkbox" value="2" @Html.IsChecked(((InvolvedType)Model.InvolvedTypes & InvolvedType.Participant) == InvolvedType.Participant) /> @EnumHelper.GetDescription(InvolvedType.Participant)
+			<input type="checkbox" value="4" @Html.IsChecked(((InvolvedType)Model.InvolvedTypes & InvolvedType.Volunteer) == InvolvedType.Volunteer) /> @EnumHelper.GetDescription(InvolvedType.Volunteer)
+		</li>
+		<li>
 			<label>预约方式：</label>
 			<select id="bookingtype_selector">
 				<option value="1" @Html.IsSelected(((BookingType)Model.BookingTypes & BookingType.Online) == BookingType.Online)>@EnumHelper.GetDescription(BookingType.Online)</option>
@@ -89,7 +95,7 @@
 		</li>
 		<li class="li_spot_booking" style="display:none;">
 			<label>确认地址(现场确认)：</label>
-			@Html.TextBoxFor(x => x.SpotBookingTime, new { @class = "input-1" })
+			@Html.TextBoxFor(x => x.SpotBookingAddress, new { @class = "input-1" })
 		</li>
 		<li>
 			<label>活动简介：</label>
@@ -115,6 +121,7 @@
 	<input name="Id" type="hidden" value="@Model.Id" />
 	<input id="post_hidden" name="Image" type="hidden" value="@Model.Image" />
 	<input id="bookingType_hidden" name="BookingTypes" type="hidden" value="@Model.BookingTypes" />
+	<input id="involvedType_hidden" name="InvolvedTypes" type="hidden" value="@Model.InvolvedTypes" />
 	<a id="save_post" href="javascript:;" class="btn-3">保　存</a>
 	<a href="javascript:window.history.go(-1);" class="btn-3">返　回</a>
 }
@@ -200,12 +207,26 @@
 				bookingTypes |= $("#chk_spot_booking").val();
 			}
 
-			if(bookingTypes == 0) {
+			if (bookingTypes == 0) {
 				alert("请选择预约方式");
 				return;
 			}
 
+			var involvedTypes = 0;
+
+			$("#li_InvolvedTypes input[type=checkbox]").each(function () {
+				if ($(this).attr('checked')) {
+					involvedTypes |= $(this).val();
+				}
+			});
+
+			if (involvedTypes == 0) {
+				alert("请选择参与形式");
+				return;
+			}
+
 			$("#bookingType_hidden").val(bookingTypes);
+			$("#involvedType_hidden").val(involvedTypes);
 
 			$("#admin_save_post_form").submit();
 		});

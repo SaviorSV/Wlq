@@ -325,7 +325,7 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult Post(long id)
 		{
-			ViewBag.GroupList = UserGroupService.GetGroupsByManager(AdminUser);
+			ViewBag.GroupList = UserGroupService.GetGroupTreeByManager(AdminUser);
 
 			var post = id > 0
 				? PostService.GetPost(id, false)
@@ -373,10 +373,11 @@ namespace Wlq.Web.Controllers
 			post.Remark = postModel.Remark;
 			post.IsHealthTopic = group.IsHealth;
 			post.VenueGroupId = postModel.PostType == (int)PostType.Venue ? postModel.VenueGroupId : 0;
-			post.Publisher = AdminUser.Name;
+			post.Publisher = !string.IsNullOrEmpty(post.Publisher) ? post.Publisher : AdminUser.Name;
 			post.PublishTime = DateTime.Now;
 			post.Image = postModel.Image;
 			post.BookingTypes = postModel.BookingTypes;
+			post.InvolvedTypes = postModel.InvolvedTypes;
 			post.PhoneBookingNumber = postModel.PhoneBookingNumber;
 			post.PhoneBookingTime = postModel.PhoneBookingTime;
 			post.SpotBookingNumber = postModel.SpotBookingNumber;

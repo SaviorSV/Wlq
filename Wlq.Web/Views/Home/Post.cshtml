@@ -73,9 +73,18 @@
 					<span>限定人数：@Model.Post.LimitNumber</span><br />
 					<span>
 						参与形式：
+					@if (((InvolvedType)Model.Post.InvolvedTypes & InvolvedType.Observer) == InvolvedType.Observer)
+					{
 						<input type="radio" name="involvedType" value="1" /> @EnumHelper.GetDescription(InvolvedType.Observer)
+					}
+					@if (((InvolvedType)Model.Post.InvolvedTypes & InvolvedType.Participant) == InvolvedType.Participant)
+					{
 						<input type="radio" name="involvedType" value="2" /> @EnumHelper.GetDescription(InvolvedType.Participant)
+					}
+					@if (((InvolvedType)Model.Post.InvolvedTypes & InvolvedType.Volunteer) == InvolvedType.Volunteer)
+					{
 						<input type="radio" name="involvedType" value="4" /> @EnumHelper.GetDescription(InvolvedType.Volunteer)
+					}
 					</span><br />
 				}
 					<br />

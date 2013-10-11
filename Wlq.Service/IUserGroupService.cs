@@ -28,6 +28,7 @@ namespace Wlq.Service
 		IEnumerable<GroupInfo> GetCircles(int pageIndex, int pageSize, out int totalNumber);
 		IEnumerable<GroupInfo> GetGroupsByUser(long userId);
 		IEnumerable<GroupInfo> GetGroupsByManager(UserInfo manager);
+		IEnumerable<GroupInfo> GetGroupTreeByManager(UserInfo manager);
 		IEnumerable<GroupInfo> GetGroupsByParent(long parentGroupId);
 		IEnumerable<GroupInfo> GetGroupTreeByParent(long parentGroupId, UserInfo manager, string keyword);
 		GroupInfo GetGroup(long groupId, bool fromCache);
