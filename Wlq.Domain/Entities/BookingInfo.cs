@@ -2,7 +2,7 @@
 
 namespace Wlq.Domain
 {
-	public class BookingInfo : Entity
+	public class BookingInfo : EntityBase
 	{
 		public long UserId { get; set; }
 		public long PostId { get; set; }

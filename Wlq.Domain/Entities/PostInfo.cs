@@ -2,7 +2,7 @@
 
 namespace Wlq.Domain
 {
-	public class PostInfo : Entity
+	public class PostInfo : EntityBase
 	{
 		public long GroupId { get; set; }
 		public string Title { get; set; }

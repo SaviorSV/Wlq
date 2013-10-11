@@ -9,7 +9,7 @@ using Wlq.Domain;
 namespace Wlq.Persistence
 {
 	public class DatabaseRepository<TEntity>
-		where TEntity : class, IEntity
+		where TEntity : EntityBase
 	{
 		private readonly DatabaseContext _context;
 		private readonly DbSet<TEntity> _dbSet;

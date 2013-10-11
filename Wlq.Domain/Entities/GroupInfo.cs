@@ -1,7 +1,7 @@
 ﻿
 namespace Wlq.Domain
 {
-	public class GroupInfo : Entity
+	public class GroupInfo : EntityBase
 	{
 		public string Name { get; set; }
 		public string Logo { get; set; }

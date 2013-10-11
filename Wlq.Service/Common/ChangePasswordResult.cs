@@ -1,4 +1,5 @@
-﻿namespace Wlq.Service
+﻿
+namespace Wlq.Service
 {
 	public enum ChangePasswordResult
 	{

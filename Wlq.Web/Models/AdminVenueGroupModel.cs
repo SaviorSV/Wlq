@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 using Wlq.Domain;
 
 namespace Wlq.Web.Models

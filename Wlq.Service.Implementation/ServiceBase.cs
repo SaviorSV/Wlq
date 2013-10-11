@@ -18,7 +18,7 @@ namespace Wlq.Service.Implementation
 		}
 
 		protected DatabaseRepository<TEntity> GetRepository<TEntity>()
-			where TEntity : class, IEntity
+			where TEntity : EntityBase
 		{
 			var type = typeof(TEntity);
 

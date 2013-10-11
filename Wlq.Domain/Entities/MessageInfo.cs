@@ -2,7 +2,7 @@
 
 namespace Wlq.Domain
 {
-	public class MessageInfo : Entity
+	public class MessageInfo : EntityBase
 	{
 		public string Title { get; set; }
 		public string Content { get; set; }

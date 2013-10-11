@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
+﻿
 namespace Wlq.Domain
 {
-	public class VenueInfo : Entity
+	public class VenueInfo : EntityBase
 	{
 		public string Name { get; set; }
 		public string Phone { get; set; }

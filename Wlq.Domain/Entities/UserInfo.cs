@@ -1,7 +1,7 @@
 ﻿
 namespace Wlq.Domain
 {
-	public class UserInfo : Entity
+	public class UserInfo : EntityBase
 	{
 		public string Code { get; set; }
 		public string LoginName { get; set; }

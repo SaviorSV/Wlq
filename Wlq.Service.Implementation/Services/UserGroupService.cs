@@ -323,7 +323,7 @@ namespace Wlq.Service.Implementation
 		#region Private
 
 		private IEnumerable<UserInfo> GetUsersByRelation<TEntity>(long groupId)
-			where TEntity : Entity, IUserGroupRelation
+			where TEntity : EntityBase, IUserGroupRelation
 		{
 			var relations = base.GetRepository<TEntity>().Entities
 				.Where(r => r.GroupId == groupId)
@@ -334,7 +334,7 @@ namespace Wlq.Service.Implementation
 		}
 
 		private IEnumerable<GroupInfo> GetGroupsByRelation<TEntity>(long userId)
-			where TEntity : Entity, IUserGroupRelation
+			where TEntity : EntityBase, IUserGroupRelation
 		{
 			var relations = base.GetRepository<TEntity>().Entities
 				.Where(r => r.UserId == userId)
@@ -345,7 +345,7 @@ namespace Wlq.Service.Implementation
 		}
 
 		private bool AddRelation<TEntity>(long userId, long groupId)
-			where TEntity : Entity, IUserGroupRelation, new()
+			where TEntity : EntityBase, IUserGroupRelation, new()
 		{
 			if (this.HasRelation<TEntity>(userId, groupId))
 				return true;
@@ -370,7 +370,7 @@ namespace Wlq.Service.Implementation
 		}
 
 		private bool RemoveRelations<TEntity>(long userId, long groupId)
-			where TEntity : Entity, IUserGroupRelation
+			where TEntity : EntityBase, IUserGroupRelation
 		{
 			var relationRepository = base.GetRepository<TEntity>();
 			var relations = relationRepository.Entities
@@ -385,7 +385,7 @@ namespace Wlq.Service.Implementation
 		}
 
 		private bool HasRelation<TEntity>(long userId, long groupId)
-			where TEntity : Entity, IUserGroupRelation
+			where TEntity : EntityBase, IUserGroupRelation
 		{
 			var relation = base.GetRepository<TEntity>().Entities
 				.FirstOrDefault(ug => ug.GroupId == groupId && ug.UserId == userId);

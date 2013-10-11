@@ -1,7 +1,7 @@
 ﻿
 namespace Wlq.Domain
 {
-	public class VenueConfigInfo : Entity
+	public class VenueConfigInfo : EntityBase
 	{
 		public long VenueId { get; set; }
 		public int DaysOfWeek { get; set; }

@@ -2,7 +2,7 @@
 
 namespace Wlq.Domain
 {
-	public abstract class Entity : IEntity
+	public abstract class EntityBase
 	{
 		public long Id { get; set; }
 
@@ -10,13 +10,13 @@ namespace Wlq.Domain
 
 		public override bool Equals(object obj)
 		{
-			if (obj == null || !(obj is Entity))
+			if (obj == null || !(obj is EntityBase))
 				return false;
 
 			if (Object.ReferenceEquals(this, obj))
 				return true;
 
-			var item = (Entity)obj;
+			var item = (EntityBase)obj;
 
 			return item.Id == this.Id;
 		}
@@ -31,7 +31,7 @@ namespace Wlq.Domain
 			return _requestedHashCode.Value;
 		}
 
-		public static bool operator ==(Entity left, Entity right)
+		public static bool operator ==(EntityBase left, EntityBase right)
 		{
 			if (Object.Equals(left, null))
 				return (Object.Equals(right, null)) ? true : false;
@@ -39,7 +39,7 @@ namespace Wlq.Domain
 				return left.Equals(right);
 		}
 
-		public static bool operator !=(Entity left, Entity right)
+		public static bool operator !=(EntityBase left, EntityBase right)
 		{
 			return !(left == right);
 		}
