@@ -86,13 +86,14 @@ namespace Wlq.Web.Controllers
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult Group(long groupId, long parentGroupId)
 		{
+			var group = groupId > 0
+				? UserGroupService.GetGroup(groupId, false)
+				: new GroupInfo { ParentGroupId = parentGroupId };
+
 			var parentGroup = UserGroupService.GetGroup(parentGroupId, false);
 
 			ViewBag.ParentGroupName = parentGroup == null ? "无" : parentGroup.Name;
 
-			var group = groupId > 0
-				? UserGroupService.GetGroup(groupId, false)
-				: new GroupInfo { ParentGroupId = parentGroupId };
 
 			if (group == null || group.ParentGroupId != parentGroupId)
 			{
@@ -131,6 +132,7 @@ namespace Wlq.Web.Controllers
 			group.Email = groupModel.Email;
 			group.WorkTime = groupModel.WorkTime;
 			group.Introduction = groupModel.Introduction;
+			group.IsHealth = groupModel.IsHealth;
 
 			if (group.Id == 0)
 			{
@@ -495,6 +497,7 @@ namespace Wlq.Web.Controllers
 				{
 					Id = g.Id,
 					Name = g.Name,
+					ParentGroupId = g.ParentGroupId,
 					ParentGroupName = g.ParentGroupId > 0 ? this.GetGroupName(g.ParentGroupId) : "-",
 				});
 

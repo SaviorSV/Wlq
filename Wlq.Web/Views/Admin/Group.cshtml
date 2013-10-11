@@ -38,6 +38,10 @@
 			@Html.TextBoxFor(x => x.Introduction, new { @class = "input-1" })
 		</li>
 		<li>
+			<label>健康生活：</label>
+			@Html.CheckBoxFor(x => x.IsHealth)<font style="color:Gray; font-size:small;">发布的信息出现在健康生活版块</font>
+		</li>
+		<li>
 			<label>头　　像：</label>
 			<input id="logo_uploader" name="logo_uploader" type="file" onchange="upload_file('logo');" /><br />
 		@if (string.IsNullOrWhiteSpace(Model.Logo))

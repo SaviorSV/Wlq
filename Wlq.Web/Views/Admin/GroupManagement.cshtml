@@ -101,7 +101,7 @@ else
 					for (var i in data) {
 						result += "<tr><td>" + data[i].Name + "</td>";
 						result += "<td>" + data[i].ParentGroupName + "</td>";
-						result += "<td><a href='javascript:;' onclick='send_message(" + data[i].Id + ")'>发送消息</a>&nbsp;&nbsp;<a href='/Admin/Group?groupId=" + data[i].Id + "&parentGroupId=" + groupId + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_group(" + data[i].Id + ");'>删除</a></td></tr>";
+						result += "<td><a href='javascript:;' onclick='send_message(" + data[i].Id + ")'>发送消息</a>&nbsp;&nbsp;<a href='/Admin/Group?groupId=" + data[i].Id + "&parentGroupId=" + data[i].ParentGroupId + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_group(" + data[i].Id + ");'>删除</a></td></tr>";
 					}
 
 					result += "</tbody></table>";
