@@ -33,7 +33,7 @@
 		{
 			<a href="/Home/Post/@Model.Post.Id" class="btn">预 约</a>
 		}
-		@if (Model.Post.PostType != (int)PostType.Venue)
+		@if (Model.Post.VenueGroupId == 0)
 		{
 			<font>已预约<strong id='@string.Format("booking_number_{0}", Model.Post.Id)'>@Model.Post.BookingNumber</strong>人</font>
 		}

@@ -19,5 +19,13 @@ namespace Wlq.Web.Extensions
 
 			return null;
 		}
+
+		public static MvcHtmlString IsVisible(this HtmlHelper helper, bool isVisible)
+		{
+			if (!isVisible)
+				return new MvcHtmlString("style='display:none;'");
+
+			return null;
+		}
 	}
 }

@@ -43,7 +43,6 @@
 {
 	<script type="text/javascript">
 		var postId = @Model.Id;
-		var postType = @Model.PostType;
 
 		$(function () {
 			$(document).ready(function () {
@@ -51,12 +50,7 @@
 
 				$("#userCode").focus();
 
-				if (postType == 3) {
-					bind_venue_configs();
-				}
-				else {
-					$("#venue_panel").hide();
-				}
+				bind_venue_configs();
 			});
 		});
 
@@ -76,6 +70,9 @@
 						venueconfigSelector.append("<option value='0'>无</option>")
 					}
 				});
+			}
+			else {
+				$("#venue_panel").hide();
 			}
 
 			$("#userCode").focus();

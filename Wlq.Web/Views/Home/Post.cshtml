@@ -45,7 +45,7 @@
 			<div class="clear detailtxt-box">
 				<h3>
 					@Model.Post.Title
-				@if (Model.Post.PostType != (int)PostType.Venue)
+				@if (Model.Post.VenueGroupId == 0)
 				{
 					<p>
 						已预约<strong id='@string.Format("booking_number_{0}", Model.Post.Id)'>@Model.Post.BookingNumber</strong>人,
@@ -68,7 +68,7 @@
 				{
 					<span>起止日期：@string.Format("{0:yyyy-MM-dd}", Model.Post.BeginDate) 至 @string.Format("{0:yyyy-MM-dd}", Model.Post.EndDate)</span><br />
 				}
-				@if (Model.Post.PostType != (int)PostType.Venue) 
+				@if (Model.Post.VenueGroupId == 0) 
 				{
 					<span>限定人数：@Model.Post.LimitNumber</span><br />
 					<span>
@@ -124,7 +124,7 @@
 				<div class="btnbox">
 			@if (ViewBag.CurrentUserId > 0)
 			{
-				if (Model.Post.PostType != (int)PostType.Venue)
+				if (Model.Post.VenueGroupId == 0)
 				{
 					if (!Model.IsBooked)
 					{

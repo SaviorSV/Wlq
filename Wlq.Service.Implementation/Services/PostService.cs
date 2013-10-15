@@ -22,10 +22,17 @@ namespace Wlq.Service.Implementation
 
 		#region venue
 
-		public IEnumerable<VenueGroupInfo> GetVenueGroupsByGroup(long groupId)
+		public IEnumerable<VenueGroupInfo> GetVenueGroupsByGroup(long groupId, int postType)
 		{
-			return base.GetRepository<VenueGroupInfo>().Entities
+			var venueGroups = base.GetRepository<VenueGroupInfo>().Entities
 				.Where(v => v.GroupId == groupId);
+
+			if (postType != (int)PostType.All)
+			{
+				venueGroups = venueGroups.Where(v => v.PostType == postType);
+			}
+
+			return venueGroups;
 		}
 
 		public VenueGroupInfo GetVenueGroup(long venueGroupId)
@@ -487,13 +494,13 @@ namespace Wlq.Service.Implementation
 
 			if (post == null || (DateTime.Now < post.BeginDate || DateTime.Now > post.EndDate))
 			{
-				message = "预订失败(发布信息失效)";
+				message = "预约失败(发布信息失效)";
 				return false;
 			}
 
-			if (post.PostType != (int)PostType.Venue && post.BookingNumber >= post.LimitNumber)
+			if (booking.VenueConfigId == 0 && post.BookingNumber >= post.LimitNumber)
 			{
-				message = "预订失败(预定人数已满)";
+				message = "预约失败(预约人数已满)";
 				return false;
 			}
 
@@ -505,7 +512,7 @@ namespace Wlq.Service.Implementation
 
 				if (venueConfig == null)
 				{
-					message = "预订失败(该场配置不存在)";
+					message = "预约失败(该配置不存在)";
 					return false;
 				}
 
@@ -514,7 +521,7 @@ namespace Wlq.Service.Implementation
 
 				if (booked != null)
 				{
-					message = "预订失败(已预订过该场地)";
+					message = "预约失败(已预约)";
 					return false;
 				}
 
@@ -522,7 +529,7 @@ namespace Wlq.Service.Implementation
 
 				if (venueBookingNumber >= venueConfig.LimitNumber)
 				{
-					message = "预订失败(该场预定达到人数上限)";
+					message = "预约失败(预约达到人数上限)";
 					return false;
 				}
 			}
@@ -658,7 +665,7 @@ namespace Wlq.Service.Implementation
 			}
 
 			var bookingRepository = base.GetRepository<BookingInfo>();
-			var booking = post.PostType == (int)PostType.Venue
+			var booking = post.VenueGroupId > 0
 				? bookingRepository.Entities
 					.FirstOrDefault(b => b.PostId == postId && b.UserId == user.Id && b.VenueConfigId == venueConfigId && b.BookingDate == bookingDate.Date)
 				: bookingRepository.Entities

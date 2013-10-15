@@ -197,7 +197,7 @@ namespace Wlq.Web.Controllers
 
 			if (venueGroup == null)
 			{
-				return AlertAndRedirect("保存失败(场馆不存在)", "/Admin/VenueManagement");
+				return AlertAndRedirect("保存失败", "/Admin/VenueManagement");
 			}
 
 			venueGroup.Name = venueGroupModel.Name;
@@ -205,19 +205,20 @@ namespace Wlq.Web.Controllers
 			venueGroup.GroupId = venueGroupModel.GroupId;
 			venueGroup.Phone = venueGroupModel.Phone;
 			venueGroup.Address = venueGroupModel.Address;
+			venueGroup.PostType = venueGroupModel.PostType;
 
 			if (venueGroup.Id == 0)
 			{
 				if (!PostService.AddVenueGroup(venueGroup))
 				{
-					return AlertAndRedirect("保存失败(添加场馆失败)", "/Admin/VenueManagement");
+					return AlertAndRedirect("保存失败(添加失败)", "/Admin/VenueManagement");
 				}
 			}
 			else
 			{
 				if (!PostService.UpdateVenueGroup(venueGroup))
 				{
-					return AlertAndRedirect("保存失败(更新场馆失败)", "/Admin/VenueManagement");
+					return AlertAndRedirect("保存失败(更新失败)", "/Admin/VenueManagement");
 				}
 			}
 
@@ -374,7 +375,7 @@ namespace Wlq.Web.Controllers
 			post.Fee = postModel.Fee;
 			post.Remark = postModel.Remark;
 			post.IsHealthTopic = group.IsHealth;
-			post.VenueGroupId = postModel.PostType == (int)PostType.Venue ? postModel.VenueGroupId : 0;
+			post.VenueGroupId = postModel.VenueGroupId;
 			post.Publisher = !string.IsNullOrEmpty(post.Publisher) ? post.Publisher : AdminUser.Name;
 			post.PublishTime = DateTime.Now;
 			post.Image = postModel.Image;
@@ -422,7 +423,7 @@ namespace Wlq.Web.Controllers
 
 			ViewBag.PostTypeName = EnumHelper.GetDescription((PostType)post.PostType);
 
-			if (post.PostType == (int)PostType.Venue && post.VenueGroupId > 0)
+			if (post.VenueGroupId > 0)
 			{
 				ViewBag.Venues = PostService.GetVenuesByVenueGroup(post.VenueGroupId);
 			}
@@ -515,21 +516,22 @@ namespace Wlq.Web.Controllers
 			return Content(groups.ObjectToJson(), "text/json");
 		}
 
-		public ActionResult GetVenueGroupsByGroup(long id)
+		public ActionResult GetVenueGroupsByGroup(long id, int postType = (int)PostType.All)
 		{
 			if (AdminUser == null)
 			{
 				return Content("[]", "text/json");
 			}
 
-			var venueGroups = PostService.GetVenueGroupsByGroup(id)
-				.Select(v => new 
-				{ 
-					Id = v.Id, 
+			var venueGroups = PostService.GetVenueGroupsByGroup(id, postType)
+				.Select(v => new
+				{
+					Id = v.Id,
 					Name = v.Name,
 					Phone = v.Phone,
 					Address = v.Address,
-					VenueType = EnumHelper.GetDescription((VenueType)v.VenueType)
+					PostTypeName = v.PostType == (int)PostType.Venue
+						? "场馆" : EnumHelper.GetDescription((PostType)v.PostType)
 				});
 
 			return Content(venueGroups.ObjectToJson(), "text/json");

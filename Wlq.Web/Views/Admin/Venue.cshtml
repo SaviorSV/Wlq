@@ -7,16 +7,16 @@
 
 @model VenueInfo
 
-<h4 class="form-tt">场地配置</h4>
+<h4 class="form-tt">时段配置</h4>
 <div class="formbody">
 @using (Html.BeginForm("SaveVenue", "Admin", FormMethod.Post, new { id = "admin_save_venue_form" }))
 {
 	<ul>
 		<li>
-			<label>所属场馆：@ViewBag.VenueGroupName</label>
+			<label>所　　属：@ViewBag.VenueGroupName</label>
 		</li>
 		<li>
-			<label>场地名称：</label>
+			<label>名　　称：</label>
 			<input class="input-2" id="venueName" name="Name" type="text" value="@Model.Name" />
 		</li>
 		<li>
@@ -24,7 +24,7 @@
 			<input class="input-2" name="Phone" type="text" value="@Model.Phone" />
 		</li>
 		<li>
-			<label>场地地址：</label>
+			<label>地　　址：</label>
 			<input class="input-1" name="Address" type="text" value="@Model.Address" />
 		</li>
 		<li>
@@ -92,7 +92,7 @@
 	<input name="VenueGroupId" type="hidden" value="@ViewBag.VenueGroupId" />
 	<input id="config_hidden" name="config" type="hidden" />
 	<a id="save_venue" href="javascript:;" class="btn-3">保　存</a>
-	<a href="@Url.Action("VenueManagement", "Admin")" class="btn-3">返　回</a>
+	<a href="javascript:window.history.go(-1);" class="btn-3">返　回</a>
 }
 </div>
 <div class="formfooter"></div>
@@ -109,7 +109,7 @@
 
 		$("#save_venue").bind("click", function () {
 			if ($.trim($("#venueName").val()) == '') {
-				alert("场地名称不可为空");
+				alert("名称不可为空");
 				return false;
 			}
 			else {

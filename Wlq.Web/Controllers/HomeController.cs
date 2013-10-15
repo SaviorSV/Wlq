@@ -32,8 +32,6 @@ namespace Wlq.Web.Controllers
 				{
 					Post = post,
 					Group = UserGroupService.GetGroup(post.GroupId, true)
-					//IsBooked = CurrentUserId > 0 && post.PostType != (int)PostType.Venue
-					//    ? PostService.IsBookedPost(post.Id, CurrentUserId) : false
 				});
 			}
 
@@ -57,8 +55,6 @@ namespace Wlq.Web.Controllers
 				{
 					Post = post,
 					Group = UserGroupService.GetGroup(post.GroupId, true)
-					//IsBooked = CurrentUserId > 0 && post.PostType != (int)PostType.Venue
-					//    ? PostService.IsBookedPost(post.Id, CurrentUserId) : false
 				});
 			}
 
@@ -102,8 +98,6 @@ namespace Wlq.Web.Controllers
 				{
 					Post = post,
 					Group = group
-					//IsBooked = CurrentUserId > 0 && post.PostType != (int)PostType.Venue
-					//    ? PostService.IsBookedPost(post.Id, CurrentUserId) : false
 				});
 			}
 
@@ -166,9 +160,9 @@ namespace Wlq.Web.Controllers
 			{
 				Post = post,
 				Group = group,
-				Venues = post.PostType == (int)PostType.Venue && post.VenueGroupId > 0
+				Venues = post.VenueGroupId > 0
 					? PostService.GetVenuesByVenueGroupNotSuspended(post.VenueGroupId) : null,
-				IsBooked = post.PostType != (int)PostType.Venue
+				IsBooked = post.VenueGroupId == 0
 					? PostService.IsBookedPost(CurrentUserId, post.Id) : false,
 				IsConcerned = PostService.IsUserConcernPost(post.Id, CurrentUserId)
 			};

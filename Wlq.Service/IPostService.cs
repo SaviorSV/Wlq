@@ -17,7 +17,7 @@ namespace Wlq.Service
 		bool DeleteVenue(long venueId);
 		bool SuspendVenue(long venueId, bool suspend);
 
-		IEnumerable<VenueGroupInfo> GetVenueGroupsByGroup(long groupId);
+		IEnumerable<VenueGroupInfo> GetVenueGroupsByGroup(long groupId, int postType);
 		VenueGroupInfo GetVenueGroup(long venueGroupId);
 		bool AddVenueGroup(VenueGroupInfo venueGroup);
 		bool UpdateVenueGroup(VenueGroupInfo venueGroup);

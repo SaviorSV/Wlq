@@ -39,7 +39,7 @@
 				<option value="2" @Html.IsSelected(Model.PostType == 2)>课程</option>
 				<option value="3" @Html.IsSelected(Model.PostType == 3)>场地</option>
 			</select>
-			<label id="venuegroup_selector_title">场馆：</label>
+			<label id="venuegroup_selector_title">周期活动：</label>
 			<select id="venuegroup_selector" name="VenueGroupId" class="select-1"></select>
 		</li>
 		<li>
@@ -142,7 +142,7 @@
 		$(document).ready(function () {
 			selected_left_menu(3);
 
-			show_venue_group_selector(@Model.PostType);
+			show_venue_group_selector('@Model.VenueGroupId');
 
 			if($("#bookingtype_selector").val() == '2') {
 				$(".li_phone_booking").show();
@@ -231,16 +231,8 @@
 			$("#admin_save_post_form").submit();
 		});
 
-		$("#post_type_selector").bind("change", function () {
-			var postType = $("#post_type_selector").val();
-
-			show_venue_group_selector(postType);
-		});
-
-		$("#group_selector").bind("change", function () {
-			var postType = $("#post_type_selector").val();
-
-			show_venue_group_selector(postType);
+		$("#post_type_selector, #group_selector").bind("change", function () {
+			show_venue_group_selector();
 		});
 
 		$("#bookingtype_selector").bind("change", function() {
@@ -270,45 +262,41 @@
 			}
 		});
 
-		function show_venue_group_selector(postType) {
+		function show_venue_group_selector(venueGroupId) {
+			var groupId = $("#group_selector").val();
+			var postType = $("#post_type_selector").val();
+			var venuegroupSelector = $("#venuegroup_selector").empty();
+
+			venuegroupSelector.append("<option value='0'>无</option>");
+
+			if (groupId > 0) {
+				$.get("/Admin/GetVenueGroupsByGroup/" + groupId + "?postType=" + postType, function (data) {
+					if (data.length > 0) {
+						for (var i in data) {
+							venuegroupSelector.append("<option value='" + data[i].Id + "' phone='" + data[i].Phone + "' address='" + data[i].Address + "'>" + data[i].Name + "</option>")
+						}
+					}
+
+					if (venueGroupId > 0) {
+						$("#venuegroup_selector").val(venueGroupId);
+					}
+				});
+			}
+
 			if (postType == 3) {
-				var groupId = $("#group_selector").val();
-				var venuegroupSelector = $("#venuegroup_selector").empty();
-
-				if (groupId > 0) {
-					$.get("/Admin/GetVenueGroupsByGroup/" + groupId, function (data) {
-						if (data.length > 0) {
-							for (var i in data) {
-								venuegroupSelector.append("<option value='" + data[i].Id + "' phone='" + data[i].Phone + "' address='" + data[i].Address + "'>" + data[i].Name + "</option>")
-							}
-
-							bind_venuegroup_detail();
-						}
-						else {
-							venuegroupSelector.append("<option value='0'>无</option>")
-						}
-					});
-				}
-
-				$("#venuegroup_selector_title").show();
-				$("#venuegroup_selector").show();
+				$("#venuegroup_selector_title").text("场馆：");
 			}
 			else {
-				$("#venuegroup_selector_title").hide();
-				$("#venuegroup_selector").hide();
+				$("#venuegroup_selector_title").text("周期活动：");
 			}
 		}
 
-		$('#venuegroup_selector').bind("change", function() {
-			bind_venuegroup_detail()
-		});
-
-		function bind_venuegroup_detail() {
+		$('#venuegroup_selector').bind("change", function () {
 			var selected = $('#venuegroup_selector').find(":selected");
 
 			$("#Phone").val(selected.attr('phone'));
 			$("#Address").val(selected.attr('address'));
-		}
+		});
 
 	</script>
 }

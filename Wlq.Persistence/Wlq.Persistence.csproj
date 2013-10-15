@@ -138,6 +138,10 @@
     <Compile Include="Migrations\201310091334306_UpdateVenueInfo.Designer.cs">
       <DependentUpon>201310091334306_UpdateVenueInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201310151511259_UpdateVenueGroupInfo.cs" />
+    <Compile Include="Migrations\201310151511259_UpdateVenueGroupInfo.Designer.cs">
+      <DependentUpon>201310151511259_UpdateVenueGroupInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -213,6 +217,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201310091334306_UpdateVenueInfo.resx">
       <DependentUpon>201310091334306_UpdateVenueInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201310151511259_UpdateVenueGroupInfo.resx">
+      <DependentUpon>201310151511259_UpdateVenueGroupInfo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

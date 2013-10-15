@@ -5,11 +5,11 @@
 
 @model IEnumerable<Wlq.Domain.GroupInfo>
 
-<h4 class="form-tt">场地管理</h4>
+<h4 class="form-tt">周期配置</h4>
 <div class="formbody">
 @if (Model == null || Model.Count() == 0)
 {
-	 <span>没有组织信息，无法配置场馆</span>
+	 <span>没有组织信息，无法配置</span>
 }
 else
 {
@@ -21,9 +21,16 @@ else
 			<option value="@group.Id">@group.Name</option>
 		}
 		</select>
-
-		@*<a id="find_venuegroup" href="javascript:;" class="btn-3">查询场馆信息</a>*@
-		<a id="add_venue_group" href="@Url.Action("VenueGroup", "Admin", new { Id = 0 })" class="btn-3">+新增场馆</a>
+		&nbsp;&nbsp;
+		<span>类型：</span>
+		<select id="postType_selector" class="select-2">
+			<option value="0">全部</option>
+			<option value="1">活动</option>
+			<option value="2">课程</option>
+			<option value="3">场馆</option>
+		</select>
+		&nbsp;&nbsp;
+		<a id="add_venue_group" href="/Admin/VenueGroup/0" class="btn-3">+新增场馆或周期活动</a>
 	</div>
 	<div id="venuegroup_list" class="quanxian-tt"></div>
 }
@@ -39,28 +46,29 @@ else
 			bind_venuegroup_list();
 		});
 
-		$("#department_selector").bind("change", function () {
+		$("#department_selector, #postType_selector").bind("change", function () {
 			bind_venuegroup_list();
 		});
 
 		function bind_venuegroup_list() {
 			var groupId = $("#department_selector").val();
+			var postType = $("#postType_selector").val();
 
 			if (groupId > 0) {
-				$.get("/Admin/GetVenueGroupsByGroup/" + groupId, function (data) {
+				$.get("/Admin/GetVenueGroupsByGroup/" + groupId + "?postType=" + postType, function (data) {
 					var result = '';
 					if (data.length > 0) {
 						result += "<table class='list-tbl'>";
-						result += "<thead><tr><th>名称</th><th>场馆类型</th><th>操作</th></tr></thead><tbody>";
+						result += "<thead><tr><th>名称</th><th>类型</th><th>操作</th></tr></thead><tbody>";
 
 						for (var i in data) {
-							result += "<tr><td>" + data[i].Name + "</td><td>" + data[i].VenueType + "</td><td><a href='/Admin/VenueGroup/" + data[i].Id + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_venuegroup(" + data[i].Id + ");'>删除</a></td></tr>";
+							result += "<tr><td>" + data[i].Name + "</td><td>" + data[i].PostTypeName + "</td><td><a href='/Admin/VenueGroup/" + data[i].Id + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_venuegroup(" + data[i].Id + ");'>删除</a></td></tr>";
 						}
 
 						result += "</tbody></table>";
 					}
 					else {
-						result = "<span>未添加任何场馆</span>";
+						result = "<span>未添加任何数据</span>";
 					}
 
 					$("#venuegroup_list").html(result);
@@ -69,7 +77,7 @@ else
 		}
 
 		function remove_venuegroup(venuegroupId) {
-			if (!confirm("确定删除该场馆?"))
+			if (!confirm("确定删除?"))
 				return false;
 
 			$.ajax({
