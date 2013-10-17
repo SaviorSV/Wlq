@@ -413,23 +413,9 @@ namespace Wlq.Web.Controllers
 		}
 
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
-		public ActionResult SigninBooking(long id)
+		public ActionResult SigninBooking()
 		{
-			var post = PostService.GetPost(id, true);
-
-			if (post == null)
-			{
-				return AlertAndRedirect("发布信息不存在", "/Admin/PostManagement");
-			}
-
-			ViewBag.PostTypeName = EnumHelper.GetDescription((PostType)post.PostType);
-
-			if (post.VenueGroupId > 0)
-			{
-				ViewBag.Venues = PostService.GetVenuesByVenueGroup(post.VenueGroupId);
-			}
-
-			return View(post);
+			return View();
 		}
 
 		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
@@ -479,6 +465,29 @@ namespace Wlq.Web.Controllers
 		#endregion
 
 		#region Ajax
+
+		public ActionResult GetBookingList(string userCode)
+		{
+			if (AdminUser == null)
+			{
+				return Content("[]", "text/json");
+			}
+
+			var bookingList = PostService.GetBookingListByUserCode(userCode, AdminUser)
+				.Select(b => new
+				{ 
+					Id = b.Id,
+					PostTitle = GetPostTile(b.PostId),
+					Name = b.Name,
+					Mobile = b.Mobile,
+					VenueName = GetVenueName(b.VenueId),
+					DateShow = GetBookingDateShow(b),
+					IsPresent = b.IsPresent,
+					PresentTime = b.PresentTime.ToString("yyyy-MM-dd HH:mm:ss")
+				});
+
+			return Content(bookingList.ObjectToJson(), "text/json");
+		}
 
 		public ActionResult GetGroupManagers(long id, string keyword)
 		{
@@ -784,13 +793,13 @@ namespace Wlq.Web.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult SigninForBooking(string userCode, long postId, long venueConfigId)
+		public ActionResult SigninForBooking(long id)
 		{
 			var success = false;
 
 			if (AdminUser != null)
 			{
-				success = PostService.SigninForBooking(userCode, postId, venueConfigId, DateTime.Today.Date);
+				success = PostService.SigninForBooking(id);
 			}
 
 			return Content(new { Success = success }.ObjectToJson(), "text/json");
@@ -800,12 +809,7 @@ namespace Wlq.Web.Controllers
 		{
 			var group = UserGroupService.GetGroup(groupId, true);
 
-			if (group != null)
-			{
-				return group.Name;
-			}
-
-			return "-";
+			return group != null ? group.Name : "-";
 		}
 
 		//todo: many to many
@@ -834,6 +838,33 @@ namespace Wlq.Web.Controllers
 			}
 
 			return "-";
+		}
+
+		private string GetVenueName(long venueId)
+		{
+			var venue = venueId > 0 ? PostService.GetVenue(venueId) : null;
+
+			return venue != null ? venue.Name : "-";
+		}
+
+		private string GetPostTile(long postId)
+		{
+			var post = PostService.GetPost(postId, true);
+
+			return post != null ? post.Title : "-";
+		}
+
+		private string GetBookingDateShow(BookingInfo booking)
+		{
+			var dateShow = booking.BookingDate.ToString("yyyy-MM-dd");
+			var venueConfig = booking.VenueConfigId > 0 ? PostService.GetVenueConfig(booking.VenueConfigId) : null;
+
+			if (venueConfig != null)
+			{
+				dateShow += string.Format("({0}:00-{1}:00)", venueConfig.BegenTime / 100, venueConfig.EndTime / 100);
+			}
+
+			return dateShow;
 		}
 
 		#endregion

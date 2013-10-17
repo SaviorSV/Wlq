@@ -2,123 +2,96 @@
 	Layout = "~/Views/Admin/_Layout.cshtml";
 }
 
-@using Wlq.Domain;
-
-@model PostInfo
-
 <h4 class="form-tt">刷卡签到</h4>
 <div id="formbody" class="formbody">
 	<ul class="singin-list">
-		<li>标题： @Model.Title</li>
-		<li>类型： @ViewBag.PostTypeName</li>
-		<li id="venue_panel">
-			场地：
-			<select id="venue_selector">
-		@if (ViewBag.Venues != null)
-		{
-			foreach (var venue in ViewBag.Venues as IEnumerable<VenueInfo>)
-			{
-				<option value="@venue.Id">@venue.Name</option>
-			}
-		}
-		else
-		{
-				<option value="0">无</option>
-		}
-			</select>
-			<select id="venueconfig_selector">
-				<option value="0">无</option>
-			</select>
-		</li>
 		<li>
 			<label class="btn-4">读 卡</label>
-			<input name="userCode" id="userCode" type="password" />
-			<a id="btn_signin_booking" href="javascript:;" class="btn-5" style="width:70px;">签 到</a>
+			<input id="userCode" type="password" />
 		</li>
 	</ul>
+
+	<div id="booking_list" class="quanxian-tt"></div>
 </div>
 <div class="formfooter"></div>
 
 @section scripts
 {
 	<script type="text/javascript">
-		var postId = @Model.Id;
-
 		$(function () {
 			$(document).ready(function () {
-				selected_left_menu(3);
-
 				$("#userCode").focus();
-
-				bind_venue_configs();
 			});
-		});
-
-		function bind_venue_configs() {
-			var venueId = $("#venue_selector").val();
-			var venueconfigSelector = $("#venueconfig_selector").empty();
-
-			if (venueId > 0) {
-				$.get("/Admin/GetVenueConfigs/" + venueId, function (data) {
-					var result = '';
-					if (data.length > 0) {
-						for (var i in data) {
-							venueconfigSelector.append("<option value='" + data[i].Id + "'>" + get_day_of_week(data[i].DayOfWeek) + " " + data[i].BeginTime + "-" + data[i].EndTime + "</option>")
-						}
-					}
-					else {
-						venueconfigSelector.append("<option value='0'>无</option>")
-					}
-				});
-			}
-			else {
-				$("#venue_panel").hide();
-			}
-
-			$("#userCode").focus();
-		}
-
-		$("#venue_selector").bind("change", function () {
-			bind_venue_configs();
 		});
 
 		$("#formbody").keypress(function (e) {
 			var kCode = e.keyCode || e.charCode;
 
 			if (kCode == 13) {
-				$("#btn_signin_booking").click();
+				bind_group_list();
 				return false;
 			}
 		});
 
-		$("#btn_signin_booking").bind("click", function () {
-			var userCode = $("#userCode").val();
+		function bind_group_list() {
+			var code = $.trim($("#userCode").val());
 
-			if (userCode != '') {
-				var venueConfigId = $("#venueconfig_selector").val();
+			if (code != '') {
+				$.get("/Admin/GetBookingList?userCode=" + code, function (data) {
+					var result = '';
+					
+					if (data.length > 0) {
+						result += "<table class='list-tbl'>";
+						result += "<thead><tr><th>预约项目</th><th>姓名</th><th>联系方式</th><th>场地/周期活动</th><th>预约日期</th><th>操作</th></tr></thead><tbody>";
 
-				$.ajax({
-					type: "POST",
-					dataType: 'json',
-					url: "/Admin/SigninForBooking",
-					data: {
-						'userCode': userCode,
-						'postId': postId,
-						'venueConfigId': venueConfigId
-					},
-					success: function (r, status) {
-						if (r.Success) {
-							alert("签到成功");
+						for (var i in data) {
+							result += "<tr><td>" + data[i].PostTitle + "</td>";
+							result += "<td>" + data[i].Name + "</td>";
+							result += "<td>" + data[i].Mobile + "</td>";
+							result += "<td>" + data[i].VenueName + "</td>";
+							result += "<td>" + data[i].DateShow + "</td>";
+							if (data[i].IsPresent) {
+								result += "<td>签到时间：" + data[i].PresentTime + "</td></tr>";
+							}
+							else {
+								result += "<td id='td_booking_status_" + data[i].Id + "'><a href='javascript:;' onclick='sign_in(" + data[i].Id + ")'>签到</a></td></tr>";
+							}
 						}
-						else {
-							alert("签到失败");
-						}
+
+						result += "</tbody></table>";
 					}
+					else {
+						result = "<span>无预约信息</span>";
+					}
+
+					$("#booking_list").html(result);
 				});
+
+				$("#userCode").val('');
+				$("#userCode").focus();
 			}
-			
-			$("#userCode").val('');
+		}
+
+		function sign_in(bookingId) {
+			$.ajax({
+				type: "POST",
+				dataType: 'json',
+				url: "/Admin/SigninForBooking",
+				data: {
+					'id': bookingId
+				},
+				success: function (r, status) {
+					if (r.Success) {
+						$("#td_booking_status_" + bookingId).html("已签到");
+						alert("签到成功");
+					}
+					else {
+						alert("签到失败");
+					}
+				}
+			});
+
 			$("#userCode").focus();
-		});
+		}
 	</script>
 }

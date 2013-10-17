@@ -631,6 +631,37 @@ namespace Wlq.Service.Implementation
 				.Paging(pageIndex, pageSize, out totalNumber);
 		}
 
+		public IEnumerable<BookingInfo> GetBookingListByUserCode(string userCode, UserInfo manager)
+		{
+			var user = base.GetRepository<UserInfo>().Entities
+				.FirstOrDefault(u => u.Code == userCode);
+
+			if (user == null)
+			{
+				return new List<BookingInfo>();
+			}
+
+			var posts = base.GetRepository<PostInfo>().Entities
+				.Where(p => p.IsAudited == true && DateTime.Now >= p.BeginDate && DateTime.Now <= p.EndDate);
+
+			if (manager.Role != (int)RoleLevel.SuperAdmin)
+			{
+				var parentGroupIds = base.GetRepository<GroupManagerInfo>().Entities
+					.Where(r => r.UserId == manager.Id)
+					.Select(r => r.GroupId);
+
+				var groupIds = base.GetRepository<GroupInfo>().Entities
+					.Where(g => parentGroupIds.Contains(g.ParentGroupId))
+					.Select(g => g.Id);
+
+				posts = posts.Where(p => parentGroupIds.Contains(p.GroupId) || groupIds.Contains(p.GroupId));
+			}
+
+			return base.GetRepository<BookingInfo>().Entities
+				.Where(b => b.UserId == user.Id && posts.Select(p => p.Id).Contains(b.PostId) && (b.VenueConfigId == 0 || b.BookingDate > DateTime.Now))
+				.OrderByDescending(b => b.BookingDate);
+		}
+
 		private bool IsBookedVenue(long postId, long userId, long venueConfigId, DateTime bookingDate)
 		{
 			var booking = base.GetRepository<BookingInfo>().Entities
@@ -647,38 +678,20 @@ namespace Wlq.Service.Implementation
 			return booking != null;
 		}
 
-		public bool SigninForBooking(string userCode, long postId, long venueConfigId, DateTime bookingDate)
+		public bool SigninForBooking(long bookingId)
 		{
-			var user = base.GetRepository<UserInfo>().Entities
-				.FirstOrDefault(u => u.Code == userCode);
-
-			if (user == null)
-			{
-				return false;
-			}
-
-			var post = base.GetRepository<PostInfo>().GetById(postId);
-
-			if (post == null)
-			{
-				return false;
-			}
-
 			var bookingRepository = base.GetRepository<BookingInfo>();
-			var booking = post.VenueGroupId > 0
-				? bookingRepository.Entities
-					.FirstOrDefault(b => b.PostId == postId && b.UserId == user.Id && b.VenueConfigId == venueConfigId && b.BookingDate == bookingDate.Date)
-				: bookingRepository.Entities
-					.FirstOrDefault(b => b.PostId == postId && b.UserId == user.Id);
+			var booking = bookingRepository.GetById(bookingId);
 
-			if (booking == null)
+			if (booking != null)
 			{
-				return false;
+				booking.IsPresent = true;
+				booking.PresentTime = DateTime.Now;
+
+				return bookingRepository.Update(booking, true) > 0;
 			}
 
-			booking.IsPresent = true;
-
-			return bookingRepository.Update(booking, true) > 0;
+			return false;
 		}
 
 		#endregion

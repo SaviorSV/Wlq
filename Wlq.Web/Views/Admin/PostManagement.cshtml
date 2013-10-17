@@ -113,7 +113,7 @@ else
 						result += "<td>" + list[i].Publisher + "</td>";
 						result += "<td>" + list[i].PublishTime + "</td>";
 						result += "<td>" + list[i].Status + "</td>";
-						result += "<td><a href='javascript:;' onclick='send_message(" + list[i].Id + ")'>发送消息</a>&nbsp;&nbsp;<a href='/Admin/SigninBooking/" + list[i].Id + "'>签到</a>&nbsp;&nbsp;<a href='/Admin/Post/" + list[i].Id + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_post(" + list[i].Id + ");'>删除</a></td></tr>";
+						result += "<td><a href='javascript:;' onclick='send_message(" + list[i].Id + ")'>发送消息</a>&nbsp;&nbsp;<a href='/Admin/Post/" + list[i].Id + "'>编辑</a>&nbsp;&nbsp;<a href='javascript:;' onclick='remove_post(" + list[i].Id + ");'>删除</a></td></tr>";
 					}
 
 					result += "</tbody></table>";

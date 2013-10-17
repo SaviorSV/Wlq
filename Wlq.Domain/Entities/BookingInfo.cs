@@ -14,12 +14,14 @@ namespace Wlq.Domain
 		public int InvolvedType { get; set; }
 		public DateTime BookingDate { get; set; }
 		public bool IsPresent { get; set; }
-		
+		public DateTime PresentTime { get; set; }
+
 		public BookingInfo()
 		{
 			Name = string.Empty;
 			Mobile = string.Empty;
 			BookingDate = DateTime.Now;
+			PresentTime = DateTime.Now;
 		}
 	}
 }

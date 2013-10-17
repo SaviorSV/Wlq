@@ -58,10 +58,11 @@ namespace Wlq.Service
 
 		IList<BookingSchedule> GetBookingSchedules(long userId, long postId, long venueId, int days);
 		IEnumerable<BookingInfo> GetBookingList(long postId, int pageIndex, int pageSize, out int totalNumber);
+		IEnumerable<BookingInfo> GetBookingListByUserCode(string userCode, UserInfo manager);
 		bool Booking(BookingInfo booking, out string message);
 		bool CancelBooking(long userId, long postId, long venueConfigId, DateTime bookingDate);
 		bool IsBookedPost(long userId, long postId);
-		bool SigninForBooking(string userCode, long postId, long venueConfigId, DateTime bookingDate);
+		bool SigninForBooking(long bookingId);
 
 		#endregion
 

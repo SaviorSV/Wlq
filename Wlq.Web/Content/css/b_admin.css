@@ -159,7 +159,7 @@ body{ background:url(../images/admin/bg.png) repeat-y left top; }
 .post_img { max-width:150px; max-height:150px; }
 .configs { font-size:10pt; margin:20px 0 30px 40px; }
 
-.singin-list{ padding:0 0 0 50px;}
+.singin-list{ padding:0 0 0 20px;}
 .singin-list li{ margin-bottom:20px; clear:both; overflow:hidden}
 .singin-list li label.btn-4{ float:left;margin-right:0px;}
 .singin-list li span{ float:left; height:40px; line-height:40px;}
