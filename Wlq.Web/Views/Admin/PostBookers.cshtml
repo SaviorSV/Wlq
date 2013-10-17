@@ -16,6 +16,7 @@
 					<th>姓名</th>
 					<th>联系方式</th>
 					<th>参与方式</th>
+					<td>场地</td>
 					<th>预约日期</th>
 					<th>是否签到</th>
 				</tr>
@@ -27,6 +28,12 @@
 					<td>@item.Booking.Name</td>
 					<td>@item.Booking.Mobile</td>
 					<td>@EnumHelper.GetDescription((InvolvedType)item.Booking.InvolvedType)</td>
+					<td>
+					@if (item.Booking.VenueId > 0 && item.Venue != null)
+					{
+						<span>@item.Venue.Name</span> 
+					}
+					</td>
 					<td>
 						@string.Format("{0:yyyy-MM-dd}", item.Booking.BookingDate)
 					@if (item.Booking.VenueConfigId > 0 && item.VenueConfig != null)

@@ -450,6 +450,7 @@ namespace Wlq.Web.Controllers
 				model.Add(new AdminPostBookerModel
 				{
 					Booking = booking,
+					Venue = booking.VenueId > 0 ? PostService.GetVenue(booking.VenueId) : null,
 					VenueConfig = booking.VenueConfigId > 0 ? PostService.GetVenueConfig(booking.VenueConfigId) : null
 				});
 			}
