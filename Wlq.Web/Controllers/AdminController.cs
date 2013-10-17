@@ -61,7 +61,7 @@ namespace Wlq.Web.Controllers
 			var isSuperAdmin = AdminUser.Role == (int)RoleLevel.SuperAdmin;
 
 			model.Departments = UserGroupService.GetGroupsByManager(AdminUser)
-				.Where(g => g.ParentGroupId == 0);
+				.Where(g => g.GroupType == (int)GroupType.Department);
 
 			if (!isSuperAdmin && model.Departments != null && model.Departments.Count() > 0)
 			{
@@ -77,7 +77,7 @@ namespace Wlq.Web.Controllers
 		public ActionResult GroupManagement()
 		{
 			var groups = UserGroupService.GetGroupsByManager(AdminUser)
-				.Where(g => g.ParentGroupId == 0);
+				.Where(g => g.GroupType == (int)GroupType.Department);
 
 			ViewBag.IsSuperAdmin = AdminUser.Role == (int)RoleLevel.SuperAdmin;
 
@@ -390,7 +390,7 @@ namespace Wlq.Web.Controllers
 			post.IsLongterm = postModel.IsLongterm;
 			post.Phone = postModel.Phone;
 			post.Address = postModel.Address;
-			post.IsAudited = false;
+			post.IsAudited = group.GroupType == (int)GroupType.Department ? true : false;
 
 			if (post.Id == 0)
 			{

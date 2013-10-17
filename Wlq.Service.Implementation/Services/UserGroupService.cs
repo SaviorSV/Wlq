@@ -137,7 +137,7 @@ namespace Wlq.Service.Implementation
 			if (manager.Role == (int)RoleLevel.SuperAdmin)
 			{
 				return base.GetRepository<GroupInfo>().Entities
-					.Where(g => g.ParentGroupId == 0);
+					.Where(g => g.GroupType == (int)GroupType.Department);
 			}
 			else
 			{
