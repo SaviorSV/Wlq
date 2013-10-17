@@ -1,0 +1,55 @@
+﻿@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4 class="r-subtitle">注册用户</h4>
+@using (Html.BeginForm("Register", "User", FormMethod.Post, new { id = "register_form" }))
+{
+<ul class="useredit-list1">
+	<li>
+		<label class="btn-2">用户名</label>
+		<input name="LoginName" id="register_loginName" />
+	</li>
+	<li>
+		<label class="btn-2">读　卡</label>
+		<input name="Code" id="register_userCode" type="password" />
+	</li>
+	<li>
+		<a id="btn_register" href="javascript:;" class="btn-1" style="width:120px;">注 册</a>
+	</li>
+</ul>
+}@section scripts
+{
+	<script type="text/javascript">
+		$(function () {
+			$(document).ready(function () {
+				$("#register_loginName").focus();
+			});
+		});
+
+		$("#register_form").keypress(function (e) {
+			var kCode = e.keyCode || e.charCode;
+
+			if (kCode == 13) {
+				$("#btn_register").click();
+				return false;
+			}
+		});
+
+		$("#btn_register").bind("click", function () {
+			if ($("#register_loginName").val() == '') {
+				$("#register_loginName").focus();
+				alert('请输入用户名');
+				return;
+			}
+
+			if ($("#register_userCode").val() == '') {
+				$("#register_userCode").focus();
+				alert('请刷卡');
+				return;
+			}
+
+			$("#register_form").submit();
+		});
+	</script>
+}

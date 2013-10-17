@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\ChangePasswordResult.cs" />
+    <Compile Include="Common\AddUserResult.cs" />
     <Compile Include="IPostService.cs" />
     <Compile Include="IUserGroupService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

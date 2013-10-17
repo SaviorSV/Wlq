@@ -7,6 +7,7 @@ using NUnit.Framework;
 using Wlq.Domain;
 using Hanger.Common;
 using Hanger.Utility;
+using Wlq.Service;
 
 namespace Wlq.Test.ServiceTests
 {
@@ -23,7 +24,7 @@ namespace Wlq.Test.ServiceTests
 
 			var result = UserGroupService.AddUser(user);
 
-			Assert.IsTrue(result);
+			Assert.AreEqual(AddUserResult.Success, result);
 		}
 
 		[Test]

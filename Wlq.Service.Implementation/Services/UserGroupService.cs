@@ -27,7 +27,7 @@ namespace Wlq.Service.Implementation
 			return base.GetRepository<UserInfo>().GetById(userId);
 		}
 
-		public bool AddUser(UserInfo user)
+		public AddUserResult AddUser(UserInfo user)
 		{
 			var userRepository = base.GetRepository<UserInfo>();
 			var existUser = userRepository.Entities
@@ -35,10 +35,11 @@ namespace Wlq.Service.Implementation
 
 			if (existUser != null)
 			{
-				return false;
+				return AddUserResult.Exist;
 			}
 
-			return userRepository.Add(user, true) > 0;
+			return userRepository.Add(user, true) > 0
+				? AddUserResult.Success : AddUserResult.Error;
 		}
 
 		public bool UpdateUser(UserInfo user)

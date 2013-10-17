@@ -1,12 +1,13 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 using System.Web.Security;
 
+using Hanger.Utility;
 using Wlq.Domain;
 using Wlq.Service;
 using Wlq.Web.Fliters;
 using Wlq.Web.Models;
-using System;
-using System.Collections.Generic;
 
 namespace Wlq.Web.Controllers
 {
@@ -151,6 +152,32 @@ namespace Wlq.Web.Controllers
 			{
 				return AlertAndRedirect("登录失败", "/User/SwipeLogin");
 			}
+		}
+
+		public ActionResult Register()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public ActionResult Register(UserInfo userModel)
+		{
+			if (string.IsNullOrWhiteSpace(userModel.LoginName) || string.IsNullOrWhiteSpace(userModel.Code))
+			{
+				return AlertAndRedirect("登录名或卡号为空", "/User/Register");
+			}
+
+			var user = new UserInfo
+			{
+				Code = userModel.Code,
+				LoginName = userModel.LoginName,
+				Password = StringHelper.GetMd5("111111"),
+				Role = (int)RoleLevel.Normal
+			};
+
+			var result = UserGroupService.AddUser(user);
+
+			return AlertAndRedirect(EnumHelper.GetDescription(result), "/User/Register");
 		}
 
 		[LoginAuthentication(RoleLevel.Normal, "Home", "Index")]

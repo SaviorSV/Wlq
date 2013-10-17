@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Hanger.Common;
 using Hanger.Utility;
 using Wlq.Domain;
+using Wlq.Service;
 using Wlq.Web.Fliters;
 using Wlq.Web.Models;
 
@@ -632,7 +633,7 @@ namespace Wlq.Web.Controllers
 						Role = (int)RoleLevel.Manager
 					};
 
-					if (UserGroupService.AddUser(user))
+					if (UserGroupService.AddUser(user) == AddUserResult.Success)
 					{
 						success = UserGroupService.AddManagerToGroup(user.Id, groupId);
 					}

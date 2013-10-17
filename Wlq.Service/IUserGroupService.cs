@@ -13,7 +13,7 @@ namespace Wlq.Service
 		#region User
 
 		UserInfo GetUser(long userId);
-		bool AddUser(UserInfo user);
+		AddUserResult AddUser(UserInfo user);
 		bool UpdateUser(UserInfo user);
 		bool DeleteUser(long userId);
 		ChangePasswordResult ChangePassword(UserInfo user, string oldPassword, string newPassword);
