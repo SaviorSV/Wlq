@@ -370,8 +370,7 @@ namespace Wlq.Web.Controllers
 			post.PostType = postModel.PostType;
 			post.Title = postModel.Title;
 			post.Content = postModel.Content;
-			post.BeginDate = postModel.BeginDate;
-			post.EndDate = postModel.EndDate;
+			
 			post.LimitNumber = postModel.LimitNumber;
 			post.Fee = postModel.Fee;
 			post.Remark = postModel.Remark;
@@ -387,10 +386,21 @@ namespace Wlq.Web.Controllers
 			post.SpotBookingNumber = postModel.SpotBookingNumber;
 			post.SpotBookingTime = postModel.SpotBookingTime;
 			post.SpotBookingAddress = postModel.SpotBookingAddress;
-			post.IsLongterm = postModel.IsLongterm;
 			post.Phone = postModel.Phone;
 			post.Address = postModel.Address;
 			post.IsAudited = group.GroupType == (int)GroupType.Department ? true : false;
+			post.IsLongterm = postModel.IsLongterm;
+
+			if (postModel.IsLongterm)
+			{
+				post.BeginDate = new DateTime(2000, 1, 1);
+				post.EndDate = new DateTime(2099, 1, 1);
+			}
+			else
+			{
+				post.BeginDate = postModel.BeginDate;
+				post.EndDate = postModel.EndDate;
+			}
 
 			if (post.Id == 0)
 			{
