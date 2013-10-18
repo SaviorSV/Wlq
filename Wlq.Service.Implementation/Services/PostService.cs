@@ -375,7 +375,7 @@ namespace Wlq.Service.Implementation
 		public IEnumerable<PostInfo> GetPostsByUserBooking(long userId, int pageIndex, int pageSize, out int totalNumber)
 		{
 			var bookingPostIds = base.GetRepository<BookingInfo>().Entities
-				.Where(b => b.UserId == userId && (b.VenueConfigId == 0 || b.BookingDate > DateTime.Now))
+				.Where(b => b.UserId == userId && (b.VenueConfigId == 0 || b.BookingDate >= DateTime.Today))
 				.Select(b => b.PostId)
 				.Distinct();
 
@@ -658,7 +658,7 @@ namespace Wlq.Service.Implementation
 			}
 
 			return base.GetRepository<BookingInfo>().Entities
-				.Where(b => b.UserId == user.Id && posts.Select(p => p.Id).Contains(b.PostId) && (b.VenueConfigId == 0 || b.BookingDate > DateTime.Now))
+				.Where(b => b.UserId == user.Id && posts.Select(p => p.Id).Contains(b.PostId) && (b.VenueConfigId == 0 || b.BookingDate >= DateTime.Today))
 				.OrderByDescending(b => b.BookingDate);
 		}
 
