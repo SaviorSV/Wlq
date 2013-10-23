@@ -44,6 +44,7 @@ namespace Wlq.Service
 		IEnumerable<UserInfo> GetManagersByGroupTree(long groupId, UserInfo manager, string keyword);
 		bool AddManagerToGroup(long userId, long groupId);
 		bool RemoveManagerFromGroup(long userId, long groupId);
+		bool RemoveManager(long userId);
 		bool IsManagerInGroup(long userId, long groupId);
 
 		#endregion

@@ -664,18 +664,13 @@ namespace Wlq.Web.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult RemoveManager(long userId, long groupId)
+		public ActionResult RemoveManager(long id)
 		{
 			var success = false;
 
 			if (AdminUser != null)
 			{
-				success = UserGroupService.RemoveManagerFromGroup(userId, groupId);
-
-				if (success)
-				{
-					UserGroupService.DeleteUser(userId);
-				}
+				success = UserGroupService.RemoveManager(id);
 			}
 
 			return Content(new { Success = success }.ObjectToJson(), "text/json");

@@ -182,7 +182,7 @@ else
 						result += "<td>" + data[i].Name + "</td>";
 						result += "<td>" + data[i].Group.Level + "</td>";
 						result += "<td>" + data[i].Group.Name + "</td>";
-						result += "<td><a href='javascript:;' onclick='remove_manager(" + data[i].Id + "," + groupId + ")' class='editico-1'></a></td>";
+						result += "<td><a href='javascript:;' onclick='remove_manager(" + data[i].Id + ")' class='editico-1'></a></td>";
 						result += "<td><a href='javascript:;' onclick='reset_password(" + data[i].Id + ")' class='editico-2'></a></td></tr>";
 					}
 
@@ -209,7 +209,7 @@ else
 			}
 		}
 
-		function remove_manager(userId, groupId) {
+		function remove_manager(userId) {
 			if (!confirm("确定删除管理员?"))
 				return false;
 
@@ -218,8 +218,7 @@ else
 				dataType: 'json',
 				url: "/Admin/RemoveManager",
 				data: {
-					'userId': userId,
-					'groupId': groupId
+					'id': userId
 				},
 				success: function (r, status) {
 					if (r.Success) {

@@ -45,7 +45,7 @@
 			<div class="clear detailtxt-box">
 				<h3>
 					@Model.Post.Title
-				@if (Model.Post.VenueGroupId == 0)
+				@if (Model.Post.VenueGroupId == 0 && ((BookingType)Model.Post.BookingTypes & BookingType.Phone) != BookingType.Phone)
 				{
 					<p>
 						已预约<strong id='@string.Format("booking_number_{0}", Model.Post.Id)'>@Model.Post.BookingNumber</strong>人,
@@ -124,7 +124,7 @@
 				<div class="btnbox">
 			@if (ViewBag.CurrentUserId > 0)
 			{
-				if (Model.Post.VenueGroupId == 0)
+				if (Model.Post.VenueGroupId == 0 && ((BookingType)Model.Post.BookingTypes & BookingType.Phone) != BookingType.Phone)
 				{
 					if (!Model.IsBooked)
 					{

@@ -307,6 +307,27 @@ namespace Wlq.Service.Implementation
 			return this.AddRelation<GroupManagerInfo>(userId, groupId);
 		}
 
+		public bool RemoveManager(long userId)
+		{
+			var success = base.GetRepository<UserInfo>().DeleteById(userId, true) > 0;
+
+			if (success)
+			{
+				var relationRepository = base.GetRepository<GroupManagerInfo>();
+				var relations = relationRepository.Entities
+					.Where(ug => ug.UserId == userId);
+
+				foreach (var relation in relations)
+				{
+					relationRepository.Delete(relation, false);
+				}
+
+				_databaseContext.SaveChanges();
+			}
+
+			return success;
+		}
+
 		public bool RemoveManagerFromGroup(long userId, long groupId)
 		{
 			return this.RemoveRelations<GroupManagerInfo>(userId, groupId);
