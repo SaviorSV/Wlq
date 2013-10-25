@@ -303,6 +303,7 @@
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\Admin\UnAuditedPost.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Views\Home\YYGH.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

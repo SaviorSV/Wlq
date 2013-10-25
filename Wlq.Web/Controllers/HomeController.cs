@@ -79,6 +79,29 @@ namespace Wlq.Web.Controllers
 			return View();
 		}
 
+		[LoginAuthentication(RoleLevel.Normal, "User", "Login")]
+		public ActionResult YYGH()
+		{
+			var modelList = new List<PostModel>();
+			var configPostIds = new int[] { 82, 83 };
+
+			foreach (var postId in configPostIds)
+			{
+				var post = PostService.GetPost(postId, true);
+
+				if (post != null)
+				{
+					modelList.Add(new PostModel
+					{
+						Post = post,
+						Group = UserGroupService.GetGroup(post.GroupId, true)
+					});
+				}
+			}
+
+			return View(modelList);
+		}
+
 		public ActionResult Group(long id, int pageIndex = 1)
 		{
 			var group = UserGroupService.GetGroup(id, true);

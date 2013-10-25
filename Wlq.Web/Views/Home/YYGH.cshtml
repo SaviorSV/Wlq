@@ -10,9 +10,9 @@
 	<li><a href="@Url.Action("TZJC", "Home")" class="tab-1"></a></li>
 	<li><a href="@Url.Action("JKDA", "Home")" class="tab-2"></a></li>
 	<li><a href="@Url.Action("JKBD", "Home")" class="tab-3"></a></li>
-	<li><a href="@Url.Action("YYGH", "Home")" class="tab-4"></a></li>
+	<li class="tabon"><a href="javascript:;" class="tab-4"></a></li>
 </ul>
-<h3 class="r-box-title"><img src="/content/images/common/title-7.jpg" alt="title" /></h3>
+<h3 class="r-box-title"><img src="/content/images/common/title-15.jpg" alt="title" /></h3>
 <div class="indexlist">
 @foreach (var item in Model)
 {
@@ -21,22 +21,11 @@
 		Html.RenderPartial("_PostItem", item);
 	}
 }
-	<div class="page">
-		第 @ViewBag.PageIndex / @ViewBag.TotalPage 页 
-		<a id="previous" href="javascript:;">上一页</a>
-		<a id="next" href="javascript:;">下一页</a>
-		<input id="pager_index" type="text" />
-		<a id="pager_redirect" href="javascript:;">跳转</a>
-	</div>
 </div>
 
 @section scripts
 {
 	<script type="text/javascript">
-		pageIndex = @ViewBag.PageIndex;
-		totalPage = @ViewBag.TotalPage;
-		pageUrl = '/Home/Health?';
-
 		$(document).ready(function () {
 			selected_left_menu(1);
 		});
