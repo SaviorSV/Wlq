@@ -1,0 +1,36 @@
+﻿@{
+	Layout = "~/Views/Admin/_Layout.cshtml";
+}
+
+<h4 class="form-tt">开卡导入</h4>
+<div class="formbody">
+@using (Html.BeginForm("DoImport", "Admin", FormMethod.Post, new { id = "import_user_form", enctype = "multipart/form-data" }))
+{
+	<ul>
+		<li>
+			<label>数据文件：</label>
+			<input id="importFile" name="importFile" type="file" />
+			<a id="btn_import" href="javascript:;" class="btn-3">开始导入</a>
+		</li>
+	</ul>
+}
+</div>
+<div class="formfooter"></div>
+
+@section scripts
+{
+	<script type="text/javascript">
+		$(document).ready(function () {
+			selected_left_menu(6);
+		});
+
+		$("#btn_import").bind("click", function () {
+			if ($("#importFile").val() == '') {
+				alert('请选择上传文件');
+				return;
+			}
+
+			$("#import_user_form").submit();
+		});
+	</script>
+}

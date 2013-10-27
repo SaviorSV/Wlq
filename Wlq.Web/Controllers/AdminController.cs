@@ -175,6 +175,29 @@ namespace Wlq.Web.Controllers
 			return View(users);
 		}
 
+		[LoginAuthentication(RoleLevel.SuperAdmin, "Admin", "Login")]
+		public ActionResult ImportUser()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		[LoginAuthentication(RoleLevel.SuperAdmin, "Admin", "Login")]
+		public ActionResult DoImport()
+		{
+			var result = CommonService.UploadImportFile();
+
+			if (result.Error == 1)
+			{
+				return AlertAndRedirect(result.Message, "/Admin/ImportUser");
+			}
+
+			var message = string.Empty;
+			var importNumber = UserGroupService.ImportUser(out message);
+
+			return AlertAndRedirect(message == string.Empty ? string.Format("导入 {0} 个新用户", importNumber) : message, "/Admin/ImportUser");
+		}
+
 		#endregion
 
 		#region Venue

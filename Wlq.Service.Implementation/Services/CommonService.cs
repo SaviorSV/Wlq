@@ -51,6 +51,34 @@ namespace Wlq.Service.Implementation
 			return new FileUploadResult(0, "上传成功", string.Format("/upload/user/{0}/{1}", userId, fileName), extension);
 		}
 
+		public FileUploadResult UploadImportFile()
+		{
+			var fileName = "import_user.xls";
+
+			if (HttpContext.Current.Request.Files.Count > 0 && HttpContext.Current.Request.Files[0].ContentLength > 0)
+			{
+				var uploadFile = HttpContext.Current.Request.Files[0];
+				var extension = Path.GetExtension(uploadFile.FileName);
+
+				if (extension == ".xls")
+				{
+					var tempPath = UploadPhysicalPath + "Temp\\";
+
+					FileManager.Upload(uploadFile.InputStream, tempPath, fileName);
+				}
+				else
+				{
+					return new FileUploadResult(1, "请上传xls文件", string.Empty, string.Empty);
+				}
+			}
+			else
+			{
+				return new FileUploadResult(1, "请选择上传文件", string.Empty, string.Empty);
+			}
+
+			return new FileUploadResult(0, "上传成功", string.Format("/upload/temp/{0}", fileName), ".xls");
+		}
+
 		public void CleanTempFile(long userId)
 		{
 			var tempPath = this.GetTempFilePath(userId);

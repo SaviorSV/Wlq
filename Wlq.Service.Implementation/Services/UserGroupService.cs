@@ -10,6 +10,7 @@ using Hanger.Utility;
 using Microsoft.Practices.Unity;
 using Wlq.Domain;
 using Wlq.Persistence;
+using System.IO;
 
 namespace Wlq.Service.Implementation
 {
@@ -134,6 +135,27 @@ namespace Wlq.Service.Implementation
 			}
 
 			return users.Paging(pageIndex, pageSize, out  totalNumber);
+		}
+
+		public int ImportUser(out string message)
+		{
+			message = string.Empty;
+
+			var filePath = AppDomain.CurrentDomain.BaseDirectory + "\\Upload\\Temp\\import_user.xls";
+
+			if (!File.Exists(filePath))
+			{
+				message = "导入文件不存在";
+				return 0;
+			}
+
+			var number = 0;
+
+			//todo: import
+
+			File.Delete(filePath);
+
+			return number;
 		}
 
 		#endregion

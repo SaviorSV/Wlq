@@ -11,14 +11,14 @@
 		<div class="lbody">
 			<a href="/" class="logo"></a>
 			<ul id="leftmenu" class="leftmenu">
-				<li><a href="/Admin/Index" class="menu-1">后台首页</a></li>
-				<li><a href="/Admin/AdminManagement" class="menu-2">权限管理</a></li>
-				<li><a href="/Admin/GroupManagement" class="menu-3">组织管理</a></li>
-				<li><a href="/Admin/PostManagement" class="menu-4">发布管理</a></li>
-				<li><a href="/Admin/UnAuditedPost" class="menu-6">发布审核</a></li>
-				<li><a href="/Admin/VenueManagement" class="menu-5">场馆/周期活动</a></li>
-				@*<li><a href="/Admin/ActivityManagement" class="menu-7">业务管理</a></li>*@
-				<li><a href="#" class="menu-8">其他</a></li>
+				<li><a href="@Url.Action("Index", "Admin")" class="menu-1">后台首页</a></li>
+				<li><a href="@Url.Action("AdminManagement", "Admin")" class="menu-2">权限管理</a></li>
+				<li><a href="@Url.Action("GroupManagement", "Admin")" class="menu-3">组织管理</a></li>
+				<li><a href="@Url.Action("PostManagement", "Admin")" class="menu-4">发布管理</a></li>
+				<li><a href="@Url.Action("UnAuditedPost", "Admin")" class="menu-6">发布审核</a></li>
+				<li><a href="@Url.Action("VenueManagement", "Admin")" class="menu-5">场馆/周期活动</a></li>
+				@*<li><a href="@" class="menu-7">业务管理</a></li>*@
+				<li><a href="@Url.Action("ImportUser", "Admin")" class="menu-8">其他</a></li>
 			</ul>
 		</div>
 		<div class="rbody">
