@@ -155,6 +155,26 @@ namespace Wlq.Web.Controllers
 			return AlertAndRedirect("保存成功", "/Admin/GroupManagement");
 		}
 
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
+		public ActionResult UserManagement(string name, int pageIndex = 1)
+		{
+			if (pageIndex < 1)
+			{
+				pageIndex = 1;
+			}
+
+			var pageSize = 20;
+			var totalNumber = 0;
+
+			var users = UserGroupService.GetNormalUserList(name, pageIndex, pageSize, out totalNumber);
+
+			ViewBag.SearchName = name;
+			ViewBag.PageIndex = pageIndex;
+			ViewBag.TotalPage = totalNumber > 0 ? Math.Ceiling((decimal)totalNumber / pageSize) : 1;
+
+			return View(users);
+		}
+
 		#endregion
 
 		#region Venue

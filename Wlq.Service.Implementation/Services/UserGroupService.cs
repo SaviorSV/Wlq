@@ -123,6 +123,19 @@ namespace Wlq.Service.Implementation
 			return true;
 		}
 
+		public IEnumerable<UserInfo> GetNormalUserList(string name, int pageIndex, int pageSize, out int totalNumber)
+		{
+			var users = base.GetRepository<UserInfo>().Entities
+				.Where(u => u.Role == (int)RoleLevel.Normal);
+
+			if (!string.IsNullOrWhiteSpace(name))
+			{
+				users = users.Where(u => u.Name.Contains(name));
+			}
+
+			return users.Paging(pageIndex, pageSize, out  totalNumber);
+		}
+
 		#endregion
 
 		#region Group

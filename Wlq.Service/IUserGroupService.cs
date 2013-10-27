@@ -20,6 +20,7 @@ namespace Wlq.Service
 		bool ResetPassword(long userId, string newPassword);
 		bool Login(string loginName, string password, bool isAdmin);
 		bool LoginByCode(string code);
+		IEnumerable<UserInfo> GetNormalUserList(string name, int pageIndex, int pageSize, out int totalNumber);
 
 		#endregion
 

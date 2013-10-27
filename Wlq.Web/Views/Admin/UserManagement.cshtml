@@ -1,0 +1,89 @@
+﻿@{
+	Layout = "~/Views/Admin/_Layout.cshtml";
+}
+
+@using Hanger.Utility;
+@using Wlq.Domain;
+
+@model IEnumerable<UserInfo>
+
+<h4 class="form-tt">用户列表</h4>
+<div class="formbody">
+	<div class="quanxian-tt">
+		姓名：
+		<input id="txt_name" type="text" class="input-2" value="@ViewBag.SearchName" />
+		<a id="find_user" href="javascript:;" class="btn-3">查 询</a>
+	</div>
+	<div id="booker_list" class="quanxian-tt">
+		<table class='list-tbl'>
+			<thead>
+				<tr>
+					<th>用户ID</th>
+					<th>姓名</th>
+					<th>性别</th>
+					<th>出生年月</th>
+					<th>居委会</th>
+					<th>联系电话</th>
+				</tr>
+			</thead>
+			<tbody>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>@item.Id</td>
+					<td>@item.Name</td>
+					<td>@item.Gender</td>
+					<td>@item.Birth</td>
+					<td>@item.Committees</td>
+					<td>@item.Mobile</td>
+				</tr>
+			}
+			</tbody>
+		</table>
+	</div>
+
+	<div id="pager" class="page">
+		第 <span id="currentPage">@ViewBag.PageIndex</span> / <span id="totalPage">@ViewBag.TotalPage</span> 页 &nbsp;&nbsp;
+		<a class="pre" id="previous" href="javascript:;">上一页</a>
+		<a class="next" id="next" href="javascript:;">下一页</a>
+	</div>
+</div>
+<div class="formfooter"></div>
+
+@section scripts
+{
+	<script type="text/javascript">
+		var pageIndex = @ViewBag.PageIndex;
+		var totalPage = @ViewBag.TotalPage;
+		var pageUrl = "/Admin/UserManagement?name=@ViewBag.SearchName&";
+
+		$(document).ready(function () {
+			$("#pager").show();
+
+			if (pageIndex <= 1) {
+				pageIndex = 1;
+				$("#previous").hide();
+			}
+
+			if (pageIndex >= totalPage) {
+				pageIndex = totalPage;
+				$("#next").hide();
+			}
+		});
+
+		$("#find_user").bind("click", function () {
+			window.location =  "/Admin/UserManagement?name=" + $("#txt_name").val();
+		});
+
+		$("#previous").bind("click", function () {
+			var newPage = pageIndex - 1;
+			window.location = pageUrl + "pageIndex=" + newPage;
+		});
+
+		$("#next").bind("click", function () {
+			var newPage = pageIndex + 1;
+			window.location = pageUrl + "pageIndex=" + newPage;
+		});
+
+	</script>
+}
