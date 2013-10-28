@@ -175,7 +175,7 @@ namespace Wlq.Web.Controllers
 			return View(users);
 		}
 
-		[LoginAuthentication(RoleLevel.SuperAdmin, "Admin", "Login")]
+		[LoginAuthentication(RoleLevel.SuperAdmin, "Admin", "Index")]
 		public ActionResult ImportUser()
 		{
 			return View();

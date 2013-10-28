@@ -21,9 +21,10 @@
 					<th>用户ID</th>
 					<th>姓名</th>
 					<th>性别</th>
-					<th>出生年月</th>
+					<th>出生日期</th>
 					<th>居委会</th>
 					<th>联系电话</th>
+					<th>开卡时间</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -36,6 +37,7 @@
 					<td>@item.Birth</td>
 					<td>@item.Committees</td>
 					<td>@item.Mobile</td>
+					<td>@item.CreateTime.ToString("yyyy-MM-dd")</td>
 				</tr>
 			}
 			</tbody>
