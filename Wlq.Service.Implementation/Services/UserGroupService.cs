@@ -11,6 +11,7 @@ using Microsoft.Practices.Unity;
 using Wlq.Domain;
 using Wlq.Persistence;
 using System.IO;
+using System.Data.OleDb;
 
 namespace Wlq.Service.Implementation
 {
@@ -149,13 +150,78 @@ namespace Wlq.Service.Implementation
 				return 0;
 			}
 
-			var number = 0;
+			var userRepository = base.GetRepository<UserInfo>();
+			var newUsers = new List<UserInfo>();
 
-			//todo: import
+			#region read unexist users in xls
 
-			File.Delete(filePath);
+			using (OleDbConnection conn = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + filePath + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=1\";"))
+			{
+				conn.Open();
 
-			return number;
+				try
+				{
+					using (OleDbCommand command = new OleDbCommand("SELECT * FROM [Sheet1$]", conn))
+					{
+						using (OleDbDataReader dr = command.ExecuteReader())
+						{
+							while (dr.Read())
+							{
+								var loginName = dr["封面卡号"].ToString().Trim();
+								var code = dr["内置卡号"].ToString().Trim();
+								var name = dr["姓名"].ToString().Trim();
+								var gender = dr["性别"].ToString().Trim();
+								var birth = dr["出生日期"].ToString().Trim();
+								var mobile = dr["电话"].ToString().Trim();
+								var committees = dr["居委会"].ToString().Trim();
+								var address = dr["地址"].ToString().Trim();
+
+								if (!string.IsNullOrWhiteSpace(loginName))
+								{
+									var existUser = userRepository.Entities
+										.FirstOrDefault(u => u.LoginName == loginName);
+
+									if (existUser == null && !string.IsNullOrWhiteSpace(code) && !string.IsNullOrWhiteSpace(name))
+									{
+										newUsers.Add(new UserInfo
+										{
+											LoginName = loginName,
+											Password = StringHelper.GetMd5(loginName),
+											Code = code,
+											Name = name,
+											Gender = gender,
+											Birth = birth,
+											Mobile = mobile,
+											Committees = committees,
+											Address = address
+										});
+									}
+								}
+							}
+						}
+					}
+
+				}
+				catch (Exception ex)
+				{
+					message = ex.Message;
+					LocalLoggingService.Exception(ex);
+				}
+				finally 
+				{ 
+					conn.Close();
+					File.Delete(filePath);
+				}
+			}
+
+			#endregion
+
+			if (newUsers.Count > 0)
+			{
+				userRepository.BatchInsert(newUsers);
+			}
+
+			return newUsers.Count;
 		}
 
 		#endregion

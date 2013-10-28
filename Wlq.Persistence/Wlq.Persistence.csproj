@@ -146,6 +146,14 @@
     <Compile Include="Migrations\201310171355042_UpdateBookingInfo.Designer.cs">
       <DependentUpon>201310171355042_UpdateBookingInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201310271500388_UpdateUserInfo1.cs" />
+    <Compile Include="Migrations\201310271500388_UpdateUserInfo1.Designer.cs">
+      <DependentUpon>201310271500388_UpdateUserInfo1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201310281259234_UpdateUserInfo2.cs" />
+    <Compile Include="Migrations\201310281259234_UpdateUserInfo2.Designer.cs">
+      <DependentUpon>201310281259234_UpdateUserInfo2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -227,6 +235,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201310171355042_UpdateBookingInfo.resx">
       <DependentUpon>201310171355042_UpdateBookingInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201310271500388_UpdateUserInfo1.resx">
+      <DependentUpon>201310271500388_UpdateUserInfo1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201310281259234_UpdateUserInfo2.resx">
+      <DependentUpon>201310281259234_UpdateUserInfo2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace Wlq.Domain
 {
 	public class UserInfo : EntityBase
@@ -15,6 +16,7 @@ namespace Wlq.Domain
 		public string Avatar { get; set; }
 		public int Tags { get; set; }
 		public int Role { get; set; }
+		public DateTime CreateTime { get; set; }
 
 		public UserInfo()
 		{
@@ -28,6 +30,7 @@ namespace Wlq.Domain
 			Committees = string.Empty;
 			Address = string.Empty;
 			Avatar = string.Empty;
+			CreateTime = DateTime.Now;
 		}
 	}
 }
