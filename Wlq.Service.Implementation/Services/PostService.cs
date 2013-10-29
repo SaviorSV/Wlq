@@ -596,7 +596,7 @@ namespace Wlq.Service.Implementation
 			var schedules = new List<BookingSchedule>();
 			var today = DateTime.Now.Date;
 
-			for (int i = 0; i < days; i++)
+			for (int i = 1; i <= days; i++)
 			{
 				var date = today.AddDays(i);
 
