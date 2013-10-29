@@ -127,15 +127,26 @@ namespace Wlq.Service.Implementation
 
 		public IEnumerable<UserInfo> GetNormalUserList(string name, int pageIndex, int pageSize, out int totalNumber)
 		{
-			var users = base.GetRepository<UserInfo>().Entities
+			var key = string.Format("UserGroupService.GetNormalUserList.{0}"
+				, name);
+
+			var userList = CacheManager.GetList<UserInfo>(true, key, pageIndex, pageSize, new TimeSpan(0, 15, 0),
+			() =>
+			{
+				var users = base.GetRepository<UserInfo>().Entities
 				.Where(u => u.Role == (int)RoleLevel.Normal);
 
-			if (!string.IsNullOrWhiteSpace(name))
-			{
-				users = users.Where(u => u.Name.Contains(name));
-			}
+				if (!string.IsNullOrWhiteSpace(name))
+				{
+					users = users.Where(u => u.Name.Contains(name));
+				}
 
-			return users.Paging(pageIndex, pageSize, out  totalNumber);
+				return users;
+			});
+
+			totalNumber = userList.TotalNumber;
+
+			return userList.List;
 		}
 
 		public int ImportUser(out string message)
