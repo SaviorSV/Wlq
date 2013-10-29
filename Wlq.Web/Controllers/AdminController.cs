@@ -49,6 +49,8 @@ namespace Wlq.Web.Controllers
 				VenueList = PostService.GetPostsByType(true, PostType.Venue, true, 1, 8, out totalNumber)
 			};
 
+			ViewBag.ManagerId = AdminUser.Id;
+
 			return View(model);
 		}
 
@@ -465,8 +467,7 @@ namespace Wlq.Web.Controllers
 			return AlertAndRedirect("保存成功", "/Admin/PostManagement");
 		}
 
-		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
-		public ActionResult SigninBooking()
+		public ActionResult SigninBooking(long managerId)
 		{
 			return View();
 		}
@@ -840,15 +841,14 @@ namespace Wlq.Web.Controllers
 			return Content(new { Success = success }.ObjectToJson(), "text/json");
 		}
 
+		/// <summary>
+		/// SigninBooking
+		/// </summary>
+		/// <param name="id">bookingId</param>
 		[HttpPost]
-		public ActionResult SigninForBooking(long id)
+		public ActionResult SigninBooking(long managerId, string userCode)
 		{
-			var success = false;
-
-			if (AdminUser != null)
-			{
-				success = PostService.SigninForBooking(id);
-			}
+			var success = PostService.SigninBooking(managerId, userCode);
 
 			return Content(new { Success = success }.ObjectToJson(), "text/json");
 		}

@@ -677,7 +677,7 @@ namespace Wlq.Service.Implementation
 			return booking != null;
 		}
 
-		public bool SigninForBooking(long bookingId)
+		public bool SigninBooking(long bookingId)
 		{
 			var bookingRepository = base.GetRepository<BookingInfo>();
 			var booking = bookingRepository.GetById(bookingId);
@@ -691,6 +691,65 @@ namespace Wlq.Service.Implementation
 			}
 
 			return false;
+		}
+
+		public bool SigninBooking(long managerId, string userCode)
+		{
+			var userRepository= base.GetRepository<UserInfo>();
+			var user = userRepository.Entities.FirstOrDefault(u => u.Code == userCode);
+
+			if (user == null)
+			{
+				return false;
+			}
+
+			var manager = userRepository.GetById(managerId);
+
+			if (manager == null)
+			{
+				return false;
+			}
+
+			var bookingRepository = base.GetRepository<BookingInfo>();
+			var bookingList = bookingRepository.Entities
+				.Where(b => b.UserId == user.Id && b.BookingDate == DateTime.Today);
+
+			var find = false;
+
+			if (bookingList.Count() > 0)
+			{
+				foreach (var bookingInfo in bookingList)
+				{
+					if (manager.Role == (int)RoleLevel.SuperAdmin || this.PostIsManagedByManager(bookingInfo.PostId, managerId))
+					{
+						find = true;
+
+						bookingInfo.IsPresent = true;
+						bookingInfo.PresentTime = DateTime.Now;
+
+						bookingRepository.Update(bookingInfo, false);
+					}
+				}
+
+				_databaseContext.SaveChanges();
+			}
+
+			return find;
+		}
+
+		private bool PostIsManagedByManager(long postId, long managerId)
+		{
+			var post = base.GetRepository<PostInfo>().GetById(postId);
+
+			if (post == null)
+			{
+				return false;
+			}
+
+			var relation = base.GetRepository<GroupManagerInfo>().Entities
+				.FirstOrDefault(r => r.GroupId == post.GroupId && r.UserId == managerId);
+
+			return relation != null;
 		}
 
 		#endregion

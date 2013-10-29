@@ -62,7 +62,8 @@ namespace Wlq.Service
 		bool Booking(BookingInfo booking, out string message);
 		bool CancelBooking(long userId, long postId, long venueConfigId, DateTime bookingDate);
 		bool IsBookedPost(long userId, long postId);
-		bool SigninForBooking(long bookingId);
+		bool SigninBooking(long bookingId);
+		bool SigninBooking(long managerId, string userCode);
 
 		#endregion
 

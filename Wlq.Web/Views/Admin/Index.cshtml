@@ -9,7 +9,7 @@
 		@*<li><a href="/Admin/AdminManagement" class="tab-1">权限管理</a></li>
 		<li><a href="/Admin/GroupManagement" class="tab-4">组织管理</a></li>
 		<li><a href="/Admin/PostManagement" class="tab-2">发布管理</a></li>*@
-		<li><a href="@Url.Action("SigninBooking", "Admin")" class="tab-3">签到</a></li>
+		<li><a href="/Admin/SigninBooking?managerId=@ViewBag.ManagerId" class="tab-3">签到</a></li>
 		<li><a href="@Url.Action("UserManagement", "Admin")" class="tab-5">用户查询</a></li>
 	</ul>
 </div>

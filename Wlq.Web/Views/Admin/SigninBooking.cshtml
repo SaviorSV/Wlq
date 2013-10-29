@@ -28,61 +28,30 @@
 			var kCode = e.keyCode || e.charCode;
 
 			if (kCode == 13) {
-				bind_group_list();
+				Signin();
 				return false;
 			}
 		});
 
-		function bind_group_list() {
-			var code = $.trim($("#userCode").val());
+		function Signin() {
+			var managerId = $.trim(getQueryStringByName("managerId"));
+			var userCode = $.trim($("#userCode").val());
 
-			if (code != '') {
-				$.get("/Admin/GetBookingList?userCode=" + code, function (data) {
-					var result = '';
-					
-					if (data.length > 0) {
-						result += "<table class='list-tbl'>";
-						result += "<thead><tr><th>预约项目</th><th>姓名</th><th>联系方式</th><th>场地/周期活动</th><th>预约日期</th><th>操作</th></tr></thead><tbody>";
-
-						for (var i in data) {
-							result += "<tr><td>" + data[i].PostTitle + "</td>";
-							result += "<td>" + data[i].Name + "</td>";
-							result += "<td>" + data[i].Mobile + "</td>";
-							result += "<td>" + data[i].VenueName + "</td>";
-							result += "<td>" + data[i].DateShow + "</td>";
-							if (data[i].IsPresent) {
-								result += "<td>签到时间：" + data[i].PresentTime + "</td></tr>";
-							}
-							else {
-								result += "<td id='td_booking_status_" + data[i].Id + "'><a href='javascript:;' onclick='sign_in(" + data[i].Id + ")'>签到</a></td></tr>";
-							}
-						}
-
-						result += "</tbody></table>";
-					}
-					else {
-						result = "<span>无预约信息</span>";
-					}
-
-					$("#booking_list").html(result);
-				});
-
-				$("#userCode").val('');
-				$("#userCode").focus();
+			if (managerId == '' || userCode == '') {
+				alert('读取错误');
+				return;
 			}
-		}
 
-		function sign_in(bookingId) {
 			$.ajax({
 				type: "POST",
 				dataType: 'json',
-				url: "/Admin/SigninForBooking",
+				url: "/Admin/SigninBooking",
 				data: {
-					'id': bookingId
+					'managerId': managerId,
+					'userCode': userCode
 				},
 				success: function (r, status) {
 					if (r.Success) {
-						$("#td_booking_status_" + bookingId).html("已签到");
 						alert("签到成功");
 					}
 					else {
@@ -91,7 +60,9 @@
 				}
 			});
 
+			$("#userCode").val('');
 			$("#userCode").focus();
 		}
+
 	</script>
 }
