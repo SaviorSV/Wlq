@@ -724,10 +724,13 @@ namespace Wlq.Service.Implementation
 					{
 						find = true;
 
-						bookingInfo.IsPresent = true;
-						bookingInfo.PresentTime = DateTime.Now;
+						if (!bookingInfo.IsPresent)
+						{
+							bookingInfo.IsPresent = true;
+							bookingInfo.PresentTime = DateTime.Now;
 
-						bookingRepository.Update(bookingInfo, false);
+							bookingRepository.Update(bookingInfo, false);
+						}
 					}
 				}
 
