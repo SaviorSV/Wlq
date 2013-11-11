@@ -14,7 +14,7 @@ namespace Wlq.Service.Implementation
 {
 	public class PostService : ServiceBase, IPostService
 	{
-		private static readonly TimeSpan _PostListCachedTime = new TimeSpan(0, 5, 0);
+		private static readonly TimeSpan _PostListCachedTime = new TimeSpan(0, 0, 30);
 
 		[InjectionConstructor]
 		public PostService(DatabaseContext databaseContext)

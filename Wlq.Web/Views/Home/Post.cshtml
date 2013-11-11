@@ -105,10 +105,10 @@
 			{
 				<div class="booking_tab">
 					<ul id="tab_menu" class="tab_menu">
-						<li id="li-venue-@Model.Venues.First().Id" class="current" phone="@Model.Venues.First().Phone" address="@Model.Venues.First().Address" value="@Model.Venues.First().Id">@Model.Venues.First().Name</li>
+						<li id="li-venue-@Model.Venues.First().Id" class="current" phone="@Model.Venues.First().Phone" address="@Model.Venues.First().Address" value="@Model.Venues.First().Id" title="@Model.Venues.First().Name">@StringHelper.Cut(Model.Venues.First().Name, 10, "..")</li>
 					@foreach (var venue in Model.Venues.Skip(1))
 					{
-						<li id="li-venue-@venue.Id" phone="@venue.Phone" address="@venue.Address" value="@venue.Id">@venue.Name</li>
+						<li id="li-venue-@venue.Id" phone="@venue.Phone" address="@venue.Address" value="@venue.Id" title="@venue.Name">@StringHelper.Cut(venue.Name, 10, "..")</li>
 					}
 					</ul>
 	
