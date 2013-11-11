@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Hanger.Caching;
+﻿using Hanger.Caching;
 using Hanger.Common;
 using Microsoft.Practices.Unity;
+using OfficeOpenXml;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 using Wlq.Domain;
 using Wlq.Persistence;
-using System.IO;
-using OfficeOpenXml;
 
 namespace Wlq.Service.Implementation
 {
@@ -757,37 +757,123 @@ namespace Wlq.Service.Implementation
 			return relation != null;
 		}
 
-        public bool ExportBookingInfo()
-        {
-            var filePath = AppDomain.CurrentDomain.BaseDirectory + "\\Upload\\Temp\\ExportBookingInfo.xls";
+		public bool ExportBookingInfo(string fileName)
+		{
+			var filePath = AppDomain.CurrentDomain.BaseDirectory + "\\Upload\\Temp\\";
 
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
+			if (!Directory.Exists(filePath))
+			{
+				Directory.CreateDirectory(filePath);
+			}
 
-            var newFile = new FileInfo(filePath);
+			filePath += fileName;
 
-            using (var pck = new ExcelPackage(newFile))
-            {
-                var ws = pck.Workbook.Worksheets.Add("Sheet1");
-                //ws.View.ShowGridLines = false;
+			if (File.Exists(filePath))
+			{
+				File.Delete(filePath);
+			}
 
-                ws.Cells["A1"].Value = "卡号";
-                ws.Cells["B1"].Value = "姓名";
-                ws.Cells["C1"].Value = "预约信息";
-                ws.Cells["D1"].Value = "签到信息";
+			var newFile = new FileInfo(filePath);
+			var pck = new ExcelPackage(newFile);
 
-                for (int i = 2; i <= 12; i++)
-                {
-                    ws.Cells["A" + i.ToString()].Value = "";
-                }
+			try
+			{
+				var ws = pck.Workbook.Worksheets.Add("Sheet1");
+				//ws.View.ShowGridLines = false;
 
-                pck.SaveAs(newFile);
-            }
+				ws.Cells["A1"].Value = "卡号";
+				ws.Cells["B1"].Value = "姓名";
+				ws.Cells["C1"].Value = "预约信息";
+				ws.Cells["D1"].Value = "签到信息";
 
-            return true;
-        }
+				var tableIndex = 2;
+				var users = base.GetRepository<UserInfo>().Entities;
+				var bookingRepository = base.GetRepository<BookingInfo>();
+				var postRepository = base.GetRepository<PostInfo>();
+
+				foreach (var user in users)
+				{
+					var bookingInfos = bookingRepository.Entities
+						.Where(b => b.UserId == user.Id);
+
+					if (bookingInfos.Count() == 0)
+					{
+						continue;
+					}
+
+					var bookingDic = new Dictionary<long, int>();
+					var signinDic = new Dictionary<long, int>();
+
+					foreach (var booking in bookingInfos)
+					{
+						if (bookingDic.ContainsKey(booking.PostId))
+						{
+							bookingDic[booking.PostId]++;
+						}
+						else
+						{
+							bookingDic.Add(booking.PostId, 1);
+						}
+
+						//签到过
+						if (booking.IsPresent)
+						{
+							if (signinDic.ContainsKey(booking.PostId))
+							{
+								signinDic[booking.PostId]++;
+							}
+							else
+							{
+								signinDic.Add(booking.PostId, 1);
+							}
+						}
+					}
+
+					var bookingInfoBuilder = new StringBuilder();
+					var signinInfoBuilder = new StringBuilder();
+
+					foreach (var postId in bookingDic.Keys)
+					{
+						var post = postRepository.GetById(postId);
+
+						if (post != null)
+						{
+							bookingInfoBuilder.AppendFormat("{0} [{1}]次; ", post.Title, bookingDic[postId]);
+						}
+					}
+
+					foreach (var postId in signinDic.Keys)
+					{
+						var post = postRepository.GetById(postId);
+
+						if (post != null)
+						{
+							signinInfoBuilder.AppendFormat("{0} [{1}]次; ", post.Title, signinDic[postId]);
+						}
+					}
+
+					ws.Cells["A" + tableIndex.ToString()].Value = user.LoginName;
+					ws.Cells["B" + tableIndex.ToString()].Value = user.Name;
+					ws.Cells["C" + tableIndex.ToString()].Value = bookingInfoBuilder.ToString();
+					ws.Cells["D" + tableIndex.ToString()].Value = signinInfoBuilder.ToString();
+
+					tableIndex++;
+				}
+
+				pck.SaveAs(newFile);
+			}
+			catch (Exception ex)
+			{
+				LocalLoggingService.Exception(ex);
+				return false;
+			}
+			finally
+			{
+				pck.Dispose();
+			}
+			
+			return true;
+		}
 
 		#endregion
 

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 using Hanger.Common;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
+using System.Data.Entity;
 using Wlq.Persistence;
+using Wlq.Persistence.Migrations;
 using Wlq.Service;
 
 namespace Wlq.Test
@@ -32,7 +30,7 @@ namespace Wlq.Test
 
 		protected ICommonService CommonService
 		{
-			get { return this.GetService<ICommonService>(ref _commonService); }
+			get { return LocalServiceLocator.GetService<ICommonService>(); }
 		}
 
 		private IUserGroupService _userGroupService;
@@ -67,6 +65,8 @@ namespace Wlq.Test
 		protected void TestSetUp()
 		{
 			Hanger.Common.HangerFramework.Start();
+
+			Database.SetInitializer(new MigrateDatabaseToLatestVersion<DatabaseContext, Configuration>());
 		}
 
 		[TearDown]

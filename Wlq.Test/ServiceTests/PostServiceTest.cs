@@ -28,5 +28,14 @@ namespace Wlq.Test.ServiceTests
 
 			Assert.IsTrue(result);
 		}
+
+        [Test]
+        public void ExportBookingInfoTest()
+        {
+			var fileName = "export.xls";
+			var result = PostService.ExportBookingInfo(fileName);
+
+			Assert.IsTrue(result);
+		}
 	}
 }

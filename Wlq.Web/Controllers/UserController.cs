@@ -154,12 +154,14 @@ namespace Wlq.Web.Controllers
 			}
 		}
 
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult Register()
 		{
 			return View();
 		}
 
 		[HttpPost]
+		[LoginAuthentication(RoleLevel.Manager, "Admin", "Login")]
 		public ActionResult Register(UserInfo userModel)
 		{
 			if (string.IsNullOrWhiteSpace(userModel.LoginName) || string.IsNullOrWhiteSpace(userModel.Code))

@@ -49,7 +49,10 @@ namespace Wlq.Web.Fliters
 			if (!isLogin || roleLevel < (int)_role)
 			{
 				filterContext.Result = new RedirectToRouteResult(
-					new RouteValueDictionary { { "Controller", _loginController }, { "Action", _loginAction } });
+					new RouteValueDictionary { 
+						{ "Controller", _loginController }, 
+						{ "Action", _loginAction }, 
+						{ "returnUrl", filterContext.RequestContext.HttpContext.Request.RawUrl } });
 			}
 
 			//base.OnAuthorization(filterContext);

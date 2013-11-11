@@ -10,6 +10,7 @@ using Wlq.Domain;
 using Wlq.Service;
 using Wlq.Web.Fliters;
 using Wlq.Web.Models;
+using System.Net.Mime;
 
 namespace Wlq.Web.Controllers
 {
@@ -514,6 +515,38 @@ namespace Wlq.Web.Controllers
 				? string.Empty : AdminUser.LoginName;
 
 			return PartialView("_Header");
+		}
+
+		#endregion
+
+		#region Other
+
+		public ActionResult ExportBookingInfo()
+		{
+			var fileName = string.Format("export-{0}.xls", DateTime.Now.ToString("yyyyMMddHHmmssffff"));
+
+			if (PostService.ExportBookingInfo(fileName))
+			{
+				var fileBytes = this.GetFile(Server.MapPath(@"~/Upload/Temp/" + fileName));
+
+				return File(fileBytes, MediaTypeNames.Application.Octet, fileName);
+			}
+
+			return AlertAndRedirect("数据导出异常", "/Admin/Index");
+		}
+
+		private byte[] GetFile(string path)
+		{
+			var fs = System.IO.File.OpenRead(path);
+			var data = new byte[fs.Length];
+			var br = fs.Read(data, 0, data.Length);
+
+			if (br != fs.Length)
+			{ 
+				return null; 
+			}
+
+			return data;
 		}
 
 		#endregion

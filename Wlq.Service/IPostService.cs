@@ -65,7 +65,7 @@ namespace Wlq.Service
 		bool SigninBooking(long bookingId);
 		bool SigninBooking(long managerId, string userCode);
 
-        bool ExportBookingInfo();
+		bool ExportBookingInfo(string fileName);
 
 		#endregion
 

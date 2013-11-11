@@ -9,7 +9,7 @@
 <body>
 	<div class="body">
 		<div class="lbody">
-			<a href="/" class="logo"></a>
+			<a href="@Url.Action("Index", "Admin")" class="logo"></a>
 			<ul id="leftmenu" class="leftmenu">
 				<li><a href="@Url.Action("Index", "Admin")" class="menu-1">后台首页</a></li>
 				<li><a href="@Url.Action("AdminManagement", "Admin")" class="menu-2">权限管理</a></li>
@@ -18,7 +18,7 @@
 				<li><a href="@Url.Action("UnAuditedPost", "Admin")" class="menu-6">发布审核</a></li>
 				<li><a href="@Url.Action("VenueManagement", "Admin")" class="menu-5">场馆/周期活动</a></li>
 				@*<li><a href="@" class="menu-7">业务管理</a></li>*@
-				<li><a href="@Url.Action("ImportUser", "Admin")" class="menu-8">其他</a></li>
+				<li><a href="@Url.Action("ImportUser", "Admin")" class="menu-8">数据导入/导出</a></li>
 			</ul>
 		</div>
 		<div class="rbody">
