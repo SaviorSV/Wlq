@@ -171,7 +171,13 @@ namespace Wlq.Web.Controllers
 			{
 				Code = userModel.Code,
 				LoginName = userModel.LoginName,
-				Password = StringHelper.GetMd5("111111"),
+                Password = StringHelper.GetMd5(userModel.LoginName),
+                Name = userModel.Name,
+                Gender = userModel.Gender,
+                Birth = userModel.Birth,
+                Committees = userModel.Committees,
+                Mobile = userModel.Mobile,
+                Address = userModel.Address,
 				Role = (int)RoleLevel.Normal
 			};
 

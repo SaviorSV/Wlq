@@ -10,16 +10,41 @@
 		<label class="btn-2">用户名</label>
 		<input name="LoginName" id="register_loginName" />
 	</li>
+    <li>
+        <label class="btn-2">姓名</label>
+        <input name="Name" type="text" />
+    </li>
+    <li>
+        <label class="btn-2">性　别</label>
+        <input name="Gender" type="text" />
+    </li>
+    <li>
+        <label class="btn-2">出生年月</label>
+        <input name="Birth" type="text" onclick="WdatePicker()" />
+    </li>
+    <li>
+        <label class="btn-2">居委会</label>
+        <input name="Committees" type="text" />
+    </li>
+    <li>
+        <label class="btn-2">联系电话</label>
+        <input name="Mobile" type="text" />
+    </li>
 	<li>
-		<label class="btn-2">读　卡</label>
-		<input name="Code" id="register_userCode" type="password" />
+		<label class="btn-2">联系地址</label>
+        <input name="Address" type="text" />
 	</li>
+    <li>
+        <label class="btn-2">读　卡</label>
+        <input name="Code" id="register_userCode" type="password" />
+    </li>
 	<li>
 		<a id="btn_register" href="javascript:;" class="btn-1" style="width:120px;">注 册</a>
 	</li>
 </ul>
 }@section scripts
 {
+    <script src="@Url.Content("~/content/Calender/WdatePicker.js")" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(function () {
 			$(document).ready(function () {

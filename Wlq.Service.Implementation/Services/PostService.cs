@@ -7,6 +7,8 @@ using Hanger.Common;
 using Microsoft.Practices.Unity;
 using Wlq.Domain;
 using Wlq.Persistence;
+using System.IO;
+using OfficeOpenXml;
 
 namespace Wlq.Service.Implementation
 {
@@ -754,6 +756,38 @@ namespace Wlq.Service.Implementation
 
 			return relation != null;
 		}
+
+        public bool ExportBookingInfo()
+        {
+            var filePath = AppDomain.CurrentDomain.BaseDirectory + "\\Upload\\Temp\\ExportBookingInfo.xls";
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            var newFile = new FileInfo(filePath);
+
+            using (var pck = new ExcelPackage(newFile))
+            {
+                var ws = pck.Workbook.Worksheets.Add("Sheet1");
+                //ws.View.ShowGridLines = false;
+
+                ws.Cells["A1"].Value = "卡号";
+                ws.Cells["B1"].Value = "姓名";
+                ws.Cells["C1"].Value = "预约信息";
+                ws.Cells["D1"].Value = "签到信息";
+
+                for (int i = 2; i <= 12; i++)
+                {
+                    ws.Cells["A" + i.ToString()].Value = "";
+                }
+
+                pck.SaveAs(newFile);
+            }
+
+            return true;
+        }
 
 		#endregion
 
